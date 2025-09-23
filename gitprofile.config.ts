@@ -80,7 +80,7 @@ const CONFIG = {
     telegram: '',
     website: '',
     phone: '',
-    email: 'leechanhye3722@gmail.com',
+    email: 'leechanhye@skku.edu',
   },
   resume: {
     fileUrl:
@@ -185,6 +185,7 @@ const CONFIG = {
       'snowfall',
     ],
     bannerImageUrl: '/banner.jpg',
+    bannerSubtitle: 'AI Researcher\nComputer Vision, Generative AI, Bias Mitigation',
   },
 
   // Optional Footer. Supports plain text or HTML.

@@ -123,6 +123,7 @@ export interface SanitizedThemeConfig {
   displayAvatarRing: boolean;
   themes: Array<string>;
   bannerImageUrl?: string;
+  bannerSubtitle?: string;
 }
 
 export interface SanitizedConfig {

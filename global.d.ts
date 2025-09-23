@@ -314,6 +314,11 @@ interface ThemeConfig {
    * Optional banner image to show when theme switch is disabled
    */
   bannerImageUrl?: string;
+
+  /**
+   * Optional subtitle text under the name on banner
+   */
+  bannerSubtitle?: string;
 }
 
 interface Config {

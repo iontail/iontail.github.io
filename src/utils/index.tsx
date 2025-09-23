@@ -128,6 +128,7 @@ export const getSanitizedConfig = (
         // If not provided, look for a local banner at public/banner.jpg
         bannerImageUrl:
           config?.themeConfig?.bannerImageUrl || '/banner.jpg',
+        bannerSubtitle: config?.themeConfig?.bannerSubtitle,
       },
       footer: config?.footer,
       enablePWA: config?.enablePWA ?? true,

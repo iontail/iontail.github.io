@@ -15,8 +15,9 @@ import ErrorPage from './error-page';
 import { DEFAULT_THEMES } from '../constants/default-themes';
 import ThemeChanger from './theme-changer';
 import { MdLocationOn } from 'react-icons/md';
-import { FaBuilding, FaLinkedin } from 'react-icons/fa';
+import { FaBuilding, FaLinkedin, FaUniversity } from 'react-icons/fa';
 import { AiFillGithub } from 'react-icons/ai';
+import { RiMailFill } from 'react-icons/ri';
 import { BG_COLOR, FALLBACK_IMAGE } from '../constants';
 import AvatarCard from './avatar-card';
 import { Profile } from '../interfaces/profile';
@@ -210,9 +211,16 @@ const GitProfile = ({ config }: { config: Config }) => {
                                 alt={profile.name}
                                 className={`w-48 h-48 rounded-full ${sanitizedConfig.themeConfig.displayAvatarRing ? 'ring-3 ring-primary ring-offset-base-100 ring-offset-2' : ''} shadow`}
                               />
-                              <div className="mt-4">
-                                <div className="px-4 py-2 rounded-xl bg-base-100/90 backdrop-blur border border-base-300 shadow text-2xl font-bold text-center">
-                                  {profile.name}
+                              <div className="mt-4 w-full px-4">
+                                <div className="max-w-3xl mx-auto px-6 py-3 rounded-xl bg-base-100/90 backdrop-blur border border-base-300 shadow text-center">
+                                  <div className="text-2xl font-bold">
+                                    {profile.name}
+                                  </div>
+                                  {sanitizedConfig.themeConfig.bannerSubtitle && (
+                                    <div className="mt-1 text-sm text-base-content/60 whitespace-pre-line text-center">
+                                      {sanitizedConfig.themeConfig.bannerSubtitle}
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                               {profile.bio && (
@@ -222,6 +230,7 @@ const GitProfile = ({ config }: { config: Config }) => {
                               )}
                               {/* Info chips overlay */}
                               <div className="mt-4 flex flex-wrap justify-center gap-2 max-w-3xl px-4">
+                                {/* 1) Location */}
                                 {profile.location && (
                                   <a
                                     className="px-3 py-2 rounded-lg bg-base-100/80 backdrop-blur border border-base-300 text-sm shadow flex items-center gap-2"
@@ -233,12 +242,24 @@ const GitProfile = ({ config }: { config: Config }) => {
                                     <span>{profile.location}</span>
                                   </a>
                                 )}
-                                {profile.company && (
+                                {/* 2) School (first education) */}
+                                {sanitizedConfig.educations?.length > 0 && sanitizedConfig.educations[0]?.institution && (
                                   <div className="px-3 py-2 rounded-lg bg-base-100/80 backdrop-blur border border-base-300 text-sm shadow flex items-center gap-2">
-                                    <FaBuilding />
-                                    <span className="truncate max-w-[14rem]">{profile.company}</span>
+                                    <FaUniversity />
+                                    <span className="truncate max-w-[14rem]">{sanitizedConfig.educations[0].institution}</span>
                                   </div>
                                 )}
+                                {/* 3) Email */}
+                                {sanitizedConfig.social?.email && (
+                                  <a
+                                    className="px-3 py-2 rounded-lg bg-base-100/80 backdrop-blur border border-base-300 text-sm shadow flex items-center gap-2"
+                                    href={`mailto:${sanitizedConfig.social.email}`}
+                                  >
+                                    <RiMailFill />
+                                    <span className="truncate max-w-[14rem]">{sanitizedConfig.social.email}</span>
+                                  </a>
+                                )}
+                                {/* 4) GitHub */}
                                 {sanitizedConfig.github?.username && (
                                   <a
                                     className="px-3 py-2 rounded-lg bg-base-100/80 backdrop-blur border border-base-300 text-sm shadow flex items-center gap-2"
@@ -250,6 +271,7 @@ const GitProfile = ({ config }: { config: Config }) => {
                                     <span>@{sanitizedConfig.github.username}</span>
                                   </a>
                                 )}
+                                {/* 5) LinkedIn */}
                                 {sanitizedConfig.social?.linkedin && (
                                   <a
                                     className="px-3 py-2 rounded-lg bg-base-100/80 backdrop-blur border border-base-300 text-sm shadow flex items-center gap-2"
