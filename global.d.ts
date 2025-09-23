@@ -309,6 +309,11 @@ interface ThemeConfig {
    * Available themes
    */
   themes?: Array<string>;
+
+  /**
+   * Optional banner image to show when theme switch is disabled
+   */
+  bannerImageUrl?: string;
 }
 
 interface Config {

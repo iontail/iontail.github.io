@@ -14,10 +14,10 @@ const CONFIG = {
     github: {
       display: true, // Display GitHub projects?
       header: 'Github Projects',
-      mode: 'automatic', // Mode can be: 'automatic' or 'manual'
+      mode: 'manual', // Mode can be: 'automatic' or 'manual'
       automatic: {
         sortBy: 'stars', // Sort projects by 'stars' or 'updated'
-        limit: 8, // How many projects to display.
+        limit: 4, // How many projects to display.
         exclude: {
           forks: false, // Forked projects will not be displayed if set to true.
           projects: [], // These projects will not be displayed. example: ['arifszn/my-project1', 'arifszn/my-project2']
@@ -25,7 +25,7 @@ const CONFIG = {
       },
       manual: {
         // Properties for manually specifying projects
-        projects: ['arifszn/gitprofile', 'arifszn/pandora'], // List of repository names to display. example: ['arifszn/my-project1', 'arifszn/my-project2']
+        projects: ['iontail/N-TIDE', 'iontail/BRNet', 'rkdrn79/CoReaP', 'iontail/dive_into_mamba'], // List of repository names to display. example: ['arifszn/my-project1', 'arifszn/my-project2']
       },
     },
     external: {
@@ -33,29 +33,37 @@ const CONFIG = {
       // To hide the `External Projects` section, keep it empty.
       projects: [
         {
-          title: 'Project Name',
+          title: 'N-TIDE: Debiasing Unimodal Vision Models via Neutral Text Inversion with CLIP',
           description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut.',
+            'Research on mitigating social bias in unimodal vision models by leveraging CLIP-based neutral-text inversion inspired by the null-text inversion in DDIM and knowledge distillation to train a debiased image-only classifier.',
           imageUrl:
-            'https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg',
-          link: 'https://example.com',
+            'https://raw.githubusercontent.com/iontail/N-TIDE/main/assets/N_TIDE.png',
+          link: 'https://github.com/iontail/N-TIDE.git',
         },
         {
-          title: 'Project Name',
+          title: 'BRNet: a Bio-Receptor Networks for Object Detection with Zero-Shot Domain Adaptation',
           description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut.',
+            'Research on the low- light object detection task with boosting domain adaptation between low-light and well-lit conditions, carrying out experiments to validate and refine the proposed methodology.',
           imageUrl:
-            'https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg',
-          link: 'https://example.com',
+            'https://raw.githubusercontent.com/iontail/BRNet/main/assets/BRNet.png',
+          link: 'https://github.com/iontail/BRNet.git',
+        },
+        {
+          title: 'CoReaP: Collaborative Reconstruction with assitive priors',
+          description:
+            'An image inpainting model leveraging Deformable Convolution Tokenization (DCT), integrated Early and Late Fusion strategies, and a two-stream learning architecture comprising high-frequency and low-frequency pathways connected via inclusion residual connections, with high-frequency information serving as a prior for low-frequency refinement.',
+          imageUrl:
+            'https://raw.githubusercontent.com/rkdrn79/CoReaP/main/assets/coreap_teaser.png',
+          link: 'https://github.com/rkdrn79/CoReaP.git',
         },
       ],
     },
   },
   seo: { title: 'Portfolio of Ariful Alam', description: '', imageURL: '' },
   social: {
-    linkedin: 'ariful-alam',
-    x: 'arif_szn',
-    mastodon: 'arifszn@mastodon.social',
+    linkedin: 'chanheelee3722',
+    x: '',
+    mastodon: '',
     researchGate: '',
     facebook: '',
     instagram: '',
@@ -65,98 +73,57 @@ const CONFIG = {
     udemy: '',
     dribbble: '',
     behance: '',
-    medium: 'arifszn',
-    dev: 'arifszn',
+    medium: '',
+    dev: '',
     stackoverflow: '', // example: '1/jeff-atwood'
     discord: '',
     telegram: '',
-    website: 'https://www.arifszn.com',
+    website: '',
     phone: '',
-    email: 'arifulalamszn@gmail.com',
+    email: 'leechanhye3722@gmail.com',
   },
   resume: {
     fileUrl:
-      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', // Empty fileUrl will hide the `Download Resume` button.
+      'https://github.com/iontail/iontail/blob/main/Chanhee_Lee_CV_2025_08.pdf', // Empty fileUrl will hide the `Download Resume` button.
   },
   skills: [
-    'PHP',
-    'Laravel',
-    'JavaScript',
-    'React.js',
-    'Node.js',
-    'Nest.js',
-    'MySQL',
-    'PostgreSQL',
-    'Git',
-    'Docker',
-    'PHPUnit',
-    'CSS',
-    'Antd',
-    'Tailwind',
+    'python',
+    'pytorch',
+    'opencv',
+    'numpy',
+    'pandas'
   ],
   experiences: [
     {
-      company: 'Company Name',
+      company: 'Efficient Learning Lab, Sungkyunkwan University',
       position: 'Position',
-      from: 'September 2021',
+      from: 'August 2025',
       to: 'Present',
-      companyLink: 'https://example.com',
-    },
-    {
-      company: 'Company Name',
-      position: 'Position',
-      from: 'July 2019',
-      to: 'August 2021',
-      companyLink: 'https://example.com',
+      companyLink: 'https://ell.skku.edu/',
     },
   ],
   certifications: [
     {
-      name: 'Lorem ipsum',
-      body: 'Lorem ipsum dolor sit amet',
-      year: 'March 2022',
-      link: 'https://example.com',
+      name: 'ADsP',
+      body: 'Advanced Data Analytics Semi-Professional',
+      year: 'March 2024',
+      link: 'https://www.dataq.or.kr/www/main.do',
     },
   ],
   educations: [
     {
-      institution: 'Institution Name',
-      degree: 'Degree',
-      from: '2015',
-      to: '2019',
-    },
-    {
-      institution: 'Institution Name',
-      degree: 'Degree',
-      from: '2012',
-      to: '2014',
+      institution: 'Sungkyunkwan University',
+      degree: 'Bachelor of Science in Applied Artificial Intelligence',
+      from: '2021',
+      to: 'Present',
     },
   ],
-  publications: [
-    {
-      title: 'Publication Title',
-      conferenceName: '',
-      journalName: 'Journal Name',
-      authors: 'John Doe, Jane Smith',
-      link: 'https://example.com',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    },
-    {
-      title: 'Publication Title',
-      conferenceName: 'Conference Name',
-      journalName: '',
-      authors: 'John Doe, Jane Smith',
-      link: 'https://example.com',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    },
-  ],
+  publications: [],
   // Display articles from your medium or dev account. (Optional)
   blog: {
-    source: 'dev', // medium | dev
-    username: 'arifszn', // to hide blog section, keep it empty
-    limit: 2, // How many articles to display. Max is 10.
+    source: '', // medium | dev
+    username: '', // to hide blog section, keep it empty
+    limit: 0, // How many articles to display. Max is 10.
   },
   googleAnalytics: {
     id: '', // GA3 tracking id/GA4 tag id UA-XXXXXXXXX-X | G-XXXXXXXXXX
@@ -164,11 +131,11 @@ const CONFIG = {
   // Track visitor interaction and behavior. https://www.hotjar.com
   hotjar: { id: '', snippetVersion: 6 },
   themeConfig: {
-    defaultTheme: 'winter',
+    defaultTheme: 'snowfall',
 
     // Hides the switch in the navbar
     // Useful if you want to support a single color mode
-    disableSwitch: false,
+    disableSwitch: true,
 
     // Should use the prefers-color-scheme media-query,
     // using user system preferences, instead of the hardcoded defaultTheme
@@ -215,7 +182,9 @@ const CONFIG = {
       'abyss',
       'silk',
       'procyon',
+      'snowfall',
     ],
+    bannerImageUrl: '/banner.jpg',
   },
 
   // Optional Footer. Supports plain text or HTML.

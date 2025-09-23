@@ -125,6 +125,9 @@ export const getSanitizedConfig = (
           config?.themeConfig?.respectPrefersColorScheme || false,
         displayAvatarRing: config?.themeConfig?.displayAvatarRing ?? true,
         themes: config?.themeConfig?.themes || DEFAULT_THEMES,
+        // If not provided, look for a local banner at public/banner.jpg
+        bannerImageUrl:
+          config?.themeConfig?.bannerImageUrl || '/banner.jpg',
       },
       footer: config?.footer,
       enablePWA: config?.enablePWA ?? true,

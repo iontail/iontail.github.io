@@ -51,6 +51,48 @@
   --noise: 0;
 }
 
+@plugin "daisyui/theme" {
+  name: 'snowfall';
+  color-scheme: light;
+
+  /* 차가운 겨울 배경과 높은 대비의 콘텐츠 */
+  --color-base-100: #f3f7fb; /* 밝은 눈색 배경 */
+  --color-base-200: #e5eef7; /* 살짝 진한 배경 */
+  --color-base-300: #d7e3f2; /* 카드 경계용 */
+  --color-base-content: #0f172a; /* 짙은 네이비 텍스트 */
+
+  /* 포인트 컬러: 겨울 하늘 파랑 + 파우더 블루 */
+  --color-primary: #3b82f6; /* 스카이 블루 */
+  --color-primary-content: #ffffff;
+  --color-secondary: #60a5fa; /* 라이트 블루 */
+  --color-secondary-content: #0f172a;
+
+  /* 보조 팔레트 */
+  --color-accent: #a5f3fc; /* 눈 결정 느낌의 민트 블루 */
+  --color-accent-content: #0f172a;
+  --color-neutral: #1f2937; /* 대비용 중립 톤 */
+  --color-neutral-content: #e5eef7;
+  --color-info: #38bdf8;
+  --color-info-content: #0f172a;
+  --color-success: #22c55e;
+  --color-success-content: #ffffff;
+  --color-warning: #f59e0b;
+  --color-warning-content: #0f172a;
+  --color-error: #ef4444;
+  --color-error-content: #ffffff;
+
+  /* 라운드와 깊이감: 눈송이처럼 부드럽게 */
+  --radius-selector: 1.25rem;
+  --radius-field: 1rem;
+  --radius-box: 1.25rem;
+
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
 * {
   scrollbar-width: thin;
 }

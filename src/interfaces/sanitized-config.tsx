@@ -122,6 +122,7 @@ export interface SanitizedThemeConfig {
   respectPrefersColorScheme: boolean;
   displayAvatarRing: boolean;
   themes: Array<string>;
+  bannerImageUrl?: string;
 }
 
 export interface SanitizedConfig {

@@ -14,7 +14,10 @@ import { SanitizedConfig } from '../interfaces/sanitized-config';
 import ErrorPage from './error-page';
 import { DEFAULT_THEMES } from '../constants/default-themes';
 import ThemeChanger from './theme-changer';
-import { BG_COLOR } from '../constants';
+import { MdLocationOn } from 'react-icons/md';
+import { FaBuilding, FaLinkedin } from 'react-icons/fa';
+import { AiFillGithub } from 'react-icons/ai';
+import { BG_COLOR, FALLBACK_IMAGE } from '../constants';
 import AvatarCard from './avatar-card';
 import { Profile } from '../interfaces/profile';
 import DetailsCard from './details-card';
@@ -191,7 +194,80 @@ const GitProfile = ({ config }: { config: Config }) => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 rounded-box">
               <div className="col-span-1">
                 <div className="grid grid-cols-1 gap-6">
-                  {!sanitizedConfig.themeConfig.disableSwitch && (
+                  {sanitizedConfig.themeConfig.disableSwitch ? (
+                    sanitizedConfig.themeConfig.bannerImageUrl ? (
+                      <div className="card shadow-lg card-sm bg-base-100 overflow-hidden">
+                        <div className="relative w-full" style={{ paddingTop: '150%' }}>
+                          <img
+                            src={sanitizedConfig.themeConfig.bannerImageUrl}
+                            alt="banner"
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
+                          {!loading && profile && (
+                            <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-base-content">
+                              <img
+                                src={profile.avatar ? profile.avatar : FALLBACK_IMAGE}
+                                alt={profile.name}
+                                className={`w-48 h-48 rounded-full ${sanitizedConfig.themeConfig.displayAvatarRing ? 'ring-3 ring-primary ring-offset-base-100 ring-offset-2' : ''} shadow`}
+                              />
+                              <div className="mt-4">
+                                <div className="px-4 py-2 rounded-xl bg-base-100/90 backdrop-blur border border-base-300 shadow text-2xl font-bold text-center">
+                                  {profile.name}
+                                </div>
+                              </div>
+                              {profile.bio && (
+                                <div className="mt-1 text-sm opacity-80 text-center max-w-xl px-4">
+                                  {profile.bio}
+                                </div>
+                              )}
+                              {/* Info chips overlay */}
+                              <div className="mt-4 flex flex-wrap justify-center gap-2 max-w-3xl px-4">
+                                {profile.location && (
+                                  <a
+                                    className="px-3 py-2 rounded-lg bg-base-100/80 backdrop-blur border border-base-300 text-sm shadow flex items-center gap-2"
+                                    href={`https://www.google.com/maps/search/${encodeURIComponent(profile.location)}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    <MdLocationOn />
+                                    <span>{profile.location}</span>
+                                  </a>
+                                )}
+                                {profile.company && (
+                                  <div className="px-3 py-2 rounded-lg bg-base-100/80 backdrop-blur border border-base-300 text-sm shadow flex items-center gap-2">
+                                    <FaBuilding />
+                                    <span className="truncate max-w-[14rem]">{profile.company}</span>
+                                  </div>
+                                )}
+                                {sanitizedConfig.github?.username && (
+                                  <a
+                                    className="px-3 py-2 rounded-lg bg-base-100/80 backdrop-blur border border-base-300 text-sm shadow flex items-center gap-2"
+                                    href={`https://github.com/${sanitizedConfig.github.username}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    <AiFillGithub />
+                                    <span>@{sanitizedConfig.github.username}</span>
+                                  </a>
+                                )}
+                                {sanitizedConfig.social?.linkedin && (
+                                  <a
+                                    className="px-3 py-2 rounded-lg bg-base-100/80 backdrop-blur border border-base-300 text-sm shadow flex items-center gap-2"
+                                    href={`https://www.linkedin.com/in/${sanitizedConfig.social.linkedin}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    <FaLinkedin />
+                                    <span>LinkedIn</span>
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ) : null
+                  ) : (
                     <ThemeChanger
                       theme={theme}
                       setTheme={setTheme}
@@ -199,18 +275,15 @@ const GitProfile = ({ config }: { config: Config }) => {
                       themeConfig={sanitizedConfig.themeConfig}
                     />
                   )}
-                  <AvatarCard
-                    profile={profile}
-                    loading={loading}
-                    avatarRing={sanitizedConfig.themeConfig.displayAvatarRing}
-                    resumeFileUrl={sanitizedConfig.resume.fileUrl}
-                  />
-                  <DetailsCard
-                    profile={profile}
-                    loading={loading}
-                    github={sanitizedConfig.github}
-                    social={sanitizedConfig.social}
-                  />
+                  {/* Avatar card removed as banner now contains profile visuals */}
+                  {!sanitizedConfig.themeConfig.disableSwitch && (
+                    <DetailsCard
+                      profile={profile}
+                      loading={loading}
+                      github={sanitizedConfig.github}
+                      social={sanitizedConfig.social}
+                    />
+                  )}
                   {sanitizedConfig.skills.length !== 0 && (
                     <SkillCard
                       loading={loading}

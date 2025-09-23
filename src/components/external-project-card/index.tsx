@@ -32,11 +32,12 @@ const ExternalProjectCard = ({
                         className: 'mb-2 mx-auto',
                       })}
                     </h2>
-                    <div className="avatar w-full h-full">
-                      <div className="w-24 h-24 mask mask-squircle mx-auto">
+                    <div className="w-full">
+                      <div className="relative w-full mx-auto" style={{ paddingTop: '50%' }}>
                         {skeleton({
                           widthCls: 'w-full',
                           heightCls: 'h-full',
+                          className: 'absolute inset-0 rounded-lg',
                           shape: '',
                         })}
                       </div>
@@ -94,18 +95,20 @@ const ExternalProjectCard = ({
             <div className="w-full">
               <div className="px-4">
                 <div className="text-center w-full">
-                  <h2 className="font-medium text-center opacity-60 mb-2">
+                  <h2 className="font-semibold text-center text-base-content mb-2">
                     {item.title}
                   </h2>
                   {item.imageUrl && (
-                    <div className="avatar opacity-90">
-                      <div className="w-24 h-24 mask mask-squircle">
+                    <div className="opacity-90 w-full">
+                      <div className="relative w-full rounded-lg overflow-hidden" style={{ paddingTop: '50%' }}>
                         <LazyImage
                           src={item.imageUrl}
                           alt={'thumbnail'}
+                          className="absolute inset-0 w-full h-full object-contain bg-base-100"
                           placeholder={skeleton({
                             widthCls: 'w-full',
                             heightCls: 'h-full',
+                            className: 'absolute inset-0',
                             shape: '',
                           })}
                         />
