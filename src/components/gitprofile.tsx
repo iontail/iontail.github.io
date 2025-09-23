@@ -15,7 +15,7 @@ import ErrorPage from './error-page';
 import { DEFAULT_THEMES } from '../constants/default-themes';
 import ThemeChanger from './theme-changer';
 import { MdLocationOn } from 'react-icons/md';
-import { FaBuilding, FaLinkedin } from 'react-icons/fa';
+import { FaBuilding, FaLinkedin, FaUniversity } from 'react-icons/fa';
 import { AiFillGithub } from 'react-icons/ai';
 import { RiMailFill } from 'react-icons/ri';
 import { BG_COLOR, FALLBACK_IMAGE } from '../constants';
