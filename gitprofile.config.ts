@@ -135,7 +135,7 @@ const CONFIG = {
 
     // Hides the switch in the navbar
     // Useful if you want to support a single color mode
-    disableSwitch: false,
+    disableSwitch: true,
 
     // Should use the prefers-color-scheme media-query,
     // using user system preferences, instead of the hardcoded defaultTheme
@@ -184,6 +184,9 @@ const CONFIG = {
       'procyon',
       'snowfall',
     ],
+    // Optional banner image to show when theme switch is disabled
+    bannerImageUrl: '/banner.png',
+    bannerSubtitle: 'AI Researcher\nComputer Vision, Generative AI, Bias Mitigation',
   },
 
   // Optional Footer. Supports plain text or HTML.
