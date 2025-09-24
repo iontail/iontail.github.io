@@ -185,7 +185,7 @@ const CONFIG = {
       'snowfall',
     ],
     // Optional banner image to show when theme switch is disabled
-    bannerImageUrl: '/banner.png',
+    bannerImageUrl: '/banner.jpg',
     bannerSubtitle: 'AI Researcher\nComputer Vision, Generative AI, Bias Mitigation',
   },
 

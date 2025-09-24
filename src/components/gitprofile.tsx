@@ -194,8 +194,8 @@ const GitProfile = ({ config }: { config: Config }) => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 rounded-box">
               <div className="col-span-1">
                 <div className="grid grid-cols-1 gap-6">
-                  {sanitizedConfig.themeConfig.disableSwitch ? (
-                    sanitizedConfig.themeConfig.bannerImageUrl ? (
+                  {/* Banner or DetailsCard */}
+                  {sanitizedConfig.themeConfig.disableSwitch && sanitizedConfig.themeConfig.bannerImageUrl ? (
                       <div className="card shadow-lg card-sm bg-base-100 overflow-hidden">
                         <div className="relative w-full" style={{ paddingTop: '150%' }}>
                           <img
@@ -287,23 +287,23 @@ const GitProfile = ({ config }: { config: Config }) => {
                           )}
                         </div>
                       </div>
-                    ) : null
                   ) : (
-                    <ThemeChanger
-                      theme={theme}
-                      setTheme={setTheme}
-                      loading={loading}
-                      themeConfig={sanitizedConfig.themeConfig}
-                    />
-                  )}
-                  {/* Avatar card removed as banner now contains profile visuals */}
-                  {!sanitizedConfig.themeConfig.disableSwitch && (
+                    <>
+                    {!sanitizedConfig.themeConfig.disableSwitch && (
+                      <ThemeChanger
+                        theme={theme}
+                        setTheme={setTheme}
+                        loading={loading}
+                        themeConfig={sanitizedConfig.themeConfig}
+                      />
+                    )}
                     <DetailsCard
                       profile={profile}
                       loading={loading}
                       github={sanitizedConfig.github}
                       social={sanitizedConfig.social}
                     />
+                    </>
                   )}
                   {sanitizedConfig.skills.length !== 0 && (
                     <SkillCard
