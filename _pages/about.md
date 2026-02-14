@@ -1,11 +1,20 @@
 ---
 permalink: /
-title: "Academic Pages is a ready-to-fork GitHub Pages template for academic personal websites"
+title: "Chanhee Lee"
 author_profile: true
 redirect_from: 
   - /about/
   - /about.html
 ---
+Hi! I am Chanhee Lee.I am majorig ng in Applied Artificial Intelligence at Sungkyunkwan University. My primary research interest lies in **Video Summarization**. Additionally, I am actively studying **Generative AI** to broaden my understanding of AI technologies.
+
+<p style="text-align: center;">
+  <a href="mailto:leechanhye@skku.edu">E-mail</a>
+  <span style="margin: 0 15px;">|</span>
+  <a href="/files/cv.pdf">CV</a>
+  <span style="margin: 0 15px;">|</span>
+  <a href="https://github.com/iontail">GitHub</a>
+</p>
 
 ## Education
 
@@ -23,9 +32,8 @@ redirect_from:
 <div class="cv-item">
   <div class="cv-date">Sep. 2025 – Dec. 2025</div>
   <div class="cv-content">
-    <strong>Efficient Learning Laboratory (ELL)</strong>, SKKU, Suwon, South Korea  
-    <span class="cv-meta">Undergraduate Research Intern</span><br>
-    Advisor: Prof. Hankook Lee
+    <strong>Efficient Learning Laboratory (ELL)</strong>, SKKU, Suwon, South Korea <br>
+    <span class="cv-meta">Undergraduate Research Intern</span> (Advisor: Prof. Hankook Lee)
   </div>
 </div>
 
@@ -96,7 +104,7 @@ redirect_from:
 <div class="cv-item">
   <div class="cv-date">Jun. 2025</div>
   <div class="cv-content">
-    <strong>Dacon 2025 Bias-A-Thon</strong>, <em>Top-4<em>
+    <strong>Dacon 2025 Bias-A-Thon</strong>, <em>Top-4</em>
     <p class="cv-desc">
       Developed prompt engineering and RAG methods for generating fair responses under biased scenarios.
     </p>
