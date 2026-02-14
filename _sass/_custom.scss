@@ -1,0 +1,46 @@
+/* ===== CV Two Column Layout ===== */
+
+.cv-item {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  column-gap: 24px;
+  margin-bottom: 26px;
+}
+
+.cv-date {
+  font-weight: 600;
+  color: #7fa8c9;
+  white-space: nowrap;
+}
+
+.cv-content strong {
+  font-weight: 600;
+}
+
+.cv-meta {
+  font-style: italic;
+  color: #888;
+  font-size: 0.95em;
+  display: block;
+  margin-top: 2px;
+}
+
+.cv-desc {
+  margin: 4px 0 2px 0;
+}
+
+.cv-links {
+  margin-top: 2px;
+  display: block;
+  font-size: 0.95em;
+}
+
+@media (max-width: 768px) {
+  .cv-item {
+    grid-template-columns: 1fr;
+  }
+
+  .cv-date {
+    margin-bottom: 6px;
+  }
+}
