@@ -90,7 +90,7 @@ redirect_from:
   <div class="cv-content">
     <strong>[P2] BRNet: Bio-Receptor Networks for Object Detection with Zero-Shot Domain Adaptation</strong>, <em>Undergraduate Research Program</em><br>
     <dev class="cv-desc">
-      PDesigned a biologically inspired detector with luminance-adaptive feature modulation for zero-shot day-to-night object detection.
+      Proposed and validated a biologically inspired luminance-adaptive detection framework for zero-shot day-to-night adaptation.
     </dev><br>
     <span class="cv-links">
       [<a href="/files/BRNet.pdf">Report</a>]

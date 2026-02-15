@@ -176,6 +176,7 @@
   position: relative;
   min-width: 250px;
   background: var(--global-bg-color);
+  padding-left: 14rem;   /* ← 왼쪽 여백 추가 */
 
   a {
     display: block;
