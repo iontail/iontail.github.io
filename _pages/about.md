@@ -1,7 +1,7 @@
 ---
 permalink: /
 title: "Chanhee Lee"
-author_profile: true
+author_profile: false
 redirect_from: 
   - /about/
   - /about.html
@@ -9,20 +9,28 @@ redirect_from:
 
 <div style="display: flex; align-items: flex-start; gap: 20px;">
   <div style="flex: 1;">
-    <p>Hi! I am Chanhee Lee. I am majoring in Applied Artificial Intelligence at Sungkyunkwan University. My primary research interest lies in <strong>Video Summarization</strong>. Additionally, I am actively studying <strong>Generative AI</strong> to broaden my understanding of AI technologies.</p>
+    <p>
+      Hi! I am Chanhee Lee. I am majoring in Applied Artificial Intelligence at Sungkyunkwan University. 
+      My primary research interest lies in <strong>Video Summarization</strong>. 
+      Additionally, I am actively studying <strong>Generative AI</strong> to broaden my understanding of AI technologies.
+    </p>
+
+    <!-- 링크를 텍스트 칸 안으로 이동 -->
+    <div style="text-align: center; margin-top: 15px;">
+      <a href="mailto:leechanhye@skku.edu">E-mail</a>
+      <span style="margin: 0 15px;">|</span>
+      <a href="/files/cv.pdf">CV</a>
+      <span style="margin: 0 15px;">|</span>
+      <a href="https://github.com/iontail">GitHub</a>
+    </div>
   </div>
+
   <div style="flex-shrink: 0;">
-    <img src="/images/profile.png" alt="Chanhee Lee" style="width: 200px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <img src="/images/profile.png" alt="Chanhee Lee"
+         style="width: 200px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
   </div>
 </div>
 
-<p style="text-align: center;">
-  <a href="mailto:leechanhye@skku.edu">E-mail</a>
-  <span style="margin: 0 15px;">|</span>
-  <a href="/files/cv.pdf">CV</a>
-  <span style="margin: 0 15px;">|</span>
-  <a href="https://github.com/iontail">GitHub</a>
-</p>
 
 ## Education
 
@@ -54,7 +62,7 @@ redirect_from:
   <div class="cv-content">
     <strong>[P4] Rethinking Diffusion-Based Augmentation: Why Single Prompt Fails</strong>, <em>Course Project</em><br>
     <dev class="cv-desc">
-      Performed a controlled analysis of single-prompt diffusion-based augmentation by redesigning DiffuseMix components, including progressive scheduling, fractal-based integration, and CLIP-guided semantic hybrid blending, to examine how mixing strategies and semantic consistency affect generalization.
+      Conducted a controlled study on single-prompt diffusion-based augmentation and its impact on generalization.
     </dev><br>
     <span class="cv-links">
       [<a href="/files/Rethinking.pdf">Report</a>]
@@ -68,7 +76,7 @@ redirect_from:
   <div class="cv-content">
     <strong>[P3] N-TIDE: Debiasing Unimodal Vision Models via Neutral Text Inversion with CLIP</strong>, <em>Course Project</em><br>
     <dev class="cv-desc">
-      Designed a two-stage debiasing framework that aligns a trainable neutral-text embedding with CLIP’s null-text condition and distills the debiased semantic representations into a unimodal vision model via cosine-based feature matching.
+      Developed a CLIP-guided two-stage framework to distill debiased semantic representations into a unimodal vision model.
     </dev><br>
     <span class="cv-links">
       [<a href="/files/N_TIDE.pdf">Report</a>]
@@ -82,7 +90,7 @@ redirect_from:
   <div class="cv-content">
     <strong>[P2] BRNet: Bio-Receptor Networks for Object Detection with Zero-Shot Domain Adaptation</strong>, <em>Undergraduate Research Program</em><br>
     <dev class="cv-desc">
-      Proposed a biologically inspired object detector with luminance-aware Rod and Cone pathways, mesopic-based dark-level modulation, and feature-level Semi-Orthogonal Loss to address illumination-driven domain shift in zero-shot day-to-night detection.
+      PDesigned a biologically inspired detector with luminance-adaptive feature modulation for zero-shot day-to-night object detection.
     </dev><br>
     <span class="cv-links">
       [<a href="/files/BRNet.pdf">Report</a>]
@@ -96,7 +104,7 @@ redirect_from:
   <div class="cv-content">
     <strong>[P1] CoReaP: Collaborative Reconstruction with Assistive Priors</strong>, <em>AI Research Competition</em><br>
     <dev class="cv-desc">
-      Proposed a frequency-guided two-path inpainting framework that separates high- and low-frequency learning, integrates deformable convolution tokenization within transformer blocks, and performs early fusion to use high-frequency features as assistive priors for structured reconstruction.
+      Proposed a frequency-guided two-path transformer architecture for structured and detail-preserving image inpainting.
     </dev><br>
     <span class="cv-links">
       [<a href="/files/CoReaP.pdf">Report</a>]
