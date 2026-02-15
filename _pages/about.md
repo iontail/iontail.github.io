@@ -54,7 +54,7 @@ redirect_from:
   <div class="cv-content">
     <strong>[P4] Rethinking Diffusion-Based Augmentation: Why Single Prompt Fails</strong>, <em>Course Project</em><br>
     <dev class="cv-desc">
-      Investigated why single-prompt diffusion-based augmentation underperforms in image recognition tasks and analyzed prompt diversity and semantic inconsistencies.
+      Performed a controlled analysis of single-prompt diffusion-based augmentation by redesigning DiffuseMix components, including progressive scheduling, fractal-based integration, and CLIP-guided semantic hybrid blending, to examine how mixing strategies and semantic consistency affect generalization.
     </dev><br>
     <span class="cv-links">
       [<a href="/files/Rethinking.pdf">Report</a>]
@@ -68,7 +68,7 @@ redirect_from:
   <div class="cv-content">
     <strong>[P3] N-TIDE: Debiasing Unimodal Vision Models via Neutral Text Inversion with CLIP</strong>, <em>Course Project</em><br>
     <dev class="cv-desc">
-      Proposed a bias mitigation framework leveraging CLIP-based neutral-text inversion and knowledge distillation.
+      Designed a two-stage debiasing framework that aligns a trainable neutral-text embedding with CLIP’s null-text condition and distills the debiased semantic representations into a unimodal vision model via cosine-based feature matching.
     </dev><br>
     <span class="cv-links">
       [<a href="/files/N_TIDE.pdf">Report</a>]
@@ -82,7 +82,7 @@ redirect_from:
   <div class="cv-content">
     <strong>[P2] BRNet: Bio-Receptor Networks for Object Detection with Zero-Shot Domain Adaptation</strong>, <em>Undergraduate Research Program</em><br>
     <dev class="cv-desc">
-      Researched low-light object detection with zero-shot domain adaptation and designed an architecture to mitigate distribution shift.
+      Proposed a biologically inspired object detector with luminance-aware Rod and Cone pathways, mesopic-based dark-level modulation, and feature-level Semi-Orthogonal Loss to address illumination-driven domain shift in zero-shot day-to-night detection.
     </dev><br>
     <span class="cv-links">
       [<a href="/files/BRNet.pdf">Report</a>]
@@ -96,7 +96,7 @@ redirect_from:
   <div class="cv-content">
     <strong>[P1] CoReaP: Collaborative Reconstruction with Assistive Priors</strong>, <em>AI Research Competition</em><br>
     <dev class="cv-desc">
-      Developed an image inpainting model using deformable convolution tokenization and a two-stream architecture.
+      Proposed a frequency-guided two-path inpainting framework that separates high- and low-frequency learning, integrates deformable convolution tokenization within transformer blocks, and performs early fusion to use high-frequency features as assistive priors for structured reconstruction.
     </dev><br>
     <span class="cv-links">
       [<a href="/files/CoReaP.pdf">Report</a>]
