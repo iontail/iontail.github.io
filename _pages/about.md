@@ -12,7 +12,7 @@ redirect_from:
     <p>Hi! I am Chanhee Lee. I am majoring in Applied Artificial Intelligence at Sungkyunkwan University. My primary research interest lies in <strong>Video Summarization</strong>. Additionally, I am actively studying <strong>Generative AI</strong> to broaden my understanding of AI technologies.</p>
   </div>
   <div style="flex-shrink: 0;">
-    <img src="/images/my-photo.jpg" alt="Chanhee Lee" style="width: 200px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <img src="/images/profile.png" alt="Chanhee Lee" style="width: 200px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
   </div>
 </div>
 
@@ -107,7 +107,7 @@ redirect_from:
 
 
 
-## Honors & Awards
+## Awards
 
 <div class="cv-item">
   <div class="cv-date">Jun. 2025</div>
