@@ -1,0 +1,6 @@
+- title: "KoSum: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Editing Guidance"
+  short_title: "KoSum"
+  venue: "Demo Project"
+  description: "A demo page for Korean YouTube video analysis and editing guidance."
+  image: /assets/media/images/kosum_pipeline.png
+  url: /pages/kosum/

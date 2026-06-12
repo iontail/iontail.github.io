@@ -1,8 +1,9 @@
 ---
-layout: archive
+layout: single
 title: "Publications"
 permalink: /publications/
-author_profile: true
+page_class: projects-page
+author_profile: false
 ---
 
 {% if site.author.googlescholar %}
@@ -10,6 +11,8 @@ author_profile: true
 {% endif %}
 
 {% include base_path %}
+
+{% assign has_publications = false %}
 
 <!-- New style rendering if publication categories are defined -->
 {% if site.publication_category %}
@@ -23,14 +26,17 @@ author_profile: true
         <h2>{{ category[1].title }}</h2><hr />
         {% assign title_shown = true %}
       {% endunless %}
+      {% assign has_publications = true %}
       {% include archive-single.html %}
     {% endfor %}
   {% endfor %}
 {% else %}
   {% for post in site.publications reversed %}
+    {% assign has_publications = true %}
     {% include archive-single.html %}
   {% endfor %}
 {% endif %}
 
-
-
+{% unless has_publications %}
+  <p>No publications have been added yet.</p>
+{% endunless %}
