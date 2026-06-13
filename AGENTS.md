@@ -1,6 +1,6 @@
 # Agent Guide for `iontail.github.io`
 
-이 레포지토리는 Chanhee Lee의 개인 GitHub Pages 사이트다. Academic Pages / Minimal Mistakes 계열 Jekyll 테마를 기반으로 하지만, 템플릿 예시 콘텐츠와 생성 도구는 정리되어 있다.
+이 레포지토리는 Chanhee Lee의 개인 GitHub Pages 사이트다. 현재 사이트 구조는 개인 포트폴리오에 맞춰 정리되어 있다.
 
 ## 핵심 구조
 
@@ -87,4 +87,3 @@ citation: "Author. (Year). Title. Venue."
 - `assets/css/main.scss`는 Sass import 진입점이다.
 - `assets/js/main.min.js`만 브라우저에서 로드된다. JS 원본을 바꾸면 반드시 번들을 다시 만든다.
 - 내부 링크는 현재 루트 사이트 기준으로 `/files/name.pdf`, `/images/name.png` 패턴을 쓴다.
-

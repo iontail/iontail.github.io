@@ -9,62 +9,765 @@ hide_masthead: true
 hide_footer: true
 ---
 
-<section class="project-hero">
+<section class="kosum-hero">
   <h1><span>KoSum</span>: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Editing Guidance</h1>
-  <p class="project-venue">Demo Project</p>
-  <p class="project-authors">
-    Chanhee Lee
+  <p class="kosum-venue">2026 Spring DSC3028 Capstone Project · Technical Report</p>
+
+  <p class="kosum-authors">
+    Chanhee Lee<sup>*†</sup>, Jinho Jang<sup>*</sup>, Sungjun Ha, Jinwoong Jung
   </p>
-  <p class="project-affiliations">
-    Korean YouTube video understanding, highlight analysis, and editing guidance
+  <p class="kosum-affiliations">
+    Applied Artificial Intelligence, Sungkyunkwan University
+  </p>
+  <p class="kosum-author-notes">
+    <sup>*</sup> Equal contribution · <sup>†</sup> Team Leader
   </p>
 
-  <div class="project-links" aria-label="Project resources">
-    <span>Paper</span>
-    <span>Demo</span>
-    <span>Code</span>
-    <span>Video</span>
+  <div class="kosum-links" aria-label="Project resources">
+    <a href="/files/kosum-report-dummy.pdf" target="_blank" rel="noopener">
+      <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+      <span>Report</span>
+    </a>
+    <a href="https://github.com/iontail/dsc.git">
+      <i class="fa-brands fa-github" aria-hidden="true"></i>
+      <span>code</span>
+    </a>
+    <a href="#citation">
+      <i class="fa-solid fa-quote-right" aria-hidden="true"></i>
+      <span>BibTex</span>
+    </a>
   </div>
 </section>
 
-<section class="kosum-demo" aria-label="KoSum demo preview">
-  <div class="kosum-video">
-    <div class="kosum-video__screen">
-      <div class="kosum-video__badge">Korean YouTube</div>
-      <div class="kosum-video__caption">Most-replayed segment detected</div>
-    </div>
-    <div class="kosum-timeline">
-      <span class="kosum-timeline__heat kosum-timeline__heat--low" style="left: 7%; width: 12%;"></span>
-      <span class="kosum-timeline__heat kosum-timeline__heat--mid" style="left: 31%; width: 18%;"></span>
-      <span class="kosum-timeline__heat kosum-timeline__heat--high" style="left: 62%; width: 16%;"></span>
-      <span class="kosum-timeline__playhead"></span>
-    </div>
-  </div>
+<aside class="kosum-section-nav" aria-label="Current section">
+  <a href="#abstract" class="is-active">Abstract</a>
+  <a href="#pipeline">Pipeline</a>
+  <a href="#demo">Demo</a>
+  <a href="#overview">Overview</a>
+  <a href="#statistics">Statistics</a>
+  <a href="#evaluation">Evaluation</a>
+  <a href="#citation">Citation</a>
+</aside>
 
-  <div class="kosum-panels">
-    <article>
-      <span>Audio</span>
-      <strong>Rising emphasis</strong>
-      <p>Speech energy and reaction cues increase near the replay peak.</p>
-    </article>
-    <article>
-      <span>Visual</span>
-      <strong>Scene transition</strong>
-      <p>Fast visual change suggests a useful edit boundary.</p>
-    </article>
-    <article>
-      <span>Text</span>
-      <strong>Keyword focus</strong>
-      <p>Korean transcript terms align with viewer replay behavior.</p>
-    </article>
-    <article>
-      <span>Guidance</span>
-      <strong>Short-form candidate</strong>
-      <p>Recommended clip region is ready for editor review.</p>
-    </article>
+<section class="kosum-abstract" id="abstract" aria-label="Abstract">
+  <h2>Abstract</h2>
+  <p>
+    KoSum is a Korean YouTube benchmark for video summarization and highlight detection, built from recent videos uploaded between 2024 and 2026. Instead of treating editing as simple cut-based automation, this project connects Most-Replayed viewer engagement signals with visual, audio, and text analysis to generate practical editing guidance. KoSum contains 700 videos across 14 fine-grained content categories and supports triple-modality analysis using visual features, subtitles, audio features, and Most-Replayed importance scores.
+  </p>
+  <p>
+    Using a triple-modality model, we analyze highlight regions through modality attention patterns and feature-level statistics such as shot transitions, motion dynamics, subtitle density, reaction cues, speech dynamics, and audio novelty. These category-specific findings are organized into analysis cards and used in a data-analysis-conditioned prompting framework, allowing an LLM to generate editing guidelines that are more specific, multimodally aware, and aligned with viewer engagement.
+  </p>
+</section>
+
+<section class="kosum-section kosum-section--pipeline" id="pipeline">
+  <h2>Overall Pipeline</h2>
+  <figure class="kosum-pipeline">
+    <div class="kosum-pipeline-toolbar" aria-label="Pipeline figure controls">
+      <span>Scroll to zoom</span>
+    </div>
+    <div class="kosum-pipeline-viewport" id="kosum-pipeline-viewport">
+      <img id="kosum-pipeline-image" src="/assets/media/images/kosum_pipeline.png" alt="KoSum framework pipeline">
+    </div>
+    <figcaption>
+      KoSum uses YouTube videos and Most-Replayed signals to train a triple-modality model, analyze highlight regions, and generate category-aware editing guidelines with an LLM.
+    </figcaption>
+  </figure>
+</section>
+
+<section class="kosum-section kosum-section--demo" id="demo">
+  <h2>Demo</h2>
+  <p class="kosum-section-note">
+    The demo shows how a user-provided category, video context, and editing direction can be converted into structured editing guidance.
+  </p>
+  <div class="kosum-guideline-demo" aria-label="KoSum editing guideline demo">
+    <section class="kosum-demo-input">
+      <div class="kosum-demo-panel-head">
+        <h3>User Input</h3>
+        <p>Category · Video Context · Editing Direction</p>
+      </div>
+      <div class="kosum-demo-field">
+        <label><span>1</span>Category</label>
+        <div class="kosum-demo-chips" id="kosum-demo-category-chips"></div>
+      </div>
+      <div class="kosum-demo-field">
+        <label for="kosum-demo-context"><span>2</span>Video Context</label>
+        <textarea id="kosum-demo-context" readonly aria-readonly="true">A cooking entertainment video where a host, chef, and two guests prepare a menu together. The strongest moments appear when an unusual ingredient causes surprise, laughter, and short reactions around the finished dish.</textarea>
+      </div>
+      <div class="kosum-demo-field">
+        <label for="kosum-demo-direction"><span>3</span>Editing Direction</label>
+        <textarea id="kosum-demo-direction" readonly aria-readonly="true">Create a short highlight that emphasizes the finished dish, guest reactions, laughter, and the most replay-worthy tasting moment.</textarea>
+      </div>
+      <button class="kosum-demo-submit" id="kosum-demo-submit" type="button">Generate Guide</button>
+    </section>
+
+    <section class="kosum-demo-output">
+      <div class="kosum-demo-panel-head">
+        <h3>Editing Guideline</h3>
+        <p id="kosum-demo-status">Waiting for input</p>
+      </div>
+      <div class="kosum-demo-result" id="kosum-demo-result">
+        <div class="kosum-demo-placeholder">
+          <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+          <span>Click Generate Guide to preview a structured editing guideline.</span>
+        </div>
+      </div>
+    </section>
   </div>
 </section>
 
-<p class="project-caption">
-  KoSum previews how most-replayed signals can be combined with audio, visual, and transcript cues to guide video editing decisions.
-</p>
+<section class="kosum-section" id="overview">
+  <h2>KoSum Overview</h2>
+  <p class="kosum-section-note">
+    KoSum contains 700 Korean YouTube videos across 14 categories, with visual, textual, and audio signals aligned to Most-Replayed engagement cues.
+  </p>
+  <div class="kosum-overview-grid">
+    <article>
+      <strong>700</strong>
+      <span>Videos</span>
+      <p>Collected from Korean YouTube content uploaded between 2024 and 2026.</p>
+    </article>
+    <article>
+      <strong>14</strong>
+      <span>Categories</span>
+      <p>Fine-grained content types including entertainment, cooking, sports, knowledge, and lecture videos.</p>
+    </article>
+    <article>
+      <strong>3</strong>
+      <span>Modalities</span>
+      <p>Visual, audio, and text signals aligned with Most-Replayed importance scores.</p>
+    </article>
+  </div>
+  <div id="kosum-category-donut" class="kosum-category-donut" aria-label="KoSum category distribution chart"></div>
+</section>
+
+<section class="kosum-section kosum-section--statistics" id="statistics">
+  <h2>KoSum Statistics</h2>
+  <p class="kosum-section-note">
+    Videos average 17 minutes in length and span from 7 to 30 minutes, with full audio availability and dense transcript coverage.
+  </p>
+  <div class="kosum-stats-layout">
+    <div class="kosum-stat-table-wrap">
+      <table class="kosum-stat-table">
+        <thead>
+          <tr>
+            <th>Statistic Category</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="kosum-stat-table__group">
+            <td colspan="2">Duration Statistics</td>
+          </tr>
+          <tr>
+            <td>Avg. Duration</td>
+            <td>1019.3 sec</td>
+          </tr>
+          <tr>
+            <td>Std. Duration</td>
+            <td>339.0 sec</td>
+          </tr>
+          <tr>
+            <td>Min Duration</td>
+            <td>384.0 sec</td>
+          </tr>
+          <tr>
+            <td>Max Duration</td>
+            <td>1800.0 sec</td>
+          </tr>
+          <tr class="kosum-stat-table__group">
+            <td colspan="2">Textual Statistics</td>
+          </tr>
+          <tr>
+            <td>Total # of Tokens</td>
+            <td>2.310M</td>
+          </tr>
+          <tr>
+            <td>Avg. # of Tokens/Video</td>
+            <td>3299.6</td>
+          </tr>
+          <tr>
+            <td>Transcript Density</td>
+            <td>88.18%</td>
+          </tr>
+          <tr class="kosum-stat-table__group">
+            <td colspan="2">Audio Statistics</td>
+          </tr>
+          <tr>
+            <td>Audio Availability</td>
+            <td>100%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="kosum-duration-card">
+      <div class="kosum-duration-title">Video Duration Distribution</div>
+      <div id="kosum-duration-chart" class="kosum-duration-chart" aria-label="KoSum video duration distribution"></div>
+    </div>
+  </div>
+</section>
+
+<section class="kosum-section" id="evaluation">
+  <h2>Guide Evaluation</h2>
+  <p class="kosum-eval-summary">
+    The proposed data-analysis-conditioned prompting framework is evaluated against a user-prompt-only baseline using an LLM evaluator. Each sample is scored across editing direction, scene selection clarity, composition specificity, editing detail, content grounding, feasibility, and sample-specific guidance.
+  </p>
+  <div id="kosum-eval-summary-cards" class="kosum-eval-summary-cards" aria-label="Guide evaluation summary"></div>
+  <div class="kosum-chart-block">
+    <div class="kosum-chart-header">
+      <h3>Average Score by Evaluation Criterion</h3>
+      <div class="kosum-chart-legend" aria-label="Chart legend">
+        <span><i class="kosum-swatch kosum-swatch--baseline"></i>Baseline</span>
+        <span><i class="kosum-swatch kosum-swatch--ours"></i>Ours</span>
+      </div>
+    </div>
+    <div id="kosum-criteria-chart" class="kosum-bar-chart kosum-bar-chart--criteria" aria-label="Average score by evaluation criterion"></div>
+  </div>
+  <div class="kosum-chart-block">
+    <div class="kosum-chart-header">
+      <h3>Average Total Score by Subcategory</h3>
+      <div class="kosum-chart-legend" aria-label="Chart legend">
+        <span><i class="kosum-swatch kosum-swatch--baseline"></i>Baseline</span>
+        <span><i class="kosum-swatch kosum-swatch--ours"></i>Ours</span>
+      </div>
+    </div>
+    <div id="kosum-category-chart" class="kosum-bar-chart kosum-bar-chart--category" aria-label="Average total score by subcategory"></div>
+  </div>
+</section>
+
+<section class="kosum-section" id="citation">
+  <h2>Citation</h2>
+  <div class="kosum-citation-card">
+    <div class="kosum-citation-head">
+      <span>BibTeX</span>
+      <button type="button" id="kosum-copy-citation">
+        <i class="fa-solid fa-copy" aria-hidden="true"></i>
+        Copy
+      </button>
+    </div>
+    <pre class="kosum-citation"><code id="kosum-citation-code">@misc{lee2026kosum,
+  title  = {KoSum: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Editing Guidance},
+  author = {Lee, Chanhee and Jang, Jinho and Ha, Sungjun and Jung, Jinwoong},
+  year   = {2026},
+  note   = {2026 Spring DSC3028 Capstone Project Technical Report, Sungkyunkwan University}
+}</code></pre>
+  </div>
+</section>
+
+<script>
+  (function () {
+    const scoreUrl = "{{ '/assets/data/kosum_llm_scoring.json' | relative_url }}";
+    const criterionLabels = {
+      "편집 방향 이해도": "Direction",
+      "장면 선택 기준 명확성": "Scene Criteria",
+      "편집 구성 구체성": "Composition",
+      "편집 요소 디테일": "Details",
+      "비디오 내용 반영도": "Grounding",
+      "실행 가능성": "Feasibility",
+      "샘플 특화성 / 일반론 회피": "Specificity"
+    };
+
+    function average(values) {
+      return values.reduce((sum, value) => sum + value, 0) / values.length;
+    }
+
+    function initSectionNav() {
+      const nav = document.querySelector(".kosum-section-nav");
+      if (!nav) return;
+      const links = Array.from(nav.querySelectorAll("a"));
+      const sections = links
+        .map((link) => document.querySelector(link.getAttribute("href")))
+        .filter(Boolean);
+      if (!sections.length) return;
+
+      const observer = new IntersectionObserver((entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        links.forEach((link) => {
+          link.classList.toggle("is-active", link.getAttribute("href") === "#" + visible.target.id);
+        });
+      }, {
+        rootMargin: "-22% 0px -58% 0px",
+        threshold: [0.08, 0.18, 0.32]
+      });
+
+      sections.forEach((section) => observer.observe(section));
+    }
+
+    function initPipelineZoom() {
+      const viewport = document.getElementById("kosum-pipeline-viewport");
+      const image = document.getElementById("kosum-pipeline-image");
+      const controls = document.querySelectorAll("[data-zoom-action]");
+      if (!viewport || !image) return;
+
+      let zoom = 1;
+      const minZoom = 1;
+      const maxZoom = 2.6;
+
+      function applyZoom(nextZoom) {
+        const beforeWidth = viewport.scrollWidth || viewport.clientWidth;
+        const beforeHeight = viewport.scrollHeight || viewport.clientHeight;
+        const centerX = viewport.scrollLeft + viewport.clientWidth / 2;
+        const centerY = viewport.scrollTop + viewport.clientHeight / 2;
+        const xRatio = beforeWidth ? centerX / beforeWidth : 0.5;
+        const yRatio = beforeHeight ? centerY / beforeHeight : 0.5;
+
+        zoom = Math.max(minZoom, Math.min(maxZoom, nextZoom));
+        image.style.width = (zoom * 100).toFixed(0) + "%";
+
+        window.requestAnimationFrame(() => {
+          viewport.scrollLeft = viewport.scrollWidth * xRatio - viewport.clientWidth / 2;
+          viewport.scrollTop = viewport.scrollHeight * yRatio - viewport.clientHeight / 2;
+        });
+      }
+
+      viewport.addEventListener("wheel", (event) => {
+        event.preventDefault();
+        const direction = event.deltaY > 0 ? -1 : 1;
+        applyZoom(zoom + direction * 0.12);
+      }, { passive: false });
+
+      controls.forEach((control) => {
+        control.addEventListener("click", () => {
+          const action = control.dataset.zoomAction;
+          if (action === "in") applyZoom(zoom + 0.22);
+          if (action === "out") applyZoom(zoom - 0.22);
+          if (action === "reset") applyZoom(1);
+        });
+      });
+    }
+
+    function initCitationCopy() {
+      const button = document.getElementById("kosum-copy-citation");
+      const code = document.getElementById("kosum-citation-code");
+      if (!button || !code || !navigator.clipboard) return;
+
+      button.addEventListener("click", () => {
+        navigator.clipboard.writeText(code.textContent.trim()).then(() => {
+          const original = button.innerHTML;
+          button.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i>Copied';
+          window.setTimeout(() => {
+            button.innerHTML = original;
+          }, 1300);
+        });
+      });
+    }
+
+    function renderGuidelineDemo() {
+      const chipsTarget = document.getElementById("kosum-demo-category-chips");
+      const submit = document.getElementById("kosum-demo-submit");
+      const result = document.getElementById("kosum-demo-result");
+      const status = document.getElementById("kosum-demo-status");
+      if (!chipsTarget || !submit || !result || !status) return;
+
+      const categories = ["cooking", "job", "sketch", "talk", "baseball", "basketball", "football", "action", "animation", "romance", "review", "vlog", "knowledge", "lecture"];
+      let selectedCategory = "cooking";
+      chipsTarget.innerHTML = "";
+      categories.forEach((category) => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "kosum-demo-chip" + (category === selectedCategory ? " is-active" : "");
+        chip.textContent = category;
+        chip.addEventListener("click", () => {
+          selectedCategory = category;
+          chipsTarget.querySelectorAll(".kosum-demo-chip").forEach((item) => item.classList.remove("is-active"));
+          chip.classList.add("is-active");
+        });
+        chipsTarget.appendChild(chip);
+      });
+
+      const sampleGuides = {
+        cooking: {
+          modality: "Visual + Audio",
+          summary: "Connect the finished dish with immediate guest reactions. Keep the edit focused on stable food close-ups, laughter, and short tasting comments.",
+          visual: ["Select shots where the completed dish and facial reactions appear in the same flow.", "Hold close-up plating shots long enough for color and texture to register.", "Avoid overly fast cuts when the reaction is accumulating naturally."],
+          text: ["Use only compact labels such as the menu name or short reaction keywords.", "Place captions below eye level so they do not cover faces or food.", "Avoid long explanatory subtitles when visual reaction already carries the moment."],
+          audio: ["Prioritize laughter, surprise, and tasting exclamations near replay peaks.", "Lower background music during dialogue-heavy reaction moments.", "Slightly emphasize audio around the unusual ingredient reveal."],
+          priority: ["Start with the finished food and immediate guest response.", "Bridge laughter and tasting comments into one replay-friendly sequence.", "Keep text minimal and let visual/audio cues carry the highlight."]
+        }
+      };
+
+      function list(items) {
+        return "<ul>" + items.map((item) => "<li>" + item + "</li>").join("") + "</ul>";
+      }
+
+      function render() {
+        const guide = sampleGuides[selectedCategory] || sampleGuides.cooking;
+        status.textContent = "Generating...";
+        submit.disabled = true;
+        submit.textContent = "Generating...";
+        result.innerHTML = '<div class="kosum-demo-placeholder"><i class="fa-solid fa-spinner" aria-hidden="true"></i><span>Generating editing guideline...</span></div>';
+
+        window.setTimeout(() => {
+          status.textContent = "Generated";
+          submit.disabled = false;
+          submit.textContent = "Generate Guide";
+          result.innerHTML = [
+            '<div class="kosum-demo-output-inner">',
+            '<div class="kosum-demo-output-title"><h3>Editing Guideline</h3><span>' + selectedCategory + ' · ' + guide.modality + '</span></div>',
+            '<article class="kosum-demo-guide-card kosum-demo-guide-card--summary"><strong>Core Strategy</strong><p>' + guide.summary + '</p></article>',
+            '<div class="kosum-demo-guide-grid">',
+            '<article class="kosum-demo-guide-card"><strong>Visual Guide</strong>' + list(guide.visual) + '</article>',
+            '<article class="kosum-demo-guide-card"><strong>Text Guide</strong>' + list(guide.text) + '</article>',
+            '<article class="kosum-demo-guide-card"><strong>Audio Guide</strong>' + list(guide.audio) + '</article>',
+            '</div>',
+            '<article class="kosum-demo-guide-card"><strong>Priority Guide</strong>' + list(guide.priority) + '</article>',
+            '</div>'
+          ].join("");
+        }, 520);
+      }
+
+      submit.addEventListener("click", render);
+    }
+
+    function renderDurationChart() {
+      const target = document.getElementById("kosum-duration-chart");
+      if (!target) return;
+      const counts = [4, 11, 18, 12, 17, 19, 20, 22, 28, 20, 21, 20, 23, 36, 44, 27, 24, 22, 24, 31, 28, 25, 22, 24, 12, 16, 9, 11, 8, 11, 26, 6, 5, 5, 10, 5, 2, 2, 6, 24];
+      const minDuration = 384;
+      const maxDuration = 1800;
+      const binWidth = (maxDuration - minDuration) / counts.length;
+      const maxCount = 45;
+
+      target.innerHTML = "";
+      const yAxis = document.createElement("div");
+      yAxis.className = "kosum-duration-y-axis";
+      [0, 10, 20, 30, 40].forEach((tick) => {
+        const mark = document.createElement("span");
+        mark.textContent = tick;
+        mark.style.bottom = ((tick / maxCount) * 100).toFixed(2) + "%";
+        yAxis.appendChild(mark);
+      });
+
+      const plot = document.createElement("div");
+      plot.className = "kosum-duration-plot";
+      counts.forEach((count, index) => {
+        const binStart = Math.round(minDuration + binWidth * index);
+        const binEnd = Math.round(minDuration + binWidth * (index + 1));
+        const bar = document.createElement("div");
+        bar.className = "kosum-duration-bar";
+        bar.style.height = ((count / maxCount) * 100).toFixed(2) + "%";
+        bar.title = binStart + "-" + binEnd + " sec: " + count + " videos";
+
+        if (index % 5 === 0 || index === counts.length - 1) {
+          const label = document.createElement("span");
+          label.textContent = binStart;
+          bar.appendChild(label);
+        }
+
+        plot.appendChild(bar);
+      });
+
+      target.appendChild(yAxis);
+      target.appendChild(plot);
+    }
+
+    function describeArc(cx, cy, outerRadius, innerRadius, startAngle, endAngle) {
+      const toRadians = (angle) => (angle - 90) * Math.PI / 180;
+      const largeArc = endAngle - startAngle > 180 ? 1 : 0;
+      const outerStart = {
+        x: cx + outerRadius * Math.cos(toRadians(startAngle)),
+        y: cy + outerRadius * Math.sin(toRadians(startAngle))
+      };
+      const outerEnd = {
+        x: cx + outerRadius * Math.cos(toRadians(endAngle)),
+        y: cy + outerRadius * Math.sin(toRadians(endAngle))
+      };
+      const innerStart = {
+        x: cx + innerRadius * Math.cos(toRadians(endAngle)),
+        y: cy + innerRadius * Math.sin(toRadians(endAngle))
+      };
+      const innerEnd = {
+        x: cx + innerRadius * Math.cos(toRadians(startAngle)),
+        y: cy + innerRadius * Math.sin(toRadians(startAngle))
+      };
+
+      return [
+        "M", outerStart.x, outerStart.y,
+        "A", outerRadius, outerRadius, 0, largeArc, 1, outerEnd.x, outerEnd.y,
+        "L", innerStart.x, innerStart.y,
+        "A", innerRadius, innerRadius, 0, largeArc, 0, innerEnd.x, innerEnd.y,
+        "Z"
+      ].join(" ");
+    }
+
+    function renderCategoryDonut() {
+      const target = document.getElementById("kosum-category-donut");
+      if (!target) return;
+
+      const majorCategories = [
+        { label: "Sports", value: 150, color: "#4E79A7" },
+        { label: "Narrative", value: 150, color: "#E15759" },
+        { label: "Lifestyle", value: 100, color: "#59A14F" },
+        { label: "Education", value: 100, color: "#B07AA1" },
+        { label: "Entertainment", value: 200, color: "#F28E2B" }
+      ];
+      const subcategories = [
+        { label: "Football", value: 50, color: "#2F5F8F", major: "Sports" },
+        { label: "Baseball", value: 50, color: "#4E79A7", major: "Sports" },
+        { label: "Basketball", value: 50, color: "#8AB6D6", major: "Sports" },
+        { label: "Action", value: 50, color: "#B83A3A", major: "Narrative" },
+        { label: "Romance", value: 50, color: "#E15759", major: "Narrative" },
+        { label: "Animation", value: 50, color: "#F2A2A2", major: "Narrative" },
+        { label: "Vlog", value: 50, color: "#3B7F3B", major: "Lifestyle" },
+        { label: "Review", value: 50, color: "#59A14F", major: "Lifestyle" },
+        { label: "Lecture", value: 50, color: "#7B5A8E", major: "Education" },
+        { label: "Knowledge", value: 50, color: "#B07AA1", major: "Education" },
+        { label: "Cooking", value: 50, color: "#C96B00", major: "Entertainment" },
+        { label: "Job Experience", value: 50, color: "#F28E2B", major: "Entertainment" },
+        { label: "Sketch Comedy", value: 50, color: "#F6B66B", major: "Entertainment" },
+        { label: "Talk", value: 50, color: "#FFD08A", major: "Entertainment" }
+      ];
+
+      target.innerHTML = "";
+      const shell = document.createElement("div");
+      shell.className = "kosum-donut-shell";
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", "0 0 520 520");
+      svg.setAttribute("role", "img");
+      svg.setAttribute("aria-label", "Nested donut chart of KoSum categories");
+
+      const center = 260;
+      const total = majorCategories.reduce((sum, item) => sum + item.value, 0);
+      const majorLabels = [];
+      let angle = 0;
+      majorCategories.forEach((item) => {
+        const start = angle;
+        const end = angle + item.value / total * 360;
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", describeArc(center, center, 166, 94, start, end));
+        path.setAttribute("fill", item.color);
+        path.setAttribute("class", "kosum-donut-slice kosum-donut-slice--major");
+        svg.appendChild(path);
+
+        const labelAngle = (start + end) / 2 - 90;
+        const labelRadius = 132;
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", center + labelRadius * Math.cos(labelAngle * Math.PI / 180));
+        text.setAttribute("y", center + labelRadius * Math.sin(labelAngle * Math.PI / 180));
+        text.setAttribute("class", "kosum-donut-major-label");
+        text.textContent = item.label;
+        majorLabels.push(text);
+        angle = end;
+      });
+
+      angle = 0;
+      const subTotal = subcategories.reduce((sum, item) => sum + item.value, 0);
+      subcategories.forEach((item) => {
+        const start = angle;
+        const end = angle + item.value / subTotal * 360;
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", describeArc(center, center, 226, 168, start, end));
+        path.setAttribute("fill", item.color);
+        path.setAttribute("class", "kosum-donut-slice kosum-donut-slice--sub");
+        path.dataset.category = item.label;
+        svg.appendChild(path);
+        angle = end;
+      });
+
+      const core = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      core.setAttribute("cx", center);
+      core.setAttribute("cy", center);
+      core.setAttribute("r", 88);
+      core.setAttribute("fill", "#fff");
+      svg.appendChild(core);
+
+      const title = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      title.setAttribute("x", center);
+      title.setAttribute("y", center + 9);
+      title.setAttribute("class", "kosum-donut-title");
+      title.textContent = "KoSum";
+      svg.appendChild(title);
+      majorLabels.forEach((label) => svg.appendChild(label));
+
+      const legend = document.createElement("div");
+      legend.className = "kosum-donut-legend";
+      majorCategories.forEach((major) => {
+        const group = document.createElement("section");
+        group.className = "kosum-donut-group";
+        group.style.setProperty("--major-color", major.color);
+        group.innerHTML = '<h4>' + major.label + '</h4>';
+        const groupGrid = document.createElement("div");
+        groupGrid.className = "kosum-donut-group__items";
+        subcategories
+          .filter((item) => item.major === major.label)
+          .forEach((item) => {
+            const card = document.createElement("button");
+            card.type = "button";
+            card.className = "kosum-donut-card";
+            card.dataset.category = item.label;
+            card.style.setProperty("--category-color", item.color);
+            card.innerHTML = '<span style="--category-color: ' + item.color + '"></span><strong>' + item.label + '</strong><em>' + item.value + ' videos</em>';
+            groupGrid.appendChild(card);
+          });
+        group.appendChild(groupGrid);
+        legend.appendChild(group);
+      });
+
+      shell.appendChild(svg);
+      shell.appendChild(legend);
+      target.appendChild(shell);
+
+      const slices = Array.from(svg.querySelectorAll(".kosum-donut-slice--sub"));
+      const cards = Array.from(legend.querySelectorAll(".kosum-donut-card"));
+      function setActive(category) {
+        slices.forEach((slice) => slice.classList.toggle("is-active", slice.dataset.category === category));
+        cards.forEach((card) => card.classList.toggle("is-active", card.dataset.category === category));
+      }
+      function clearActive() {
+        slices.forEach((slice) => slice.classList.remove("is-active"));
+        cards.forEach((card) => card.classList.remove("is-active"));
+      }
+      cards.forEach((card) => {
+        card.addEventListener("mouseenter", () => setActive(card.dataset.category));
+        card.addEventListener("focus", () => setActive(card.dataset.category));
+        card.addEventListener("mouseleave", clearActive);
+        card.addEventListener("blur", clearActive);
+      });
+      slices.forEach((slice) => {
+        slice.addEventListener("mouseenter", () => setActive(slice.dataset.category));
+        slice.addEventListener("mouseleave", clearActive);
+      });
+    }
+
+    function renderGroupedChart(targetId, rows, options) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      target.innerHTML = "";
+      const yAxis = document.createElement("div");
+      yAxis.className = "kosum-chart-y-axis";
+      options.ticks.forEach((tick) => {
+        const mark = document.createElement("span");
+        mark.textContent = tick;
+        mark.style.bottom = (((tick - options.min) / (options.max - options.min)) * 100).toFixed(2) + "%";
+        yAxis.appendChild(mark);
+      });
+      const plot = document.createElement("div");
+      plot.className = "kosum-chart-plot";
+      target.appendChild(yAxis);
+      target.appendChild(plot);
+
+      rows.forEach((row) => {
+        const group = document.createElement("div");
+        group.className = "kosum-bar-group";
+
+        ["baseline", "ours"].forEach((key) => {
+          const bar = document.createElement("div");
+          const value = row[key];
+          const height = Math.max(4, ((value - options.min) / (options.max - options.min)) * 100);
+          bar.className = "kosum-bar kosum-bar--" + key;
+          bar.style.height = Math.min(100, height).toFixed(2) + "%";
+          bar.innerHTML = '<span class="kosum-bar__value">' + value.toFixed(options.decimals) + '</span>';
+          if (key === "ours" && row.baseline > 0) {
+            const improvement = (row.ours - row.baseline) / row.baseline * 100;
+            const badge = document.createElement("span");
+            badge.className = "kosum-bar__gain";
+            badge.textContent = "↑ " + improvement.toFixed(1) + "%";
+            bar.appendChild(badge);
+          }
+          group.appendChild(bar);
+        });
+
+        const label = document.createElement("span");
+        label.className = "kosum-bar__label";
+        label.textContent = row.label;
+        group.appendChild(label);
+        plot.appendChild(group);
+      });
+    }
+
+    function renderEvaluationSummary(data) {
+      const target = document.getElementById("kosum-eval-summary-cards");
+      if (!target) return;
+      const summary = data.summary || {};
+      const maxScore = (summary.num_samples || 30) * (summary.max_score_per_sample || 35);
+      const totalGain = (summary.ours_total || 0) - (summary.baseline_total || 0);
+      const averageGain = (summary.ours_average || 0) - (summary.baseline_average || 0);
+      const cards = [
+        {
+          title: "Total Score",
+          scale: "/" + maxScore,
+          max: maxScore,
+          baseline: summary.baseline_total || 0,
+          ours: summary.ours_total || 0,
+          gain: "+" + totalGain.toFixed(0) + " pts improvement",
+          decimals: 0
+        },
+        {
+          title: "Average Score",
+          scale: "/" + (summary.max_score_per_sample || 35),
+          max: summary.max_score_per_sample || 35,
+          baseline: summary.baseline_average || 0,
+          ours: summary.ours_average || 0,
+          gain: "+" + averageGain.toFixed(2) + " pts improvement",
+          decimals: 2
+        }
+      ];
+
+      target.innerHTML = cards.map((card) => {
+        const baselineWidth = Math.max(2, Math.min(100, card.baseline / card.max * 100));
+        const oursWidth = Math.max(2, Math.min(100, card.ours / card.max * 100));
+        return '<article class="kosum-eval-card">'
+          + '<h3>' + card.title + ' <span>(' + card.scale + ')</span></h3>'
+          + '<div class="kosum-eval-bars">'
+          + '<span>Baseline</span><div><i class="kosum-eval-bar kosum-eval-bar--baseline" style="width: ' + baselineWidth.toFixed(2) + '%"></i></div><strong>' + card.baseline.toFixed(card.decimals) + '</strong>'
+          + '<span class="kosum-eval-bars__ours-label">Ours</span><div class="kosum-eval-bars__ours-track"><i class="kosum-eval-bar kosum-eval-bar--ours" style="width: ' + oursWidth.toFixed(2) + '%"></i></div><strong class="kosum-eval-bars__ours-value">' + card.ours.toFixed(card.decimals) + '</strong>'
+          + '</div>'
+          + '<p>' + card.gain + '</p>'
+          + '</article>';
+      }).join("");
+    }
+
+    renderGuidelineDemo();
+    initSectionNav();
+    initPipelineZoom();
+    initCitationCopy();
+    renderDurationChart();
+    renderCategoryDonut();
+
+    fetch(scoreUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        const samples = data.samples || [];
+        const criteria = data.metadata.criteria || [];
+        const criteriaRows = criteria.map((criterion) => ({
+          label: criterionLabels[criterion] || criterion,
+          baseline: average(samples.map((sample) => sample.baseline[criterion].score)),
+          ours: average(samples.map((sample) => sample.ours[criterion].score))
+        })).sort((a, b) => (b.ours - b.baseline) - (a.ours - a.baseline));
+
+        const categories = Array.from(new Set(samples.map((sample) => sample.category)));
+        const categoryRows = categories.map((category) => {
+          const categorySamples = samples.filter((sample) => sample.category === category);
+          return {
+            label: category,
+            baseline: average(categorySamples.map((sample) => sample.baseline_total)),
+            ours: average(categorySamples.map((sample) => sample.ours_total))
+          };
+        });
+
+        renderEvaluationSummary(data);
+        renderGroupedChart("kosum-criteria-chart", criteriaRows, {
+          min: 1,
+          max: 5,
+          decimals: 2,
+          ticks: [1, 2, 3, 4, 5]
+        });
+        renderGroupedChart("kosum-category-chart", categoryRows, {
+          min: 20,
+          max: 30,
+          decimals: 1,
+          ticks: [20, 22, 24, 26, 28, 30]
+        });
+      })
+      .catch(() => {
+        ["kosum-criteria-chart", "kosum-category-chart"].forEach((targetId) => {
+          const target = document.getElementById(targetId);
+          if (target) {
+            target.innerHTML = '<p class="kosum-chart-error">Evaluation data could not be loaded.</p>';
+          }
+        });
+      });
+  })();
+</script>

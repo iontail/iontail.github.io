@@ -20,15 +20,6 @@ layout: compress
 
     {{ content }}
 
-    {% unless page.hide_footer == true %}
-      <div class="page__footer">
-        <footer>
-          {% include footer/custom.html %}
-          {% include footer.html %}
-        </footer>
-      </div>
-    {% endunless %}
-
     {% include scripts.html %}
 
   </body>
