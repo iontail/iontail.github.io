@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "KoSum"
-permalink: /pages/kosum/
+permalink: /kosum/
 hide_title: true
 page_class: project-detail-page kosum-page
 author_profile: false
@@ -10,8 +10,9 @@ hide_footer: true
 ---
 
 <section class="kosum-hero">
-  <h1><span>KoSum</span>: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Editing Guidance</h1>
-  <p class="kosum-venue">2026 Spring DSC3028 Capstone Project · Technical Report</p>
+  <h1><span>KoSum</span></h1>
+  <p class="kosum-title">Beyond Detection: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Highlight Editing Guidance</p>
+  <p class="kosum-venue">2026 Spring DSC3028 Capstone Project</p>
 
   <p class="kosum-authors">
     Chanhee Lee<sup>*†</sup>, Jinho Jang<sup>*</sup>, Sungjun Ha, Jinwoong Jung
@@ -245,7 +246,7 @@ hide_footer: true
       </button>
     </div>
     <pre class="kosum-citation"><code id="kosum-citation-code">@misc{lee2026kosum,
-  title  = {KoSum: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Editing Guidance},
+  title  = {KoSum: Beyond Detection: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Highlight Editing Guidance},
   author = {Lee, Chanhee and Jang, Jinho and Ha, Sungjun and Jung, Jinwoong},
   year   = {2026},
   note   = {2026 Spring DSC3028 Capstone Project Technical Report, Sungkyunkwan University}
@@ -328,6 +329,42 @@ hide_footer: true
         applyZoom(zoom + direction * 0.12);
       }, { passive: false });
 
+      let isDragging = false;
+      let dragStartX = 0;
+      let dragStartY = 0;
+      let scrollStartX = 0;
+      let scrollStartY = 0;
+
+      viewport.addEventListener("pointerdown", (event) => {
+        isDragging = true;
+        dragStartX = event.clientX;
+        dragStartY = event.clientY;
+        scrollStartX = viewport.scrollLeft;
+        scrollStartY = viewport.scrollTop;
+        viewport.classList.add("is-dragging");
+        viewport.setPointerCapture(event.pointerId);
+      });
+
+      viewport.addEventListener("pointermove", (event) => {
+        if (!isDragging) return;
+        event.preventDefault();
+        viewport.scrollLeft = scrollStartX - (event.clientX - dragStartX);
+        viewport.scrollTop = scrollStartY - (event.clientY - dragStartY);
+      });
+
+      function stopDragging(event) {
+        if (!isDragging) return;
+        isDragging = false;
+        viewport.classList.remove("is-dragging");
+        if (viewport.hasPointerCapture(event.pointerId)) {
+          viewport.releasePointerCapture(event.pointerId);
+        }
+      }
+
+      viewport.addEventListener("pointerup", stopDragging);
+      viewport.addEventListener("pointercancel", stopDragging);
+      image.addEventListener("dragstart", (event) => event.preventDefault());
+
       controls.forEach((control) => {
         control.addEventListener("click", () => {
           const action = control.dataset.zoomAction;
@@ -405,13 +442,16 @@ hide_footer: true
           submit.textContent = "Generate Guide";
           result.innerHTML = [
             '<div class="kosum-demo-output-inner">',
-            '<div class="kosum-demo-output-title"><h3>Editing Guideline</h3><span>' + selectedCategory + ' · ' + guide.modality + '</span></div>',
+            '<div class="kosum-demo-output-title"><h3>Editing Guideline</h3><span>' + selectedCategory + '</span></div>',
+            '<div class="kosum-dominant-modality"><span>Dominant Modality</span><strong>' + guide.modality + '</strong></div>',
             '<article class="kosum-demo-guide-card kosum-demo-guide-card--summary"><strong>Core Strategy</strong><p>' + guide.summary + '</p></article>',
+            '<div class="kosum-demo-divider" aria-hidden="true"></div>',
             '<div class="kosum-demo-guide-grid">',
             '<article class="kosum-demo-guide-card"><strong>Visual Guide</strong>' + list(guide.visual) + '</article>',
             '<article class="kosum-demo-guide-card"><strong>Text Guide</strong>' + list(guide.text) + '</article>',
             '<article class="kosum-demo-guide-card"><strong>Audio Guide</strong>' + list(guide.audio) + '</article>',
             '</div>',
+            '<div class="kosum-demo-divider kosum-demo-divider--rainbow" aria-hidden="true"></div>',
             '<article class="kosum-demo-guide-card"><strong>Priority Guide</strong>' + list(guide.priority) + '</article>',
             '</div>'
           ].join("");
@@ -691,7 +731,8 @@ hide_footer: true
           max: maxScore,
           baseline: summary.baseline_total || 0,
           ours: summary.ours_total || 0,
-          gain: "+" + totalGain.toFixed(0) + " pts improvement",
+          gainValue: "+" + totalGain.toFixed(0),
+          gainUnit: "pts improvement",
           decimals: 0
         },
         {
@@ -700,7 +741,8 @@ hide_footer: true
           max: summary.max_score_per_sample || 35,
           baseline: summary.baseline_average || 0,
           ours: summary.ours_average || 0,
-          gain: "+" + averageGain.toFixed(2) + " pts improvement",
+          gainValue: "+" + averageGain.toFixed(2),
+          gainUnit: "pts improvement",
           decimals: 2
         }
       ];
@@ -714,7 +756,7 @@ hide_footer: true
           + '<span>Baseline</span><div><i class="kosum-eval-bar kosum-eval-bar--baseline" style="width: ' + baselineWidth.toFixed(2) + '%"></i></div><strong>' + card.baseline.toFixed(card.decimals) + '</strong>'
           + '<span class="kosum-eval-bars__ours-label">Ours</span><div class="kosum-eval-bars__ours-track"><i class="kosum-eval-bar kosum-eval-bar--ours" style="width: ' + oursWidth.toFixed(2) + '%"></i></div><strong class="kosum-eval-bars__ours-value">' + card.ours.toFixed(card.decimals) + '</strong>'
           + '</div>'
-          + '<p>' + card.gain + '</p>'
+          + '<p class="kosum-eval-improvement"><span>' + card.gainValue + '</span><strong>' + card.gainUnit + '</strong></p>'
           + '</article>';
       }).join("");
     }
