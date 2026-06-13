@@ -18,9 +18,7 @@ redirect_from:
     <h1 class="profile-name">Chanhee Lee</h1>
 
     <p>
-      Hi! I am Chanhee Lee. I am majoring in Applied Artificial Intelligence at Sungkyunkwan University. 
-      My primary research interest lies in <strong>Video Summarization</strong>. 
-      Additionally, I am actively studying <strong>Generative AI</strong> to broaden my understanding of AI technologies.
+      Hi! I am Chanhee Lee, an undergraduate student majoring in Applied Artificial Intelligence at Sungkyunkwan University. My research interests lie at the intersection of <strong class="interest-emphasis">video understanding</strong> and <strong class="interest-emphasis">multimodal learning</strong>. I am particularly interested in learning spatiotemporal and multimodal video representations for <strong class="interest-emphasis">video summarization</strong>.
     </p>
 
     <div class="profile-links icon-hover-links" aria-label="Profile links">
@@ -36,6 +34,16 @@ redirect_from:
         <i class="fa-brands fa-github" aria-hidden="true"></i>
         <span>GitHub</span>
       </a>
+    </div>
+
+    <div class="research-interests" aria-label="Research interests">
+      <h2>Research Interests</h2>
+      <div class="research-interest-tags">
+        <span class="is-primary">Video Understanding</span>
+        <span class="is-primary">Multimodal Learning</span>
+        <span class="is-primary">Video Summarization</span>
+        <span>Representation Learning</span>
+      </div>
     </div>
   </div>
 </div>

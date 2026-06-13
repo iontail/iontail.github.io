@@ -44,7 +44,7 @@ body.layout-no-masthead {
 .home-page {
   @include breakpoint($large) {
     width: 100%;
-    max-width: 1050px;
+    max-width: 1160px;
     float: none;
     margin-left: auto;
     margin-right: auto;
@@ -55,16 +55,16 @@ body.layout-no-masthead {
 
 .profile-intro {
   display: grid;
-  grid-template-columns: 295px minmax(0, 1fr);
+  grid-template-columns: 320px minmax(0, 1fr);
   align-items: start;
-  column-gap: 14px;
-  max-width: 960px;
-  margin-left: 36px;
+  column-gap: 20px;
+  max-width: 1080px;
+  margin-left: 24px;
   margin-bottom: 2.25rem;
 }
 
 .profile-text {
-  max-width: 640px;
+  max-width: 760px;
 }
 
 .profile-links {
@@ -74,6 +74,53 @@ body.layout-no-masthead {
   span {
     margin: 0 15px;
   }
+}
+
+.research-interests {
+  margin-top: 0.15rem;
+
+  h2 {
+    margin: 0 0 0.7rem;
+    padding: 0;
+    border: 0;
+    color: #53636c;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+}
+
+.research-interest-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 12px;
+    border: 1px solid #cfdce8;
+    border-radius: 999px;
+    color: #425464;
+    background: #f7fafc;
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  span.is-primary {
+    border-color: #91b8d8;
+    color: #173f63;
+    background: linear-gradient(180deg, #dcecf8, #c7dff2);
+  }
+}
+
+.profile-text .interest-emphasis {
+  color: #244f85;
+  font-weight: 800;
 }
 
 .icon-hover-links {
@@ -179,7 +226,7 @@ body.layout-no-masthead {
 }
 
 .profile-image {
-  width: 280px;
+  width: 305px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -437,7 +484,7 @@ body.layout-no-masthead {
   padding: 0;
   border: 0;
   color: #4a4f52;
-  font-size: 1.45em;
+  font-size: 1.25em;
   line-height: 1.22;
   text-decoration: underline;
 }
@@ -445,7 +492,7 @@ body.layout-no-masthead {
 .project-card p {
   margin: 0;
   color: #555;
-  font-size: 1.22em;
+  font-size: 1.05em;
   line-height: 1.34;
   text-decoration: underline;
 }
