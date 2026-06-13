@@ -201,6 +201,15 @@ body.layout-no-masthead {
   font-weight: 600;
 }
 
+.cv-content strong a {
+  color: #244f85;
+}
+
+.cv-content strong a:hover,
+.cv-content strong a:focus-visible {
+  color: #1b3f6b;
+}
+
 .cv-meta {
   font-style: italic;
   color: #888;

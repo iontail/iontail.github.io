@@ -55,9 +55,17 @@ redirect_from:
 ## Experience
 
 <div class="cv-item">
+  <div class="cv-date">May 2026 – Present</div>
+  <div class="cv-content">
+    <strong><a href="https://viplab.snu.ac.kr/" target="_blank" rel="noopener">VIP (Visual Information Processing) Lab</a></strong>, Seoul National University, Seoul, South Korea <br>
+    <span class="cv-meta">Undergraduate Research Intern</span> (Advisor: Prof. Joonseok Lee)
+  </div>
+</div>
+
+<div class="cv-item">
   <div class="cv-date">Sep. 2025 – Dec. 2025</div>
   <div class="cv-content">
-    <strong>Efficient Learning Laboratory (ELL)</strong>, SKKU, Suwon, South Korea <br>
+    <strong><a href="https://ell.skku.edu/" target="_blank" rel="noopener">Efficient Learning Laboratory (ELL)</a></strong>, Sungkyunkwan University, Suwon, South Korea <br>
     <span class="cv-meta">Undergraduate Research Intern</span> (Advisor: Prof. Hankook Lee)
   </div>
 </div>
@@ -76,7 +84,24 @@ redirect_from:
 <div class="cv-item">
   <div class="cv-date">Mar. 2026 – Jun. 2026</div>
   <div class="cv-content">
-    <strong>[P5] Beyond Highlight Detection: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Editing Guidance</strong>, <em>Project</em>
+    <strong>[P5] Beyond Highlight Detection: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Editing Guidance</strong>, <em>Course (Capstone) Project</em><br>
+    <p class="cv-desc">
+      Built a most-replayed driven multimodal analysis pipeline for Korean YouTube videos and generated category-aware highlight editing guidance.
+    </p>
+    <span class="cv-links project-resource-links">
+      <a href="/kosum/" style="--clr:#4576b5;" aria-label="P5 Project Page">
+        <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
+        <span>Project Page</span>
+      </a>
+      <a href="/files/kosum-report-dummy.pdf" style="--clr:#e86f51;" aria-label="P5 Report">
+        <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+        <span>Report</span>
+      </a>
+      <a href="https://github.com/iontail/dsc.git" style="--clr:#4a4f52;" aria-label="P5 Code">
+        <i class="fa-brands fa-github" aria-hidden="true"></i>
+        <span>Code</span>
+      </a>
+    </span>
   </div>
 </div>
 
