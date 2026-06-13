@@ -1,6 +1,6 @@
-- title: "KoSum: Beyond Detection: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Highlight Editing Guidance"
+- title: "Beyond Highlight Detection: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Editing Guidance"
   short_title: "KoSum"
-  venue: "Demo Project"
-  description: "A demo page for Korean YouTube video analysis and editing guidance."
+  venue: "Project Page"
+  description: "Project page for KoSum, a most-replayed driven multimodal analysis framework for Korean YouTube video understanding and highlight editing guidance."
   image: /assets/media/images/kosum_pipeline.png
   url: /kosum/

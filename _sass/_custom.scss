@@ -804,13 +804,15 @@ body.layout-no-masthead {
   }
 }
 
-.kosum-title {
+.kosum-hero .kosum-title {
   max-width: 1120px;
   margin: 0 auto 1.05rem;
+  padding: 0;
+  border: 0;
   color: #2d3338;
-  font-size: 3.05em;
+  font-size: 2.7rem;
   font-weight: 950;
-  line-height: 1.03;
+  line-height: 1.05;
 }
 
 .kosum-venue {
@@ -2212,8 +2214,8 @@ body.layout-no-masthead {
     font-size: 2.35em;
   }
 
-  .kosum-title {
-    font-size: 2.05em;
+  .kosum-hero .kosum-title {
+    font-size: 1.92rem;
     line-height: 1.08;
   }
 
