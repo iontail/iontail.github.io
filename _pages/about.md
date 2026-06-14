@@ -101,13 +101,17 @@ redirect_from:
         <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
         <span>Project Page</span>
       </a>
-      <a href="/files/kosum-report-dummy.pdf" style="--clr:#e86f51;" aria-label="P5 Report">
+      <a href="/files/KoSum_report.pdf?v=20260614" style="--clr:#e86f51;" aria-label="P5 Report">
         <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
         <span>Report</span>
       </a>
       <a href="https://github.com/iontail/dsc.git" style="--clr:#4a4f52;" aria-label="P5 Code">
         <i class="fa-brands fa-github" aria-hidden="true"></i>
         <span>Code</span>
+      </a>
+      <a href="https://huggingface.co/datasets/iontail/KoSum" style="--clr:#ffb000;" aria-label="P5 Dataset">
+        <img class="hf-badge" src="/images/huggingface-color.png" alt="" aria-hidden="true">
+        <span>Dataset</span>
       </a>
     </span>
   </div>

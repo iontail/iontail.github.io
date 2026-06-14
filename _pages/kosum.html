@@ -25,13 +25,17 @@ hide_footer: true
   </p>
 
   <div class="kosum-links" aria-label="Project resources">
-    <a href="/files/kosum-report-dummy.pdf" target="_blank" rel="noopener">
+    <a href="/files/KoSum_report.pdf?v=20260614" target="_blank" rel="noopener">
       <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
       <span>Report</span>
     </a>
     <a href="https://github.com/iontail/dsc.git">
       <i class="fa-brands fa-github" aria-hidden="true"></i>
       <span>code</span>
+    </a>
+    <a href="https://huggingface.co/datasets/iontail/KoSum" target="_blank" rel="noopener">
+      <img class="hf-badge" src="/images/huggingface-color.png" alt="" aria-hidden="true">
+      <span>Dataset</span>
     </a>
     <a href="#citation">
       <i class="fa-solid fa-quote-right" aria-hidden="true"></i>
@@ -53,10 +57,7 @@ hide_footer: true
 <section class="kosum-abstract" id="abstract" aria-label="Abstract">
   <h2>Abstract</h2>
   <p>
-    KoSum is a Korean YouTube benchmark for video summarization and highlight detection, built from recent videos uploaded between 2024 and 2026. Instead of treating editing as simple cut-based automation, this project connects Most-Replayed viewer engagement signals with visual, audio, and text analysis to generate practical editing guidance. KoSum contains 700 videos across 14 fine-grained content categories and supports triple-modality analysis using visual features, subtitles, audio features, and Most-Replayed importance scores.
-  </p>
-  <p>
-    Using a triple-modality model, we analyze highlight regions through modality attention patterns and feature-level statistics such as shot transitions, motion dynamics, subtitle density, reaction cues, speech dynamics, and audio novelty. These category-specific findings are organized into analysis cards and used in a data-analysis-conditioned prompting framework, allowing an LLM to generate editing guidelines that are more specific, multimodally aware, and aligned with viewer engagement.
+    This project proposes a framework for practical video editing guidance. Existing highlight detection and video summarization models remain limited for real-world editing, where creators need actionable guidance rather than simple cut-based automation. We construct <strong>KoSum</strong>, a Korean YouTube benchmark for video summarization, consisting of recent videos from 2024 to 2026 collected through a structured protocol across 14 fine-grained content categories (e.g., entertainment and cooking) and annotated with triple-modality signals (e.g., visual, audio, and text) and Most-Replayed signals. Using a triple-modality model, we analyze highlight regions through modality attention patterns and feature-level statistics, capturing editing-related multimodal cues (e.g., shot transitions, motion dynamics, subtitle density, and audio novelty). Based on these analyses, we propose a <strong>data-analysis-conditioned prompting framework</strong> that augments user prompts with category-specific and statistically grounded editing cues. The proposed framework outperforms the baseline by <strong>95 points</strong> in total score and <strong>3.17 points</strong> in average score, demonstrating strong effectiveness in generating practical and structured editing guidelines. Our framework connects viewer engagement signals, multimodal analysis, and practical editing support for real-world creators. The project page is available at <a href="https://iontail.github.io/kosum/">https://iontail.github.io/kosum/</a>.
   </p>
 </section>
 

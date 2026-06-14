@@ -367,6 +367,32 @@ body.layout-no-masthead {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+
+  img.hf-badge {
+    position: relative;
+    top: auto;
+    z-index: 1;
+    display: block;
+    width: 1.7rem;
+    height: 1.7rem;
+    object-fit: contain;
+    opacity: 1;
+    transform: translateY(0);
+    transition: 0.25s ease;
+  }
+
+  a:hover img.hf-badge,
+  a:focus-visible img.hf-badge {
+    transform: translateY(-9px);
+    filter: drop-shadow(0 0 8px rgba(255, 184, 0, 0.55));
+  }
+}
+
+.kosum-links img.hf-badge {
+  display: block;
+  width: 1.45em;
+  height: 1.45em;
+  object-fit: contain;
 }
 
 .projects-page {
