@@ -85,7 +85,16 @@ redirect_from:
 <div class="cv-item">
   <div class="cv-date">May 2026 – Jun. 2026</div>
   <div class="cv-content">
-    <strong>[P6] Well Begun Is Half Solved: Linear Inference via Early-Stage Evaluation</strong>, <em>Project</em>
+    <strong>[P6] Well Begun Is Half Solved: Future-Aware Route Optimization for Long Narrative Question Answering</strong>, <em>Course Project</em><br>
+    <p class="cv-desc">
+      Proposed FARO, an inference-time framework that commits to a future-aware evidence route before final answer generation for long narrative question answering.
+    </p>
+    <span class="cv-links project-resource-links">
+      <a href="/files/FARO.pdf" style="--clr:#e86f51;" aria-label="P6 Report">
+        <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+        <span>Report</span>
+      </a>
+    </span>
   </div>
 </div>
 
