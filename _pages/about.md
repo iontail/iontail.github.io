@@ -101,7 +101,7 @@ redirect_from:
 <div class="cv-item">
   <div class="cv-date">Mar. 2026 – Jun. 2026</div>
   <div class="cv-content">
-    <strong>[P5] Beyond Highlight Detection: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Editing Guidance</strong>, <em>Course (Capstone) Project</em><br>
+    <strong>[P5] Beyond Highlight Detection: Most-Replayed Driven Multimodal Analysis of Korean YouTube Videos for Highlight Editing Guidance</strong>, <em>Course (Capstone) Project</em><br>
     <p class="cv-desc">
       Built a most-replayed driven multimodal analysis pipeline for Korean YouTube videos and generated category-aware highlight editing guidance.
     </p>
