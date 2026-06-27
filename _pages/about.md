@@ -94,6 +94,10 @@ redirect_from:
         <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
         <span>Report</span>
       </a>
+      <a href="https://github.com/Bellissimo-AI/FARO" style="--clr:#4a4f52;" aria-label="P6 Code">
+        <i class="fa-brands fa-github" aria-hidden="true"></i>
+        <span>Code</span>
+      </a>
     </span>
   </div>
 </div>
