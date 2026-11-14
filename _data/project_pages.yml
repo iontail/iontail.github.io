@@ -8,6 +8,6 @@
 - title: "PaperGlim: A macOS Paper Reader for Your Own AI"
   short_title: "PaperGlim"
   venue: "macOS App"
-  description: "Read papers with page-aligned Korean translation, Zotero collections, and your own Codex or Claude Code."
+  description: "An Apple Silicon Mac paper reader with page-aligned Korean translation, Zotero collections, and your own Codex or Claude Code."
   image: /paperglim/assets/reader.png
   url: /paperglim/
