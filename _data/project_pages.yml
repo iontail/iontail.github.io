@@ -4,3 +4,10 @@
   description: "Project page for KoSum, a most-replayed driven multimodal analysis framework for Korean YouTube video understanding and highlight editing guidance."
   image: /assets/media/images/kosum_pipeline.png
   url: /kosum/
+
+- title: "PaperGlim: A macOS Paper Reader for Your Own AI"
+  short_title: "PaperGlim"
+  venue: "macOS App"
+  description: "Read papers with page-aligned Korean translation, Zotero collections, and your own Codex or Claude Code."
+  image: /paperglim/assets/reader.png
+  url: /paperglim/
