@@ -1,11 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="none">
-  <defs>
-    <linearGradient id="tile" x1="512" y1="80" x2="512" y2="944" gradientUnits="userSpaceOnUse"><stop stop-color="#292B2F"/><stop offset="1" stop-color="#16181B"/></linearGradient>
-  </defs>
+  <defs><linearGradient id="tile" x1="512" y1="80" x2="512" y2="944" gradientUnits="userSpaceOnUse"><stop stop-color="#292B2F"/><stop offset="1" stop-color="#16181B"/></linearGradient></defs>
   <rect x="80" y="80" width="864" height="864" rx="194" fill="url(#tile)"/>
   <rect x="83" y="83" width="858" height="858" rx="191" stroke="#FFFFFF" stroke-opacity=".06" stroke-width="6"/>
-  <g id="mark" fill="#ECEDEA" transform="translate(-30 0)">
-    <path fill-rule="evenodd" d="M256 698V326H374C458 326 506 372 506 444C506 516 458 562 374 562H310V698H256ZM310 380V508H372C425 508 452 486 452 444C452 402 425 380 372 380H310Z"/>
-    <path transform="translate(34 0)" d="M782 388C749 340 711 318 655 318C553 318 498 396 498 512C498 630 568 706 663 706C717 706 761 687 795 650V494H652V547H739V625C720 644 696 654 665 654C595 654 553 594 553 512C553 430 595 370 657 370C696 370 721 385 746 419L782 388Z"/>
+  <g id="mark" fill="#ECEDEA" transform="translate(512 512) scale(1.08) translate(-512 -512)">
+    <path d="M492 286H374C325 286 286 325 286 374V650C286 699 325 738 374 738H480L503 688H378C355 688 338 671 338 648V376C338 353 355 336 378 336H469L492 286Z" transform="translate(-14 -18)"/>
+    <path d="M492 286H374C325 286 286 325 286 374V650C286 699 325 738 374 738H480L503 688H378C355 688 338 671 338 648V376C338 353 355 336 378 336H469L492 286Z" transform="rotate(180 512 512) translate(-14 -18)"/>
   </g>
 </svg>
