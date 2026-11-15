@@ -1,9 +1,13 @@
-// Keep the first-open guide visible when reached through an installation link.
-function focusGuide() {
-  if (location.hash !== '#first-open') return
-  const guide = document.getElementById('first-open')
+// Open collapsed setup guides reached through a section link.
+function focusGuide(hash = location.hash) {
+  const guide = document.getElementById(hash.slice(1))
+  if (!(guide instanceof HTMLDetailsElement)) return
+  guide.open = true
   guide.setAttribute('tabindex', '-1')
   guide.focus({ preventScroll: true })
 }
-window.addEventListener('hashchange', focusGuide)
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  link.addEventListener('click', () => focusGuide(link.hash))
+})
+window.addEventListener('hashchange', () => focusGuide())
 focusGuide()
