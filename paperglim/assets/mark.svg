@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="228 224 568 576" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="292 246 440 532" fill="none">
 <defs><linearGradient id="tile" x1="512" y1="80" x2="512" y2="944" gradientUnits="userSpaceOnUse"><stop stop-color="#292B2F"/><stop offset="1" stop-color="#16181B"/></linearGradient></defs>
-  <g id="mark" fill="#ECEDEA" transform="translate(512 512) scale(1.08) translate(-512 -512)">
-    <path d="M492 286H374C325 286 286 325 286 374V650C286 699 325 738 374 738H480L503 688H378C355 688 338 671 338 648V376C338 353 355 336 378 336H469L492 286Z" transform="translate(-14 -18)"/>
-    <path d="M492 286H374C325 286 286 325 286 374V650C286 699 325 738 374 738H480L503 688H378C355 688 338 671 338 648V376C338 353 355 336 378 336H469L492 286Z" transform="rotate(180 512 512) translate(-14 -18)"/>
+  <g id="mark" fill="#ECEDEA">
+    <path d="M316 270H524L494 334H380V654H497L468 718H316V270Z"/>
+    <path d="M708 306H556L526 370H644V690H526L496 754H708V306Z"/>
   </g>
 </svg>
