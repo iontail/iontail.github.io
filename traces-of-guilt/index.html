@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore an illustrated crime scene, connect the evidence and name your suspect.">
+  <title>Traces of Guilt</title>
+  <link rel="canonical" href="https://iontail.github.io/traces-of-guilt/">
+  <link rel="stylesheet" href="style.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="back-link" href="/app/"><span aria-hidden="true">←</span> Apps &amp; Sites</a>
+    <a class="header-link" href="#evidence">Evidence log</a>
+  </header>
+
+  <main class="page">
+    <section class="opening" aria-labelledby="case-title">
+      <div class="brief">
+        <h1>Traces<br>of Guilt<span>.</span></h1>
+        <div class="case-brief">
+          <p class="case-number">Case 01 <span> / </span> Demo</p>
+          <h2 id="case-title">The Missing Master</h2>
+          <p>The master reel vanished from Studio B just before closing. Three people signed the studio log that night. Find out who walked out with it.</p>
+          <a class="start-link" href="#scene">Investigate the scene <span aria-hidden="true">↘</span></a>
+        </div>
+      </div>
+
+      <figure class="scene" id="scene">
+        <div class="scene-image">
+          <img src="recording-room.svg" alt="Studio B at night, with a wall clock, an empty tape case on the desk and a sign-in sheet by the door.">
+          <button class="marker marker-clock" type="button" data-clue="clock" aria-label="Inspect the wall clock">1</button>
+          <button class="marker marker-case" type="button" data-clue="case" aria-label="Inspect the reel case">2</button>
+          <button class="marker marker-log" type="button" data-clue="log" aria-label="Inspect the sign-in sheet">3</button>
+        </div>
+        <figcaption>
+          <span>Studio B <span aria-hidden="true">/</span> Recording room</span>
+          <span id="progress" role="status">0 of 3 clues found</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="investigation" id="evidence" aria-labelledby="evidence-title">
+      <div>
+        <h2 id="evidence-title">Evidence log</h2>
+        <p>Select a marker in the room or inspect a clue below.</p>
+        <ol class="clues">
+          <li><button type="button" data-clue="clock"><span>01</span> Wall clock</button></li>
+          <li><button type="button" data-clue="case"><span>02</span> Reel case</button></li>
+          <li><button type="button" data-clue="log"><span>03</span> Sign-in sheet</button></li>
+        </ol>
+      </div>
+
+      <form class="suspects">
+        <fieldset>
+          <legend>Name your suspect</legend>
+          <label><input type="radio" name="suspect" value="iris" required> <span>Iris Reed</span><small>Singer</small></label>
+          <label><input type="radio" name="suspect" value="mara"> <span>Mara Voss</span><small>Engineer</small></label>
+          <label><input type="radio" name="suspect" value="leon"> <span>Leon Bell</span><small>Producer</small></label>
+        </fieldset>
+        <button class="submit" type="submit">Submit theory</button>
+        <p class="result" role="status"></p>
+      </form>
+      <noscript><p>Enable JavaScript to inspect the evidence and submit a theory.</p></noscript>
+    </section>
+  </main>
+
+  <dialog class="clue-dialog" aria-labelledby="clue-title">
+    <form method="dialog"><button class="close" aria-label="Close evidence">×</button></form>
+    <p class="case-number" id="clue-number"></p>
+    <h2 id="clue-title"></h2>
+    <p id="clue-description"></p>
+  </dialog>
+</body>
+</html>

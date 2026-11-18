@@ -9,3 +9,9 @@
   description: "Mac 화면을 녹화하고, 클릭 기반 확대와 재생 속도를 타임라인에서 다듬어 시연 영상으로 저장해요."
   image: /dollycue/assets/icon.png
   url: /dollycue/
+
+- title: "Traces of Guilt"
+  short_title: "Traces of Guilt"
+  description: "사건 현장을 둘러보고 물건에 남은 단서를 모아 범인을 찾는 웹 추리 게임."
+  image: /traces-of-guilt/recording-room.svg
+  url: /traces-of-guilt/

@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 620">
+  <title>Studio B recording room</title>
+  <desc>A late-night recording studio with a broken clock, an empty reel case and a sign-in sheet.</desc>
+  <defs>
+    <pattern id="acoustic-tiles" width="42" height="42" patternUnits="userSpaceOnUse">
+      <path d="M0 0h42v42H0z" fill="#304951"/>
+      <path d="M0 41h42M41 0v42M8 33l25-25m-15 25 15-15" fill="none" stroke="#486068" stroke-width="2"/>
+    </pattern>
+    <pattern id="speaker-cloth" width="6" height="6" patternUnits="userSpaceOnUse">
+      <path d="M1 1h2v2H1zm3 3h2v2H4z" fill="#607177"/>
+    </pattern>
+    <linearGradient id="window" x2="0.2" y2="1">
+      <stop stop-color="#16283c"/>
+      <stop offset="1" stop-color="#395761"/>
+    </linearGradient>
+    <linearGradient id="lamp" x2="0" y2="1">
+      <stop stop-color="#ffdd8c" stop-opacity=".68"/>
+      <stop offset="1" stop-color="#ffb261" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <g id="room">
+    <path fill="#26343c" d="M0 0h920v620H0z"/>
+    <path fill="#36454d" d="M160 66h588v330H160z"/>
+    <path fill="#24363c" d="M0 0l160 66v330L0 475z"/>
+    <path fill="#2c3b40" d="M748 66L920 0v480l-172-84z"/>
+    <path fill="#17242c" d="M0 0h920L748 66H160z"/>
+    <path fill="#81564a" d="M160 396h588l172 84v140H0V475z"/>
+    <path fill="#9c6d58" d="M748 396H160l-68 34h726zm126 62H35L0 475v16h920v-11zM0 535h920v10H0zm0 59h920v11H0z"/>
+    <path d="M160 397v-12h588l172 83v12l-172-83zm0 0L0 475v-12l160-78z" fill="#17242c"/>
+    <path d="M107 620l158-224m46 224 57-224m200 224-51-224m277 224L634 396" fill="none" stroke="#613e3a" stroke-width="3" opacity=".75"/>
+    <path fill="#1e2c33" d="M206 87h513v40H206z"/>
+    <path fill="url(#acoustic-tiles)" d="M260 89h430v208H260z"/>
+    <path fill="#4b5b60" d="M160 299h588v5H160z"/>
+  </g>
+
+  <g id="control-window">
+    <path d="M27 109l114 34v183l-114 31z" fill="#18242e" stroke="#11212a" stroke-width="12"/>
+    <path d="M32 118l103 30v168l-103 27z" fill="url(#window)"/>
+    <path d="M32 286l27-7v-26l15-4v-31l9-3v24l12-4v31l17-4v-53l12-2v47l11-3v65l-103 27z" fill="#172936"/>
+    <path d="M33 318l102-27m-55-158v197" stroke="#101d29" stroke-width="7"/>
+    <path d="M44 121l19 6 65 129v23zm66 20 11 3 14 26v17z" fill="#63848d" opacity=".2"/>
+    <path d="M66 270l5-1m34-14 4-1m9-31 3-1m-68 79 6-2" stroke="#d9a966" stroke-width="3"/>
+    <path d="M19 357l133-36v13L19 372z" fill="#6b7778"/>
+  </g>
+
+  <g id="door">
+    <path d="M771 122l102-32v430l-102-55z" fill="#101f26" stroke="#48616a" stroke-width="8"/>
+    <path d="M784 132l76-21v385l-76-40z" fill="#283d47"/>
+    <path d="M794 152l55-13v119l-55 1z" fill="#152831" stroke="#52696d" stroke-width="4"/>
+    <path d="M800 157l42-10v105l-42 1z" fill="#496770"/>
+    <path d="M801 159l12-3 29 62v23z" fill="#63848a"/>
+    <path d="M785 396l16 6" stroke="#bf996a" stroke-width="5" stroke-linecap="round"/>
+    <path d="M807 278l28 1v14l-28-3z" fill="#182c32"/>
+    <path d="M812 284l17 1" stroke="#708b8b" stroke-width="2"/>
+    <path d="M769 94l107-32v16l-107 32z" fill="#142329"/>
+    <path d="M780 96l45-14" stroke="#c77854" stroke-width="4" opacity=".8"/>
+  </g>
+
+  <g id="sign-in-sheet" transform="translate(748 -55) skewY(-12)">
+    <rect x="-42" y="395" width="42" height="66" rx="3" fill="#15232b" opacity=".8"/>
+    <rect x="-47" y="390" width="42" height="66" rx="3" fill="#9b664c"/>
+    <path d="M-42 397h32v54h-32z" fill="#e7cba9"/>
+    <rect x="-34" y="390" width="16" height="9" rx="2" fill="#839693"/>
+    <path d="M-37 408h22m-22 7h22m-22 7h22m-22 7h22m-22 7h15m-15 7h22" stroke="#716357" stroke-width="1.4"/>
+    <path d="M-24 403v44" stroke="#ac8773" stroke-width="1"/>
+  </g>
+
+  <g id="tape-cabinet">
+    <path fill="#18282f" d="M574 294h123v141l-123-17z"/>
+    <path fill="#302725" d="M580 274h107l23 16H572z"/>
+    <path fill="#a87558" d="M572 290h138v12H572z"/>
+    <path fill="#7b5242" d="M581 303h120v116l-120-10z"/>
+    <path fill="#543c34" d="M586 312h110v29H586zm0 37h110v27H586zm0 35h110v25l-110-6z"/>
+    <path d="M631 325h20m-20 36h20m-20 32 20 1" stroke="#be9670" stroke-width="3" stroke-linecap="round"/>
+    <path d="M578 305l12 8m-10-10 14 8" stroke="#d5af80" stroke-width="1.5"/>
+    <path d="M581 342l-56 11v91l56-34z" fill="#925b45" stroke="#3e302b" stroke-width="3"/>
+    <path d="M530 360l43-9v55l-43 25z" fill="#694639"/>
+    <path d="M535 390v-15" stroke="#bd9870" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <g id="wall-clock">
+    <path d="M635 186h10v12h-10z" fill="#667575"/>
+    <path d="M640 202c0 12-9 21-18 29" fill="none" stroke="#76888b" stroke-width="2" stroke-dasharray="3 4"/>
+    <g transform="translate(624 252) rotate(-13)">
+      <circle r="31" fill="#17272e" opacity=".7" transform="translate(5 4)"/>
+      <circle r="31" fill="#a46b4b" stroke="#342f2e" stroke-width="4"/>
+      <circle r="25" fill="#e8cf9f"/>
+      <path d="M0-21v4m21 17h-4M0 21v-4m-21-17h4" stroke="#5f5146" stroke-width="2"/>
+      <path d="M-9-7L0 0l18-3" fill="none" stroke="#352f2e" stroke-linecap="round" stroke-width="2.5"/>
+      <circle r="2" fill="#352f2e"/>
+      <path d="M14 19L9 12l2-4-4-3" fill="none" stroke="#8b7564" stroke-width="1"/>
+    </g>
+  </g>
+
+  <g id="desk">
+    <path d="M177 420l359-48 160 83-291 112L93 498z" fill="#422e2c" opacity=".55"/>
+    <path d="M160 428v77l17 7 9-6v-77zm258 81v81l14 7 11-10v-91zm172-62v73l12 5 10-8v-77z" fill="#46332e"/>
+    <path d="M153 425l260 56 199-66v16l-197 73-262-62z" fill="#79493b" stroke="#483630" stroke-width="3"/>
+    <path d="M153 425l197-63 262 53-199 66z" fill="#b17b55" stroke="#47362e" stroke-width="4"/>
+    <path d="M162 426l252 51 186-61" fill="none" stroke="#c99667" stroke-width="3"/>
+  </g>
+
+  <g id="mixing-console">
+    <path d="M195 414l142-43 151 30-133 48z" fill="#23353a" stroke="#19262d" stroke-width="4"/>
+    <path d="M204 412l133-38 138 27-121 42z" fill="#50636a"/>
+    <path d="M229 412l111-33 110 22-103 34z" fill="#293c42"/>
+    <path d="M247 408l90 19m-72-24 89 18m-72-23 89 18m-72-23 89 18m-72-23 89 18" stroke="#758883" stroke-width="2"/>
+    <path d="M268 412l9 2m16-9 9 2m10 8 9 2m14-18 9 2m9-1 9 2m8-8 9 2m8 5 9 2" stroke="#e2bc86" stroke-width="3" stroke-linecap="round"/>
+    <path d="M314 435l19 4m32-5 15-5m4-2 10-3m6-2 12-4" stroke="#cb9364" stroke-width="2"/>
+  </g>
+
+  <g id="monitors">
+    <path d="M180 281l70 10v104l-70-12z" fill="#10232c" opacity=".55"/>
+    <path d="M181 270l61 9v103l-61-11z" fill="#1b2a32" stroke="#111f28" stroke-width="4"/>
+    <path d="M242 279l18-11v99l-18 15z" fill="#394c50"/>
+    <path d="M180 270l18-11 62 9-18 11z" fill="#55666a"/>
+    <path d="M187 283l47 7v73l-47-8z" fill="url(#speaker-cloth)"/>
+    <ellipse cx="210" cy="333" rx="17" ry="20" fill="#172830" stroke="#718282" stroke-width="2"/>
+    <ellipse cx="210" cy="333" rx="8" ry="9" fill="#455c65"/>
+    <ellipse cx="210" cy="301" rx="7" ry="8" fill="#243b44" stroke="#6f8585" stroke-width="2"/>
+    <path d="M442 298l48-9v79l-48 13z" fill="#18262e" stroke="#13242c" stroke-width="4"/>
+    <path d="M442 298l-15-7 45-10 18 8z" fill="#53646a"/>
+    <path d="M427 291l15 7v83l-15-9z" fill="#344a50"/>
+    <path d="M447 308l38-8v57l-38 11z" fill="url(#speaker-cloth)"/>
+    <ellipse cx="465" cy="344" rx="13" ry="15" fill="#162730" stroke="#6f8585" stroke-width="2"/>
+    <ellipse cx="465" cy="344" rx="6" ry="7" fill="#465a61"/>
+    <ellipse cx="465" cy="315" rx="5" ry="6" fill="#243b44" stroke="#6f8585" stroke-width="2"/>
+  </g>
+
+  <g id="desk-lamp">
+    <path d="M311 276l-74 150 290 39-72-187z" fill="url(#lamp)" opacity=".6"/>
+    <path d="M364 0v218" stroke="#101e25" stroke-width="5"/>
+    <path d="M352 241l-48 32v12h141v-12l-51-32z" fill="#b96a45" stroke="#202a2c" stroke-width="3"/>
+    <path d="M352 241v-12c0-8 5-12 12-12h16c7 0 14 4 14 12v12z" fill="#8c543e"/>
+    <path d="M307 277h135v9H307z" fill="#f5cb85"/>
+  </g>
+
+  <g id="reel-case">
+    <path d="M447 429l50-16 67 14-48 19z" fill="#3d302d" opacity=".75"/>
+    <path d="M451 424l47-15 63 13v11l-47 18-63-16z" fill="#262e35" stroke="#25242a" stroke-width="2"/>
+    <path d="M451 424l63 15 47-17-63-13z" fill="#c8af88"/>
+    <path d="M463 424l36-11 47 10-34 12z" fill="#514b41"/>
+    <ellipse cx="504" cy="424" rx="23" ry="6" fill="#343635"/>
+    <path d="M451 423l-7-30 53-14v29z" fill="#8e745d" stroke="#2d2e32" stroke-width="3"/>
+    <path d="M453 417l-5-21 45-12v21z" fill="#dfc299"/>
+    <path d="M462 405l23-6 2 5-23 6z" fill="#637f9f"/>
+  </g>
+
+  <g id="chair">
+    <path d="M177 511l113-40 64 46-114 57z" fill="#462e2d" opacity=".52"/>
+    <path d="M229 520v63m42-81v64m-79-83v53" stroke="#34282a" stroke-width="7" stroke-linecap="round"/>
+    <path d="M196 487l55-21 37 34-58 27z" fill="#76473f" stroke="#302b2b" stroke-width="4"/>
+    <path d="M173 423l53 11 13 63-49-11z" fill="#77483e" stroke="#2c272a" stroke-width="4"/>
+    <path d="M179 429l40 8 10 47-36-8z" fill="#9f5d49" stroke="#b57657" stroke-width="2"/>
+  </g>
+
+  <path d="M8 608h904" stroke="#23282c" stroke-width="3" opacity=".5"/>
+</svg>
