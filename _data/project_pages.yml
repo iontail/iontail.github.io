@@ -5,9 +5,9 @@
   image: /assets/media/images/kosum_pipeline.png
   url: /kosum/
 
-- title: "PaperGlim: A macOS Paper Reader for Your Own AI"
-  short_title: "PaperGlim"
+- title: "Pagecove: Read and Translate Papers on macOS"
+  short_title: "Pagecove"
   venue: "macOS App"
-  description: "An Apple Silicon Mac paper reader with page-aligned Korean translation, Zotero collections, and your own Codex or Claude Code."
-  image: /paperglim/assets/reader.png
-  url: /paperglim/
+  description: "A Mac app for reading papers with side-by-side Korean translation, Zotero collections, and your own Codex or Claude Code."
+  image: /pagecove/assets/reader.png
+  url: /pagecove/
