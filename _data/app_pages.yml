@@ -1,0 +1,11 @@
+- title: "Pagecove"
+  short_title: "Pagecove"
+  description: "A Mac app for reading papers with side-by-side Korean translation, Zotero collections, and your own Codex or Claude Code."
+  image: /pagecove/assets/reader.png
+  url: /pagecove/
+
+- title: "DollyCue"
+  short_title: "DollyCue"
+  description: "A Mac screen recorder and timeline editor with automatic zoom, cursor tracking, and playback-speed controls."
+  image: /dollycue/assets/icon.png
+  url: /dollycue/

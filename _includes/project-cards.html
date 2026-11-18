@@ -1,0 +1,67 @@
+<div class="project-page-list">
+  {% for project in include.projects %}
+    <a class="project-card project-card--link" href="{{ project.url }}">
+      <span class="project-card__gooey" aria-hidden="true"></span>
+      {% if project.image %}
+        <img src="{{ project.image }}" alt="{{ project.short_title }} preview" class="project-card__image">
+      {% endif %}
+      <span class="project-card__text">
+        <h2>{{ project.title }}</h2>
+        <p>{{ project.description }}</p>
+      </span>
+    </a>
+  {% endfor %}
+</div>
+
+<script>
+  document.querySelectorAll(".project-card--link").forEach((card) => {
+    let currentX = 0;
+    let currentY = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let tiltX = 0;
+    let tiltY = 0;
+    let frameId = null;
+
+    const animateGlow = () => {
+      currentX += (targetX - currentX) * 0.14;
+      currentY += (targetY - currentY) * 0.14;
+      const rect = card.getBoundingClientRect();
+      const nextTiltX = ((currentY / rect.height) - 0.5) * -3.2;
+      const nextTiltY = ((currentX / rect.width) - 0.5) * 3.2;
+      tiltX += (nextTiltX - tiltX) * 0.18;
+      tiltY += (nextTiltY - tiltY) * 0.18;
+      card.style.setProperty("--x", `${currentX}px`);
+      card.style.setProperty("--y", `${currentY}px`);
+      card.style.setProperty("--tilt-x", `${tiltX}deg`);
+      card.style.setProperty("--tilt-y", `${tiltY}deg`);
+
+      if (Math.abs(targetX - currentX) > 0.2 || Math.abs(targetY - currentY) > 0.2) {
+        frameId = requestAnimationFrame(animateGlow);
+      } else {
+        frameId = null;
+      }
+    };
+
+    card.addEventListener("mousemove", (event) => {
+      const rect = card.getBoundingClientRect();
+      targetX = event.clientX - rect.left;
+      targetY = event.clientY - rect.top;
+      card.style.setProperty("--height", `${rect.height}px`);
+      card.style.setProperty("--width", `${rect.width}px`);
+
+      if (!frameId) {
+        frameId = requestAnimationFrame(animateGlow);
+      }
+    });
+
+    card.addEventListener("mouseleave", () => {
+      targetX = currentX;
+      targetY = currentY;
+      tiltX = 0;
+      tiltY = 0;
+      card.style.setProperty("--tilt-x", "0deg");
+      card.style.setProperty("--tilt-y", "0deg");
+    });
+  });
+</script>
