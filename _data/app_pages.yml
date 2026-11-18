@@ -1,11 +1,11 @@
-- title: "Pagecove"
+- title: "Pagecove · PDF 논문 읽기"
   short_title: "Pagecove"
-  description: "A Mac app for reading papers with side-by-side Korean translation, Zotero collections, and your own Codex or Claude Code."
-  image: /pagecove/assets/reader.png
+  description: "원문과 한국어 번역을 나란히 읽고, Zotero에서 논문을 불러와 AI에 질문할 수 있는 Mac 앱."
+  image: /pagecove/assets/icon.png
   url: /pagecove/
 
-- title: "DollyCue"
+- title: "DollyCue · 화면 녹화와 편집"
   short_title: "DollyCue"
-  description: "A Mac screen recorder and timeline editor with automatic zoom, cursor tracking, and playback-speed controls."
+  description: "Mac 화면을 녹화하고, 클릭 기반 확대와 재생 속도를 타임라인에서 다듬어 시연 영상으로 저장해요."
   image: /dollycue/assets/icon.png
   url: /dollycue/

@@ -1,15 +1,15 @@
 :root {
   color-scheme: light;
-  --shell: #f3f2ee;
-  --paper: #fcfbf8;
-  --ink: #242923;
-  --muted: #60665c;
-  --rule: #d8d9cf;
-  --primary: #26332c;
-  --on-primary: #fffdf8;
-  --accent: #9d482d;
-  --accent-light: #f2e2d1;
-  --stage: #202520;
+  --shell: #f8efdb;
+  --paper: #fff8e8;
+  --ink: #192d48;
+  --muted: #4f5864;
+  --rule: #cfbf9f;
+  --primary: #1e344f;
+  --on-primary: #fff5de;
+  --accent: #264968;
+  --accent-light: #f0e3c8;
+  --stage: #142840;
   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   color: var(--ink);
   background: var(--shell);
@@ -29,7 +29,6 @@ a { color: inherit; }
 .wrap { width: min(1120px, calc(100% - 80px)); margin-inline: auto; }
 .skip-link { position: fixed; z-index: 10; left: 1rem; top: 1rem; padding: 0.6rem 1rem; background: var(--paper); transform: translateY(-160%); }
 .skip-link:focus { transform: translateY(0); }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 .site-header {
   min-height: 78px;
@@ -98,6 +97,8 @@ h1 {
   word-break: keep-all;
 }
 .hero-summary p { max-width: 31ch; }
+.hero-summary .download-meta { margin-top: -9px; font-size: 12px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .button {
   min-height: 43px;
@@ -114,15 +115,17 @@ h1 {
 }
 
 .primary { background: var(--primary); color: var(--on-primary); }
-.primary:hover { background: #3c4c3f; }
+.primary:hover { background: var(--accent); }
+.secondary { border-color: var(--rule); color: var(--primary); }
+.secondary:hover { background: var(--paper); }
 .play-icon { width: 0; height: 0; border-block: 5px solid transparent; border-inline-start: 8px solid currentColor; }
 
 .demo {
   scroll-margin-top: 18px;
   padding: clamp(9px, 1.4vw, 16px);
-  border: 1px solid #d9dbd0;
+  border: 1px solid var(--rule);
   border-radius: 15px;
-  background: #e9ebe3;
+  background: var(--accent-light);
 }
 
 .demo-screen {
@@ -130,14 +133,14 @@ h1 {
   display: grid;
   overflow: hidden;
   place-items: center;
-  border: 1px solid #d6d7cc;
+  border: 1px solid var(--primary);
   border-radius: 8px;
   background: var(--stage);
 }
 
 .editor-shot, .demo-video { display: block; width: 100%; height: 100%; object-fit: contain; }
 .demo-video { min-width: 0; min-height: 0; }
-.demo-caption { min-height: 47px; padding: 10px 3px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #475148; font-size: 13px; line-height: 1.5; }
+.demo-caption { min-height: 47px; padding: 10px 3px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 13px; line-height: 1.5; }
 .text-button { display: inline-flex; gap: 5px; align-items: center; min-height: 35px; border: 0; border-radius: 5px; padding: 5px 8px; background: transparent; color: var(--primary); cursor: pointer; font-size: 13px; font-weight: 675; white-space: nowrap; }
 .text-button:hover { background: rgba(38, 51, 44, 0.08); }
 .demo-alternative { display: inline-block; margin: 10px; }
@@ -163,15 +166,15 @@ h2 { font-size: clamp(30px, 4vw, 47px); font-weight: 730; letter-spacing: -0.04e
   align-items: center;
   gap: clamp(18px, 5vw, 62px);
   padding: clamp(25px, 5vw, 57px);
-  border: 1px solid #ded1c1;
+  border: 1px solid var(--rule);
   border-radius: 10px;
   background: var(--accent-light);
 }
 .start h2 { font-size: clamp(27px, 3vw, 37px); }
 .start p { margin-top: 11px; font-size: 14px; }
-.command-panel { min-width: 0; display: grid; gap: 6px; padding: 10px 15px 14px; border: 1px solid #decebc; border-radius: 8px; background: var(--paper); }
-.command-panel pre { margin: 0; overflow: auto; padding: 3px 0; font-size: clamp(12px, 1.4vw, 14px); line-height: 1.6; }
-.copy-button { justify-self: end; }
+.install-details { display: grid; justify-items: start; gap: 14px; }
+.install-details summary { cursor: pointer; font-size: 13px; font-weight: 650; }
+.install-details a { text-underline-offset: 3px; }
 .footer { min-height: 85px; margin-top: 50px; border-top: 1px solid var(--rule); justify-content: space-between; color: var(--muted); }
 .footer .wordmark { font-size: 18px; color: var(--ink); }
 
