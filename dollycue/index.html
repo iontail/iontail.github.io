@@ -35,7 +35,7 @@
         <p>화면을 녹화하면 클릭한 곳에 확대 구간이 생겨요. 타임라인에서 확대와 속도를 다듬고, 필요한 해상도로 영상에 담아 보세요.</p>
         <div class="hero-actions">
           <a href="https://github.com/iontail/iontail.github.io/releases/latest/download/DollyCue.dmg" class="button primary">Mac용 DMG 다운로드</a>
-          <a href="#demo" class="button secondary" data-open-demo><span class="play-icon" aria-hidden="true"></span> 시연 보기</a>
+          <a href="#demo" class="button secondary" data-play-demo><span class="play-icon" aria-hidden="true"></span> 시연 재생</a>
         </div>
         <p class="download-meta">Apple Silicon · macOS 15 이상</p>
       </div>
@@ -43,21 +43,23 @@
 
     <figure class="demo" id="demo" aria-labelledby="demo-caption">
       <div class="demo-screen">
-        <img class="editor-shot" src="assets/editor.jpg" width="1180" height="770" fetchpriority="high"
-             alt="Google Sheets 시연을 편집하는 DollyCue. 오른쪽에 배율과 속도 설정, 아래에 자동 확대와 수동 효과 트랙이 있어요.">
-        <video class="demo-video" controls playsinline preload="none" poster="assets/demo-poster.jpg"
-               aria-label="Google Sheets에서 표, 체크박스와 차트를 만드는 시연 영상" hidden>
+        <video class="demo-video" width="1920" height="1080" controls playsinline preload="none"
+               poster="assets/demo-poster.jpg" aria-label="Google Sheets에서 표, 체크박스와 차트를 만드는 시연 영상">
           <source src="assets/edge-follow.mp4" type="video/mp4">
           <a href="assets/edge-follow.mp4">예제 영상 열기</a>
         </video>
       </div>
       <figcaption id="demo-caption" class="demo-caption">
-        <span>Google Sheets 시연 · 4K로 녹화한 1080p 영상</span>
-        <button type="button" class="text-button" data-open-demo>30초 시연 보기</button>
-        <button type="button" class="text-button" data-close-demo hidden>편집기 보기</button>
+        <span>Google Sheets 시연 · 표, 체크박스와 차트 만들기 · 30초</span>
+        <a href="assets/edge-follow.mp4">MP4 열기</a>
       </figcaption>
-      <noscript><a class="demo-alternative" href="assets/edge-follow.mp4">예제 영상 열기</a></noscript>
     </figure>
+
+    <details class="editor-preview">
+      <summary>DollyCue 편집 화면 보기</summary>
+      <img src="assets/editor.jpg" width="1180" height="770" loading="lazy"
+           alt="Google Sheets 시연을 편집하는 DollyCue. 오른쪽에 배율과 속도 설정, 아래에 자동 확대와 수동 효과 트랙이 있어요.">
+    </details>
 
     <section class="features" id="features" aria-labelledby="features-title">
       <h2 id="features-title">녹화부터 내보내기까지</h2>
