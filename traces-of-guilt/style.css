@@ -1380,28 +1380,44 @@ main { overflow: clip; }
 .suspect-actions button { padding-inline: 1.15rem; }
 .suspect-actions button:disabled { opacity: .55; }
 .suspect-scroll { min-height: 0; overflow: auto; padding: 1rem .4rem .85rem; scrollbar-width: thin; scrollbar-color: #ad8a5b #301f15; }
-.suspect-lineup { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(.65rem, 1.8vw, 1.6rem); perspective: 70rem; }
+.suspect-lineup { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(.65rem, 1.8vw, 1.6rem); }
 .suspect-card {
+  position: relative;
+  display: block;
+  min-width: 0;
+  cursor: pointer;
+}
+.suspect-face {
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr;
-  min-width: 0;
+  height: 100%;
   overflow: hidden;
-  cursor: pointer;
+  pointer-events: none;
   border: 1px solid #aa8b61;
   border-radius: 4px;
   color: #f0dfbf;
   background: #30241b;
   box-shadow: 0 .38rem .8rem #130d08a3, inset 0 0 0 3px #1f1710;
-  transform: rotateY(var(--card-angle, 0deg));
-  transition: transform 350ms cubic-bezier(.18,.7,.22,1), border-color 180ms ease, box-shadow 220ms ease;
+  transform: perspective(70rem) rotateY(var(--card-angle, 0deg));
+  transition: transform 380ms cubic-bezier(.17,.8,.22,1), opacity 260ms ease,
+    filter 260ms ease, border-color 180ms ease, box-shadow 220ms ease;
+}
+.suspect-face::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(113deg, #fff1c83b, transparent 46% 72%, #d9b47729);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 220ms ease;
+  content: "";
 }
 .suspect-card:nth-child(1) { --card-angle: 7deg; }
 .suspect-card:nth-child(2) { --card-angle: 3deg; }
 .suspect-card:nth-child(3) { --card-angle: -3deg; }
 .suspect-card:nth-child(4) { --card-angle: -7deg; }
 .suspect-card input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-.suspect-card:has(input:focus-visible) { outline: 2px solid #edb760; outline-offset: 3px; }
+.suspect-card:has(input:focus-visible) .suspect-face { outline: 2px solid #edb760; outline-offset: 3px; }
 .suspect-portrait {
   position: relative;
   display: grid;
@@ -1422,7 +1438,7 @@ main { overflow: clip; }
   pointer-events: none;
 }
 .suspect-portrait img { display: block; width: 100%; height: calc(var(--portrait-height) * 1.11); object-fit: contain; filter: drop-shadow(.28rem .2rem .25rem #321d1970); }
-.suspect-name { display: grid; min-height: 2.9rem; place-items: center; padding: .34rem; text-align: center; font: 700 clamp(.76rem, 1.7vw, 1.05rem)/1.38 var(--archive-serif); word-break: keep-all; }
+.suspect-number { display: grid; min-height: 2.9rem; place-items: center; padding: .34rem; text-align: center; font: 700 clamp(.76rem, 1.7vw, 1.05rem)/1.38 var(--archive-serif); word-break: keep-all; }
 .suspect-check {
   position: absolute;
   top: .48rem;
@@ -1440,16 +1456,38 @@ main { overflow: clip; }
   transform: scale(.72);
   transition: opacity 160ms ease, transform 270ms cubic-bezier(.2,.75,.2,1);
 }
-.suspect-card:active { transform: translateY(1px) scale(.98); }
-.suspect-card:has(input:checked) {
-  z-index: 1;
+.suspect-card:active .suspect-face { transform: translateY(1px) scale(.98); }
+.suspect-card:has(input:checked) { z-index: 1; }
+.suspect-card:has(input:checked) .suspect-face {
   border-color: #efd297;
   box-shadow: 0 0 0 1px #dbb477, 0 .7rem 1rem #120d09a0, inset 0 0 0 3px #251d15;
-  transform: translateY(-.34rem) translateZ(.75rem);
+  transform: perspective(70rem) translateY(-.34rem) translateZ(.75rem);
 }
 .suspect-card:has(input:checked) .suspect-check { opacity: 1; transform: scale(1); }
-@media (hover: hover) {
-  .suspect-card:hover:not(:has(input:checked)) { border-color: #ebc383; transform: translateY(-.18rem) rotateY(0deg); }
+@media (hover: hover) and (pointer: fine) {
+  .suspect-scroll {
+    padding: clamp(1.65rem, 6.2dvh, 3.65rem) clamp(1.35rem, 2.6vw, 2.25rem) clamp(1rem, 3.6dvh, 2.15rem);
+  }
+  .suspect-card:has(~ .suspect-card:hover) { --recede-x: -.42rem; }
+  .suspect-card:hover ~ .suspect-card { --recede-x: .42rem; }
+  .suspect-lineup:has(.suspect-card:hover) .suspect-card:not(:hover) .suspect-face {
+    opacity: .32;
+    filter: saturate(.62);
+    transform: perspective(70rem) translate3d(var(--recede-x, 0px), .4rem, -1.5rem) rotateY(var(--card-angle, 0deg)) scale(.94);
+  }
+  .suspect-card:hover { z-index: 3; }
+  .suspect-card:hover .suspect-face {
+    border-color: #efcd90;
+    box-shadow: 0 0 0 1px #d0a467, 0 1rem 2rem #120b05e6, 0 0 1.5rem #c6995140;
+    transform: perspective(70rem) translateY(var(--hover-lift, -.85rem)) translateZ(var(--hover-depth, 1.9rem))
+      rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--hover-scale, 1.135));
+  }
+  .suspect-card:hover .suspect-face::after { opacity: 1; }
+  .suspect-card:hover:active { --hover-scale: 1.075; }
+}
+@media (hover: hover) and (pointer: fine) and (max-height: 480px) {
+  .suspect-scroll { padding-block: 1.4rem 1.1rem; }
+  .suspect-lineup { --hover-lift: -.4rem; --hover-depth: .75rem; --hover-scale: 1.09; }
 }
 @keyframes suspect-enter { from { opacity: 0; translate: 0 .55rem; } }
 .suspect-picker[open] .suspect-card { animation: suspect-enter 340ms cubic-bezier(.18,.7,.22,1) both; }
@@ -1657,15 +1695,19 @@ body:has(.viewer[open], .hint-confirm[open], .answer-confirm[open], .suspect-pic
   .suspect-lineup { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .suspect-card:nth-child(n) { --card-angle: 0deg; }
   .suspect-heading button { padding-inline: .55rem; }
-  .suspect-name { min-height: 2.35rem; }
+  .suspect-number { min-height: 2.35rem; }
   .suspect-status { font-size: .76rem; }
 }
 @media (min-width: 601px) and (max-height: 480px) {
   .suspect-picker { --lineup-padding: .75rem; --portrait-height: 33dvh; }
 }
+@media (min-width: 601px) and (max-height: 480px) and (hover: hover) and (pointer: fine) {
+  .suspect-picker { --portrait-height: 25dvh; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .suspect-picker[open] .suspect-card:nth-child(n) { animation: none; transform: none; }
-  :is(.suspect-card, .suspect-check) { transition-property: none; }
+  .suspect-picker[open] .suspect-card:nth-child(n) { animation: none; }
+  .suspect-card .suspect-face { transform: none !important; }
+  :is(.suspect-face, .suspect-check), .suspect-face::after { transition-property: none; }
   .suspect-check { transform: none; }
 }
 

@@ -32,6 +32,7 @@ const hintQuestion = document.querySelector("#hint-question");
 const answerConfirm = document.querySelector(".answer-confirm");
 const suspectPicker = document.querySelector(".suspect-picker");
 const suspectForm = suspectPicker.querySelector("form");
+const suspectLineup = suspectForm.querySelector(".suspect-lineup");
 const suspectSubmit = suspectForm.querySelector('button[type="submit"]');
 const suspectStatus = suspectForm.querySelector(".suspect-status");
 const submissionConfirm = document.querySelector(".submission-confirm");
@@ -70,6 +71,7 @@ const number = value => String(value).padStart(2, "0");
 const icon = name => `<svg class="icon" aria-hidden="true"><use href="#icon-${name}"/></svg>`;
 const elapsedSeconds = () => Math.floor((performance.now() - attemptStartedAt) / 1000);
 const durationParts = seconds => [Math.floor(seconds / 3600), Math.floor(seconds / 60) % 60, seconds % 60];
+const suspectLabel = suspect => `${caseFile.suspects.indexOf(suspect) + 1}번 인물`;
 
 function updateClock() {
   const seconds = completedSeconds ?? elapsedSeconds();
@@ -304,8 +306,8 @@ function solution(left, right, page) {
   const [hours, minutes, seconds] = durationParts(completedSeconds);
   left.innerHTML = `<p class="paper-kicker">${practice ? "제출 시안 결과" : "사건 판정"}</p>
     <h3 class="answer-verdict" data-outcome="${successful ? "success" : "failure"}" tabindex="-1">${practice ? verdict : `범인 ${verdict}`}</h3>
-    <p class="paper-description">내가 지목한 인물 <strong>${submittedSuspect.name}</strong></p>
-    <p class="answer-value">${practice ? "시연 정답" : "범인"} <strong>${correctSuspect.name}</strong></p>
+    <p class="paper-description">내가 지목한 인물 <strong>${suspectLabel(submittedSuspect)}</strong></p>
+    <p class="answer-value">${practice ? "시연 정답" : "범인"} <strong>${suspectLabel(correctSuspect)}</strong></p>
     <div class="case-result"><span>풀이 시간</span>
       <strong>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</strong></div>
     <button class="text-link plate plate-paper" type="button" data-page="0">${icon("back")} 현장 다시 보기</button>
@@ -923,13 +925,26 @@ reader.addEventListener("click", event => {
 
 suspectForm.querySelector("#suspect-prompt").textContent = caseFile.answer.question;
 suspectForm.querySelector(".suspect-practice").hidden = !caseFile.answer.practice;
-suspectForm.querySelector(".suspect-lineup").innerHTML = caseFile.suspects.map(({ id, name, portrait }) => `
+suspectLineup.innerHTML = caseFile.suspects.map(suspect => `
   <label class="suspect-card">
-    <input type="radio" name="suspect" value="${id}" required>
-    <span class="suspect-portrait"><img src="${portrait}" alt="" draggable="false" decoding="async">
-      <span class="suspect-check" aria-hidden="true">${icon("check")}</span></span>
-    <span class="suspect-name">${name}</span>
+    <input type="radio" name="suspect" value="${suspect.id}" required>
+    <span class="suspect-face">
+      <span class="suspect-portrait"><img src="${suspect.portrait}" alt="" draggable="false" decoding="async">
+        <span class="suspect-check" aria-hidden="true">${icon("check")}</span></span>
+      <span class="suspect-number">${suspectLabel(suspect)}</span>
+    </span>
   </label>`).join("");
+
+suspectLineup.addEventListener("pointermove", event => {
+  if (event.pointerType !== "mouse" || motionPreference.matches) return;
+  const card = event.target.closest(".suspect-card");
+  if (!card) return;
+  const { left, top, width, height } = card.getBoundingClientRect();
+  const x = (event.clientX - left) / width - .5;
+  const y = (event.clientY - top) / height - .5;
+  card.style.setProperty("--tilt-x", `${-y * 11}deg`);
+  card.style.setProperty("--tilt-y", `${x * 15}deg`);
+});
 
 function selectedSuspect() {
   const id = suspectForm.querySelector('input[name="suspect"]:checked')?.value;
@@ -939,7 +954,7 @@ function selectedSuspect() {
 function updateSuspectSelection() {
   const suspect = selectedSuspect();
   suspectSubmit.disabled = !suspect;
-  suspectStatus.textContent = suspect ? `${suspect.name} 선택됨` : "용의자를 한 명 선택해 주세요.";
+  suspectStatus.textContent = suspect ? `${suspectLabel(suspect)} 선택됨` : "용의자를 한 명 선택해 주세요.";
 }
 
 answerConfirm.querySelector("form").addEventListener("submit", event => {
@@ -955,7 +970,7 @@ suspectForm.addEventListener("submit", event => {
   event.preventDefault();
   const suspect = selectedSuspect();
   if (!suspect) return;
-  submissionConfirm.querySelector(".submission-name").textContent = suspect.name;
+  submissionConfirm.querySelector(".submission-suspect").textContent = suspectLabel(suspect);
   submissionConfirm.showModal();
 });
 

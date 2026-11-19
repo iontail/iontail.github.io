@@ -42,15 +42,15 @@ export const caseFile = {
     "현장 전체 그림으로 돌아가 물건 사이의 위치를 확인해 보세요."
   ],
   suspects: [
-    { id: "margaret", name: "마거릿 헤일", portrait: "suspects/margaret.svg" },
-    { id: "arthur", name: "아서 리드", portrait: "suspects/arthur.svg" },
-    { id: "clive", name: "클라이브 베넷", portrait: "suspects/clive.svg" },
-    { id: "julian", name: "줄리언 머서", portrait: "suspects/julian.svg" }
+    { id: "margaret", portrait: "suspects/margaret.svg" },
+    { id: "arthur", portrait: "suspects/arthur.svg" },
+    { id: "clive", portrait: "suspects/clive.svg" },
+    { id: "julian", portrait: "suspects/julian.svg" }
   ],
   answer: {
     practice: true,
     question: "천문관 기술실장은 누구인가요?",
     suspectId: "arthur",
-    explanation: "아서 리드는 천문관의 기술실장으로 투영기의 운용과 정비를 맡아요. 이 결과는 제출 기능을 확인하는 연습 문제에 해당해요."
+    explanation: "기술실장은 투영기의 운용과 정비를 맡아요. 이 결과는 제출 기능을 확인하는 연습 문제에 해당해요."
   }
 };
