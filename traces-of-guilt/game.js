@@ -202,58 +202,50 @@ function illustration(title, image) {
   return `<img class="illustration" src="${image}" alt="${title}" width="1600" height="1280" decoding="async">`;
 }
 
-function artCaption(title, image, caption = "") {
+function sheetHeading(title, image, index) {
   const filename = `Traces-of-Guilt_${title.replaceAll(" ", "-")}.png`;
-  return `<div class="art-caption">${caption ? `<span>${caption}</span>` : ""}
-    <div class="art-controls">
-      <button class="plate plate-paper" type="button" data-zoom aria-haspopup="dialog">전체 화면 ${icon("zoom")}</button>
-      <a class="plate plate-paper" href="${image}" download="${filename}" data-download aria-label="이미지 저장">${icon("download")} <span><span class="download-label-prefix">이미지 </span>저장</span></a>
-    </div></div>`;
-}
-
-function folio(index, title) {
-  return `<p class="folio"><span>${title}</span><span>${number(index)}</span></p>`;
-}
-
-function titleBlock(kicker, title, text) {
-  return `<p class="paper-kicker">${kicker}</p><h3 tabindex="-1">${title}</h3><p class="paper-description">${text}</p>`;
+  return `<header class="sheet-heading">
+    ${index ? `<span class="sheet-number" aria-hidden="true">${number(index)}</span>` : ""}
+    <h3 tabindex="-1">${title}</h3>
+    <div class="art-controls sheet-actions">
+      <button type="button" data-zoom aria-haspopup="dialog" aria-label="전체 화면" title="전체 화면">${icon("zoom")} <span>확대</span></button>
+      <a href="${image}" download="${filename}" data-download aria-label="이미지 저장" title="이미지 저장">${icon("download")} <span>저장</span></a>
+    </div></header>`;
 }
 
 function overview(left, right) {
   const { title, scene, clues } = caseFile;
   left.classList.add("case-intro");
-  right.classList.add("map-paper");
-  left.innerHTML = `${titleBlock(scene.period, title, scene.description)}
+  right.classList.add("art-page");
+  left.innerHTML = `<p class="paper-kicker">${scene.period}</p>
+    <h3 tabindex="-1">${title}</h3>
+    <p class="paper-description">${scene.description}</p>
     <p class="case-objective">${scene.objective}</p>
     <details class="overview-index"><summary>단서 목록</summary>
       <ol class="clue-index">${clues.map((clue, index) => `<li><button type="button" data-clue="${index + 1}">
         <span>${number(index + 1)}</span><span>${clue.action}</span></button></li>`).join("")}</ol>
-    </details>
-    ${folio(1, "사건 개요")}`;
-  right.innerHTML = `<div class="scene-map">
-    <div class="scene-plane">
-    ${illustration(`${scene.title} 사건 현장`, scene.image)}
-    ${clues.map((clue, index) => `<button class="marker" type="button" data-clue="${index + 1}" data-align="${clue.align ?? "start"}"
-      style="--x:${clue.position[0]}%;--y:${clue.position[1]}%" aria-label="${index + 1}. ${clue.action}">
-      <span class="marker-number">${index + 1}</span><span class="marker-label">${clue.action}</span></button>`).join("")}
-    </div></div>
-    ${artCaption(scene.title, scene.image, scene.title)}
-    ${folio(2, "현장 도판")}`;
+    </details>`;
+  right.innerHTML = `${sheetHeading(scene.title, scene.image)}
+    <div class="art-window"><figure class="art-board scene-map">
+      <div class="scene-plane">
+        ${illustration(`${scene.title} 사건 현장`, scene.image)}
+        ${clues.map((clue, index) => `<button class="marker" type="button" data-clue="${index + 1}" data-align="${clue.align ?? "start"}"
+          style="--x:${clue.position[0]}%;--y:${clue.position[1]}%" aria-label="${index + 1}. ${clue.action}">
+          <span class="marker-number">${index + 1}</span><span class="marker-label">${clue.action}</span></button>`).join("")}
+      </div>
+    </figure></div>`;
 }
 
 function evidence(paper, index) {
   const clue = caseFile.clues[index - 1];
   if (!clue) return;
-  paper.classList.add("evidence-paper");
+  paper.classList.add("art-page");
   paper.dataset.clue = index;
-  paper.innerHTML = `<p class="paper-kicker">${clue.kind ?? "단서"} ${number(index)}</p>
-    <h3 tabindex="-1">${clue.title}</h3>
-    <figure class="evidence-art">${illustration(clue.title, clue.image)}</figure>
-    ${artCaption(clue.title, clue.image)}
-    ${folio(index + 2, clue.kind ? "장소 도판" : "단서 도판")}`;
+  paper.innerHTML = `${sheetHeading(clue.title, clue.image, index)}
+    <div class="art-window"><figure class="art-board">${illustration(clue.title, clue.image)}</figure></div>`;
 }
 
-function hints(left, right, page) {
+function hints(left, right) {
   const cards = caseFile.hints.map((hint, index) => {
     const shown = viewedHints.has(index);
     return `<div class="hint-card">
@@ -263,28 +255,28 @@ function hints(left, right, page) {
   });
   left.classList.add("hint-page");
   right.classList.add("hint-page");
-  left.innerHTML = `${titleBlock("책갈피", "힌트", "카드를 고르고 확인하면 가려진 힌트가 나타납니다.")}
-    <div class="hint-grid">${cards.slice(0, 2).join("")}</div>${folio(page * 2 + 1, "힌트 카드")}`;
-  right.innerHTML = `<div class="hint-grid">${cards.slice(2).join("")}</div>${folio(page * 2 + 2, "힌트 카드")}`;
+  left.innerHTML = `<h3 tabindex="-1">힌트</h3><div class="hint-grid">${cards.slice(0, 2).join("")}</div>`;
+  right.innerHTML = `<div class="hint-grid">${cards.slice(2).join("")}</div>`;
 }
 
-function solution(left, right, page) {
+function solution(left, right) {
   const { practice, suspectId, explanation } = caseFile.answer;
   const correctSuspect = caseFile.suspects.find(suspect => suspect.id === suspectId);
   const successful = submittedSuspect.id === suspectId;
   const verdict = successful ? "지목 성공" : "지목 실패";
   const [hours, minutes, seconds] = durationParts(completedSeconds);
+  left.classList.add("answer-page");
+  right.classList.add("answer-page");
   left.innerHTML = `<p class="paper-kicker">${practice ? "제출 시안 결과" : "사건 판정"}</p>
     <h3 class="answer-verdict" data-outcome="${successful ? "success" : "failure"}" tabindex="-1">${practice ? verdict : `범인 ${verdict}`}</h3>
-    <p class="paper-description">내가 지목한 인물 <strong>${suspectLabel(submittedSuspect)}</strong></p>
-    <p class="answer-value">${practice ? "시연 정답" : "범인"} <strong>${suspectLabel(correctSuspect)}</strong></p>
-    <div class="case-result"><span>풀이 시간</span>
-      <strong>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</strong></div>
-    <button class="text-link plate plate-paper" type="button" data-page="0">${icon("back")} 현장 다시 보기</button>
-    ${folio(page * 2 + 1, "정답")}`;
+    <dl class="case-result">
+      <dt>내가 지목한 용의자</dt><dd>${suspectLabel(submittedSuspect)}</dd>
+      <dt>${practice ? "시연 정답" : "범인"}</dt><dd>${suspectLabel(correctSuspect)}</dd>
+      <dt>풀이 시간</dt><dd>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</dd>
+    </dl>`;
   right.innerHTML = `<div class="answer-sheet">
       <h4>${practice ? "시연 해설" : "사건 해설"}</h4><p>${explanation}</p>
-    </div>${folio(page * 2 + 2, "사건 해설")}`;
+    </div>`;
 }
 
 function renderPage(page) {
@@ -295,8 +287,8 @@ function renderPage(page) {
     right.classList.add("indexed-paper");
   }
   if (page === 0) overview(left, right);
-  else if (page === hintsPage) hints(left, right, page);
-  else if (page === answerPage) solution(left, right, page);
+  else if (page === hintsPage) hints(left, right);
+  else if (page === answerPage) solution(left, right);
   else {
     evidence(left, page * 2 - 1);
     evidence(right, page * 2);
