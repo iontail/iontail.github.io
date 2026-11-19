@@ -1302,7 +1302,7 @@ main { overflow: clip; }
 .hint-card:has(button[aria-expanded="false"]):hover { border-color: #867253; filter: brightness(1.045); }
 .hint-card:has(button:focus-visible) { outline: 2px solid #ad7137; outline-offset: 2px; }
 
-:is(.hint-confirm, .audio-options) {
+:is(.hint-confirm, .answer-confirm, .audio-options) {
   width: min(24rem, calc(100% - 2rem));
   max-width: none;
   padding: 2rem 1.4rem 1.55rem;
@@ -1315,8 +1315,8 @@ main { overflow: clip; }
   background-blend-mode: soft-light, normal;
   box-shadow: inset 0 0 0 5px #20160f, inset 0 0 0 6px #98764f65, 0 20px 70px #0b0606d9;
 }
-:is(.hint-confirm, .audio-options)::backdrop { background: #0f0906ad; backdrop-filter: blur(3px); }
-.hint-confirm > .icon {
+:is(.hint-confirm, .answer-confirm, .audio-options)::backdrop { background: #0f0906ad; backdrop-filter: blur(3px); }
+:is(.hint-confirm, .answer-confirm) > .icon {
   box-sizing: content-box;
   width: 1.35rem;
   height: 1.35rem;
@@ -1327,9 +1327,15 @@ main { overflow: clip; }
   border-radius: 50%;
   box-shadow: inset 0 0 0 2px #7958347d;
 }
-.hint-confirm h2 { font: 700 clamp(1.1rem, 5vw, 1.38rem)/1.4 var(--archive-serif); }
-.hint-confirm form { display: flex; justify-content: center; gap: .7rem; margin-top: 1.45rem; }
-.hint-confirm button { min-width: 5.2rem; min-height: 2.75rem; padding: .48rem 1rem; font: 700 .93rem/1.3 var(--archive-serif); }
+:is(.hint-confirm, .answer-confirm) h2 { font: 700 clamp(1.1rem, 5vw, 1.38rem)/1.4 var(--archive-serif); }
+:is(.hint-confirm, .answer-confirm) form { display: flex; justify-content: center; gap: .7rem; margin-top: 1.45rem; }
+:is(.hint-confirm, .answer-confirm) button { min-width: 5.2rem; min-height: 2.75rem; padding: .48rem 1rem; font: 700 .93rem/1.3 var(--archive-serif); }
+.answer-confirm { width: min(34rem, calc(100% - 2rem)); }
+.answer-confirm h2 { word-break: keep-all; text-wrap: balance; }
+#answer-warning { margin: .8rem auto 0; max-width: 27rem; color: #dfc9a7; font: 400 .92rem/1.7 var(--archive-serif); word-break: keep-all; }
+#answer-warning p + p { margin-top: .45rem; color: #f1d198; }
+.answer-confirm form { flex-wrap: wrap; }
+.answer-confirm button { flex: 1 1 max-content; }
 
 .audio-options { padding: 1.1rem 1.45rem 1.45rem; text-align: left; }
 .options-heading, .volume-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
@@ -1356,26 +1362,12 @@ main { overflow: clip; }
 .music-credit { border-top: 1px solid #b9946359; padding-top: .72rem; color: #d0bb98; font-size: .74rem; line-height: 1.55; }
 .music-credit a { text-underline-offset: .17em; }
 
-.answer-form, .case-result { margin-top: 1.2rem; }
-.answer-form label { display: block; margin-bottom: .35rem; font-size: .84rem; font-weight: 700; }
-.answer-entry { display: flex; gap: .45rem; max-width: 27rem; }
-.answer-entry :is(input, button) { min-height: 2.75rem; font-size: 1rem; }
-.answer-entry input {
-  flex: 1;
-  min-width: 0;
-  padding: .4rem .65rem;
-  border: 1px solid #a78457;
-  border-radius: 3px;
-  color: var(--ink);
-  background: #fff4d9a9;
-  box-shadow: inset 0 1px 4px #77573729;
-}
-.answer-entry button { padding: .45rem .75rem; font-size: .84rem; font-weight: 700; white-space: nowrap; }
-#answer-feedback:not(:empty) { margin-top: .55rem; color: #7b3324; font-size: .84rem; }
+.answer-value { margin-top: .55rem; color: #51371f; font: 700 clamp(1.25rem, 3vw, 1.85rem)/1.45 var(--ink-display); }
 .case-result {
   display: grid;
   align-self: flex-start;
   gap: .18rem;
+  margin-top: 1.2rem;
   padding: .65rem 1.35rem;
   border: 3px double #aa824d;
   color: #51371f;
@@ -1534,7 +1526,7 @@ body:has(main .desk.is-open) { overflow: hidden; }
 .viewer button { min-height: 2.75rem; padding: .5rem clamp(.55rem, 2vw, 1rem); white-space: nowrap; }
 .viewer-art { display: grid; place-items: center; padding: clamp(.6rem, 2.5vw, 2rem); min-height: 0; }
 .viewer-art .illustration { width: 100%; height: 100%; }
-body:has(.viewer[open], .hint-confirm[open], .audio-options[open]) { overflow: hidden; }
+body:has(.viewer[open], .hint-confirm[open], .answer-confirm[open], .audio-options[open]) { overflow: hidden; }
 .script-note { padding: 1rem; text-align: center; }
 
 @media (max-width: 760px) {

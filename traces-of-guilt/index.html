@@ -198,6 +198,19 @@
     </form>
   </dialog>
 
+  <dialog class="answer-confirm" role="alertdialog" aria-labelledby="answer-question" aria-describedby="answer-warning">
+    <svg class="icon" aria-hidden="true"><use href="#icon-seal"/></svg>
+    <h2 id="answer-question">정말 정답을 확인하시겠습니까?</h2>
+    <div id="answer-warning">
+      <p>사건의 전말, 인물들의 관계, 범행 동기와 살해 방법까지 모두 추리했다면 정답을 확인해 주세요.</p>
+      <p>정답을 확인하면 타이머가 멈춥니다.</p>
+    </div>
+    <form method="dialog">
+      <button class="plate plate-primary" type="submit" value="reveal">답을 확인하겠습니다</button>
+      <button class="plate" type="submit" value="think" autofocus>조금 더 고민해보겠습니다</button>
+    </form>
+  </dialog>
+
   <dialog class="audio-options" aria-labelledby="options-title">
     <div class="options-heading">
       <h2 id="options-title">설정</h2>

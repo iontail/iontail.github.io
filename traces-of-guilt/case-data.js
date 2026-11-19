@@ -43,7 +43,7 @@ export const caseFile = {
   ],
   answer: {
     question: "출입 기록 양식이 있는 단서의 이름은?",
-    accepted: ["출입 일지", "출입 기록", "출입 기록부"],
+    text: "출입 일지",
     explanation: "‘출입 일지’ 펼침면에서 시간, 이름, 비고를 적는 양식을 확인할 수 있어요."
   }
 };

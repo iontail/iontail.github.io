@@ -29,6 +29,7 @@ const exportImage = new Image();
 exportImage.src = caseFile.scene.image.source;
 const hintConfirm = document.querySelector(".hint-confirm");
 const hintQuestion = document.querySelector("#hint-question");
+const answerConfirm = document.querySelector(".answer-confirm");
 const soundSettings = document.querySelector(".audio-options");
 const volumeControl = soundSettings.querySelector("#bgm-volume");
 const volumeOutput = soundSettings.querySelector("output");
@@ -63,7 +64,6 @@ const number = value => String(value).padStart(2, "0");
 const icon = name => `<svg class="icon" aria-hidden="true"><use href="#icon-${name}"/></svg>`;
 const elapsedSeconds = () => Math.floor((performance.now() - attemptStartedAt) / 1000);
 const durationParts = seconds => [Math.floor(seconds / 3600), Math.floor(seconds / 60) % 60, seconds % 60];
-const normalizeAnswer = value => value.normalize("NFKC").replace(/\s+/g, "").toLowerCase();
 
 function updateClock() {
   const seconds = completedSeconds ?? elapsedSeconds();
@@ -288,25 +288,16 @@ function hints(left, right, page) {
 }
 
 function solution(left, right, page) {
-  const { question, explanation } = caseFile.answer;
-  const complete = completedSeconds !== null;
-  const [hours, minutes, seconds] = durationParts(completedSeconds ?? 0);
+  const { question, text, explanation } = caseFile.answer;
+  const [hours, minutes, seconds] = durationParts(completedSeconds);
   left.innerHTML = `${titleBlock("연습 문제", "정답", question)}
-    ${complete
-      ? `<div class="case-result" tabindex="-1"><span>풀이 완료</span>
-          <strong>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</strong></div>`
-      : `<form class="answer-form">
-          <label for="case-answer">답안</label>
-          <div class="answer-entry">
-            <input id="case-answer" name="answer" required maxlength="100" autocomplete="off" aria-describedby="answer-feedback">
-            <button class="plate plate-paper" type="submit">정답 확인</button>
-          </div>
-          <p id="answer-feedback" role="status"></p>
-        </form>`}
+    <p class="answer-value">${text}</p>
+    <div class="case-result"><span>풀이 시간</span>
+      <strong>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</strong></div>
     <button class="text-link plate plate-paper" type="button" data-page="0">${icon("back")} 현장 다시 보기</button>
     ${folio(page * 2 + 1, "정답")}`;
   right.innerHTML = `<div class="answer-sheet">
-      <h4>연습 문제 해설</h4><p>${complete ? explanation : "정답을 맞히면 해설이 열려요."}</p>
+      <h4>연습 문제 해설</h4><p>${explanation}</p>
     </div>${folio(page * 2 + 2, "사건 해설")}`;
 }
 
@@ -478,6 +469,10 @@ function setReadingLayout(reading) {
 
 function showPage(page, animate = true) {
   if (page < overviewPage || page > lastPage || (page === activePage && spread.hasChildNodes())) return;
+  if (page === answerPage && completedSeconds === null) {
+    if (!answerConfirm.open) answerConfirm.showModal();
+    return;
+  }
   removeTurns();
   const outgoing = spread.firstElementChild;
   const reading = page !== overviewPage;
@@ -665,6 +660,7 @@ async function travel(toDesk) {
 async function foldBook(opening) {
   const reduced = motionPreference.matches;
   if (!opening && hintConfirm.open) hintConfirm.close("no");
+  if (!opening && answerConfirm.open) answerConfirm.close();
   window.scrollTo(0, 0);
   removeTurns();
 
@@ -908,24 +904,16 @@ reader.addEventListener("click", event => {
   }
 });
 
-spread.addEventListener("submit", event => {
-  const form = event.target;
-  if (!form.matches(".answer-form")) return;
+answerConfirm.querySelector("form").addEventListener("submit", event => {
+  if (event.submitter?.value !== "reveal") return;
   event.preventDefault();
-  const input = form.elements.answer;
-  const entry = normalizeAnswer(input.value);
-  if (!caseFile.answer.accepted.some(answer => normalizeAnswer(answer) === entry)) {
-    form.querySelector("#answer-feedback").textContent = "아직 정답이 아니에요. 단서를 다시 확인해 보세요.";
-    input.select();
-    return;
-  }
   completedSeconds = elapsedSeconds();
   clearInterval(clockInterval);
   caseClock.setAttribute("data-complete", "");
   caseClock.setAttribute("aria-label", "최종 풀이 시간");
   updateClock();
-  spread.replaceChildren(renderPage(answerPage));
-  spread.querySelector(".case-result").focus();
+  answerConfirm.close("reveal");
+  showPage(answerPage);
 });
 
 hintConfirm.querySelector("form").addEventListener("submit", event => {
