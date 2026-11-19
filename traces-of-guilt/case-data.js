@@ -11,55 +11,63 @@ export const caseFile = {
     {
       title: "목격자 증언 A",
       action: "증언 A 확인하기",
+      mapLabel: "증언 A",
       image: "planetarium/witnesses-01.png",
-      position: [11, 85]
+      position: [4, 94.8]
     },
     {
       title: "목격자 증언 B",
       action: "증언 B 확인하기",
+      mapLabel: "증언 B",
       image: "planetarium/witnesses-02.png",
-      position: [94, 57],
-      align: "end"
+      position: [45.5, 95]
     },
     {
       title: "리허설 진행표",
       action: "진행표 확인하기",
+      mapLabel: "진행표",
       image: "planetarium/schedule.png",
-      position: [8, 26]
+      position: [10, 30]
     },
     {
       title: "투영기 조작대",
       action: "조작대 확인하기",
+      mapLabel: "조작대",
       image: "planetarium/console.png",
-      position: [8, 62]
+      position: [2.25, 68.5]
     },
     {
       title: "리허설 사진",
       action: "리허설 사진 보기",
+      mapLabel: "사진",
       image: "planetarium/photo.png",
-      position: [94, 76],
+      position: [96, 96],
       align: "end"
     },
     {
       title: "연구소장 집무실",
       action: "소장실 둘러보기",
+      mapLabel: "소장실",
       image: "planetarium/office.png",
-      position: [94, 24],
+      position: [72, 18.5],
       align: "end",
       kind: "장소"
     },
     {
       title: "연구소장실 서랍",
       action: "서랍 확인하기",
+      mapLabel: "서랍",
       image: "planetarium/drawer.png",
-      position: [94, 34],
+      position: [72, 25.3],
+      compactPosition: [94, 11.4],
       align: "end"
     },
     {
       title: "기사 교정쇄",
       action: "교정쇄 확인하기",
+      mapLabel: "교정쇄",
       image: "planetarium/proof.png",
-      position: [94, 44],
+      position: [72, 32.1],
       align: "end"
     }
   ],

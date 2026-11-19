@@ -230,8 +230,12 @@ function overview(left, right) {
       <div class="scene-plane">
         ${illustration(`${scene.title} 사건 현장`, scene.image)}
         ${clues.map((clue, index) => `<button class="marker" type="button" data-clue="${index + 1}" data-align="${clue.align ?? "start"}"
-          style="--x:${clue.position[0]}%;--y:${clue.position[1]}%" aria-label="${index + 1}. ${clue.action}">
-          <span class="marker-number">${index + 1}</span><span class="marker-label">${clue.action}</span></button>`).join("")}
+          style="--x:${clue.position[0]}%;--y:${clue.position[1]}%;
+            ${clue.compactPosition ? `--compact-x:${clue.compactPosition[0]}%;--compact-y:${clue.compactPosition[1]}%` : ""}"
+          aria-label="${index + 1}. ${clue.action}">
+          <span class="marker-number">${index + 1}</span>
+          <span class="marker-label">${clue.action}</span><span class="marker-short">${clue.mapLabel ?? clue.action}</span>
+        </button>`).join("")}
       </div>
     </figure></div>`;
 }
