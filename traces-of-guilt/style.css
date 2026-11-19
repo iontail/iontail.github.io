@@ -254,7 +254,7 @@ body:has(main .library:not([hidden])) .masthead {
   font: 400 1.06rem/1 var(--display);
   font-variant-numeric: lining-nums tabular-nums;
 }
-.case-clock span { min-inline-size: 5ch; text-align: center; }
+.case-clock span { min-inline-size: 7ch; text-align: center; }
 .case-clock .icon { color: #bc935d; }
 .case-clock[data-complete] { border-color: #b99054; color: #ffe3a5; }
 .masthead :is(.exit-room, .return) { margin-inline-start: auto; }
@@ -1629,8 +1629,8 @@ body:has(.viewer[open], .hint-confirm[open], .audio-options[open]) { overflow: h
 
 @media (max-width: 360px) {
   .desk { --desk-gutter: .75rem; }
-  .masthead:has(.case-clock:not([hidden])) { padding-inline: .75rem; gap: .28rem; }
-  .masthead:has(.case-clock:not([hidden])) .masthead-wordmark { font-size: 1rem; }
+  .masthead:has(.case-clock:not([hidden])) { padding-inline: .65rem; gap: .24rem; }
+  .masthead:has(.case-clock:not([hidden])) .masthead-wordmark { font-size: .92rem; }
   .masthead:has(.case-clock:not([hidden])) .return { padding-inline: .55rem; }
   .masthead:has(.case-clock:not([hidden])) .settings-button { margin-inline-start: 0; }
 }

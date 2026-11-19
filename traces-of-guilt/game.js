@@ -62,11 +62,12 @@ let audioContext, musicGain, pendingMusic, activeMusic;
 const number = value => String(value).padStart(2, "0");
 const icon = name => `<svg class="icon" aria-hidden="true"><use href="#icon-${name}"/></svg>`;
 const elapsedSeconds = () => Math.floor((performance.now() - attemptStartedAt) / 1000);
+const durationParts = seconds => [Math.floor(seconds / 3600), Math.floor(seconds / 60) % 60, seconds % 60];
 const normalizeAnswer = value => value.normalize("NFKC").replace(/\s+/g, "").toLowerCase();
 
 function updateClock() {
   const seconds = completedSeconds ?? elapsedSeconds();
-  caseClockValue.textContent = `${number(Math.floor(seconds / 60))}:${number(seconds % 60)}`;
+  caseClockValue.textContent = durationParts(seconds).map(number).join(":");
 }
 
 function setAttemptClock(active) {
@@ -289,10 +290,11 @@ function hints(left, right, page) {
 function solution(left, right, page) {
   const { question, explanation } = caseFile.answer;
   const complete = completedSeconds !== null;
+  const [hours, minutes, seconds] = durationParts(completedSeconds ?? 0);
   left.innerHTML = `${titleBlock("연습 문제", "정답", question)}
     ${complete
       ? `<div class="case-result" tabindex="-1"><span>풀이 완료</span>
-          <strong>${Math.floor(completedSeconds / 60)}분 ${completedSeconds % 60}초</strong></div>`
+          <strong>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</strong></div>`
       : `<form class="answer-form">
           <label for="case-answer">답안</label>
           <div class="answer-entry">
