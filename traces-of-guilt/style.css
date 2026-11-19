@@ -790,6 +790,7 @@ main { overflow: clip; }
 
 .desk {
   --stage-width: 69rem;
+  --desk-gutter: clamp(.75rem, 5.8vw, 5rem);
   --desk-padding-top: 1.4rem;
   --desk-heading-height: 2.75rem;
   --desk-heading-gap: 1rem;
@@ -797,7 +798,7 @@ main { overflow: clip; }
   isolation: isolate;
   scroll-margin-top: 3.65rem;
   min-height: calc(100svh - 3.65rem);
-  padding: var(--desk-padding-top) clamp(.75rem, 5.8vw, 5rem) 2.4rem;
+  padding: var(--desk-padding-top) var(--desk-gutter) 2.4rem;
   background:
     linear-gradient(117deg, #170e08d9, #100c09e6),
     url("wood-grain.svg") center top / 60rem auto #2b1b12;
@@ -830,19 +831,23 @@ main { overflow: clip; }
 }
 
 .desk-heading h2 { font: 700 1rem/1.3 var(--archive-serif); text-shadow: 0 1px 5px #170d08; }
-.desk-heading button, .page-nav button {
+.close-book, .page-nav button {
   min-height: 2.75rem;
   padding: .45rem 1.2rem;
   font-size: .83rem;
 }
 
-.desk-body { position: relative; }
 .closed-book {
   display: grid;
   place-items: center;
   min-height: max(0px, calc(100svh - 3.65rem - 2 * (var(--desk-padding-top) + var(--desk-heading-height) + var(--desk-heading-gap))));
 }
-.closed-book.under-reader { position: absolute; inset: 0 0 auto; visibility: hidden; pointer-events: none; }
+.closed-book.under-reader {
+  position: absolute;
+  inset: calc(var(--desk-padding-top) + var(--desk-heading-height) + var(--desk-heading-gap)) var(--desk-gutter) auto;
+  visibility: hidden;
+  pointer-events: none;
+}
 
 .desk-jacket {
   width: var(--cover-width);
@@ -928,8 +933,17 @@ main { overflow: clip; }
   transform: none;
 }
 
-.reader { max-width: var(--stage-width); margin: auto; scroll-margin-top: .75rem; }
-.bookmarks { display: flex; justify-content: flex-end; gap: .4rem; margin: 0 1.5rem -2px; }
+.reader {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: 100%;
+  height: min(100%, clamp(36rem, 50vw, 45rem));
+  max-width: var(--stage-width);
+  margin: auto;
+}
+.reader-toolbar { display: flex; align-items: end; justify-content: space-between; gap: .5rem; }
+.close-book { white-space: nowrap; }
+.bookmarks { display: flex; gap: .4rem; margin: 0 .5rem -2px 0; }
 
 .bookmarks button {
   display: inline-flex;
@@ -963,7 +977,8 @@ main { overflow: clip; }
 
 .book {
   --edge-depth: clamp(13px, 1.55vw, 23px);
-  --page-height: clamp(31rem, 41vw, 37rem);
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
   position: relative;
   isolation: isolate;
   padding: 5px 6px calc(var(--edge-depth) + 8px);
@@ -988,7 +1003,7 @@ main { overflow: clip; }
   clip-path: inset(-14% -18% -17% var(--binding-cut));
 }
 
-.is-folding :is(.bookmarks, .page-nav) { visibility: hidden; }
+.is-folding :is(.reader-toolbar, .page-nav) { visibility: hidden; }
 
 .spread {
   position: relative;
@@ -1029,8 +1044,8 @@ main { overflow: clip; }
 }
 
 .spread-layout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
-.spread > .spread-layout { grid-template-rows: var(--page-height); }
-.spread > .spread-layout > .paper { min-height: 0; overflow: auto; }
+.spread > .spread-layout { height: 100%; grid-template-rows: minmax(0, 1fr); }
+.spread > .spread-layout > .paper { min-height: 0; overflow: auto; overscroll-behavior: contain; }
 
 .paper {
   --margin: clamp(1.2rem, 2.85vw, 3.1rem);
@@ -1296,7 +1311,7 @@ main { overflow: clip; }
   align-items: center;
   justify-content: space-between;
   gap: .65rem;
-  padding: 1.35rem 0 0;
+  padding: .62rem 0 0;
   color: var(--ivory);
   font: 700 .85rem/1.4 var(--archive-serif);
   text-shadow: 0 1px 3px #160c07;
@@ -1305,61 +1320,47 @@ main { overflow: clip; }
 .page-nav button { min-width: 4.85rem; }
 .page-nav button:disabled { opacity: .55; }
 
-body:has(main .desk.is-reading) { overflow: hidden; }
+body:has(main .desk.is-open) { overflow: hidden; }
 
-.desk.is-reading {
+.desk.is-open {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
   height: calc(100dvh - 3.65rem);
   min-height: 0;
-  padding: .45rem var(--reader-gutter);
+  padding: .55rem var(--desk-gutter);
 }
-.is-reading .desk-scene { opacity: .2; }
-.is-reading .desk-body { height: 100%; }
-.is-reading .desk-heading {
-  position: absolute;
-  z-index: 3;
-  top: .45rem;
-  right: var(--reader-gutter);
-  margin: 0;
+.is-open .desk-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
 }
-.is-reading .desk-heading h2 {
+.is-open .desk-heading {
   position: absolute;
   width: 1px;
   height: 1px;
+  min-height: 0;
+  margin: 0;
   overflow: hidden;
   clip-path: inset(50%);
 }
+.desk.is-reading { padding: .45rem var(--reader-gutter); }
+.is-reading .desk-scene { opacity: .2; }
 .is-reading .reader {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
   height: 100%;
   max-width: none;
 }
-.is-reading .bookmarks {
-  justify-content: flex-start;
-  gap: .25rem;
-  margin: 0 0 -2px .35rem;
-  padding-right: 5.6rem;
-}
 .is-reading .book {
   --edge-depth: clamp(10px, 1.15vw, 18px);
-  display: grid;
-  grid-template-rows: minmax(0, 1fr);
   transform-origin: center top;
 }
-.is-reading .spread > .spread-layout {
-  height: 100%;
-  grid-template-rows: minmax(0, 1fr);
-}
-.is-reading .paper { overscroll-behavior: contain; }
 .is-reading .paper-description { font-size: clamp(.98rem, 1.2vw, 1.16rem); }
-.is-reading .page-nav { padding-top: .62rem; }
-.is-reading .turn-overlay { max-height: calc(100% - var(--edge-depth) - 13px); }
 
 .turn-overlay {
   pointer-events: none;
   position: absolute;
   z-index: 2;
   inset: 5px 6px calc(var(--edge-depth) + 8px);
+  max-height: calc(100% - var(--edge-depth) - 13px);
   transform-style: preserve-3d;
 }
 
@@ -1454,9 +1455,8 @@ body:has(.viewer[open], .hint-confirm[open], .audio-options[open]) { overflow: h
 .script-note { padding: 1rem; text-align: center; }
 
 @media (max-width: 760px) {
-  .book { --page-height: 27rem; --art-height: max(25rem, calc((100vw - 8rem) * .5625 + 8.5rem)); }
+  .reader { height: 100%; }
   .spread-layout { grid-template-columns: 1fr; }
-  .spread > .spread-layout { grid-template-rows: var(--page-height) var(--art-height); }
   .paper { --margin: clamp(1rem, 4.8vw, 2rem); min-height: auto; border-radius: 4px 4px 0 0; }
   .paper-right { padding-top: 1rem; border-top: 1px solid #c0aa855c; border-radius: 0 0 4px 4px; --page-joint: linear-gradient(#7d5c3225, transparent 9%); }
   .paper-left { --page-joint: linear-gradient(transparent, transparent); }
@@ -1468,21 +1468,52 @@ body:has(.viewer[open], .hint-confirm[open], .audio-options[open]) { overflow: h
   .turn-overlay .paper { border-radius: 4px; }
   .is-folding .book::before,
   .is-folding .spread { clip-path: inset(-12% -14% var(--binding-cut) -14%); }
-  .is-reading .spread > .spread-layout {
+  .spread > .spread-layout {
     grid-template-rows: max-content minmax(max-content, 1fr);
     overflow: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
     scrollbar-color: #95724d #dfcdab;
   }
-  .is-reading .spread > .spread-layout > .paper { overflow: visible; }
+  .spread > .spread-layout > .paper { overflow: visible; }
   .is-reading .spread > .spread-layout > .paper-right { min-height: 16rem; }
-  .is-reading .bookmarks button { min-width: 3.6rem; padding-inline: .52rem; }
-  .is-reading .desk-heading button { padding-inline: .72rem; }
+  .bookmarks { gap: .25rem; margin-right: 0; }
+  .bookmarks button { min-width: 3.6rem; padding-inline: .45rem; white-space: nowrap; }
+  .close-book { padding-inline: .72rem; }
+}
+
+@media (max-width: 760px), (max-height: 500px) and (orientation: landscape) {
+  .desk:not(.is-reading) .paper { --margin: clamp(.7rem, 3.1vw, 1.15rem); }
+  .desk:not(.is-reading) .paper h3 { font-size: clamp(1.55rem, 6.3vw, 2.4rem); }
+  .desk:not(.is-reading) .paper-description { margin-top: .55rem; font-size: .9rem; line-height: 1.55; }
+  .desk:not(.is-reading) .folio { display: none; }
+  .desk:not(.is-reading) .clue-index {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: .55rem;
+    margin: .65rem 0 0;
+    border-top: 1px solid #92724743;
+  }
+  .desk:not(.is-reading) .clue-index li:first-child { border-top: 0; }
+  .desk:not(.is-reading) .clue-index button {
+    grid-template-columns: 1.16rem minmax(0, 1fr);
+    gap: .28rem;
+    height: 100%;
+    padding-inline: .12rem;
+    font-size: .8rem;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+  .desk:not(.is-reading) .clue-index .icon { display: none; }
+  .desk:not(.is-reading) .scene-map {
+    align-self: center;
+    width: min(100%, calc(18dvh * var(--photo-ratio)));
+    flex: none;
+  }
 }
 
 @media (min-width: 761px) {
-  .is-reading .paper-right :is(.scene-map, .evidence-art) {
+  .paper-right :is(.scene-map, .evidence-art) {
     align-self: center;
     width: min(100%, max(12rem, calc((100dvh - 18rem) * var(--photo-ratio))));
     flex: none;
@@ -1493,11 +1524,22 @@ body:has(.viewer[open], .hint-confirm[open], .audio-options[open]) { overflow: h
   :root { --cover-width: clamp(11.25rem, 47svh, 15rem); }
   .desk { --desk-padding-top: .65rem; --desk-heading-gap: .55rem; padding-bottom: .65rem; }
   :is(.open-label, .preview-label) { margin-top: .95rem; }
-  body:has(main .desk.is-reading) .masthead { height: 3.15rem; }
-  .desk.is-reading { height: calc(100dvh - 3.15rem); padding-block: .25rem; }
-  .is-reading .desk-heading { top: .25rem; }
-  .is-reading .book { --edge-depth: 8px; }
-  .is-reading .page-nav { padding-top: .32rem; }
+  .desk.is-open { padding-block: .25rem; }
+  :is(.book, .is-reading .book) { --edge-depth: 8px; }
+  .page-nav { padding-top: .32rem; }
+}
+
+@media (min-width: 761px) and (max-height: 500px) {
+  .desk:not(.is-reading) .paper { --margin: .7rem; }
+  .desk:not(.is-reading) .paper h3 { margin-top: .28rem; font-size: 1.55rem; }
+  .desk:not(.is-reading) .paper-description { margin-top: .35rem; line-height: 1.4; }
+  .desk:not(.is-reading) .clue-index { margin-top: .4rem; }
+  .desk:not(.is-reading) .clue-index button { min-height: 2.1rem; padding-block: .2rem; }
+  .desk:not(.is-reading) .scene-map { width: min(100%, max(12rem, calc((100dvh - 16.75rem) * var(--photo-ratio)))); }
+}
+
+@media (max-width: 360px) {
+  .desk { --desk-gutter: .75rem; }
 }
 
 @media (max-width: 760px) {
@@ -1557,9 +1599,6 @@ body:has(.viewer[open], .hint-confirm[open], .audio-options[open]) { overflow: h
     padding-inline: max(var(--reader-gutter), calc((100% - var(--wide-reader-width)) / 2));
   }
   .is-reading .reader { max-width: var(--wide-reader-width); }
-  .is-reading .desk-heading {
-    right: max(var(--reader-gutter), calc((100% - var(--wide-reader-width)) / 2));
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

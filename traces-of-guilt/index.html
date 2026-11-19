@@ -121,7 +121,6 @@
       </picture>
       <div class="desk-heading">
         <h2 id="desk-title" tabindex="-1">녹음실 사건 기록</h2>
-        <button class="close-book plate" type="button" hidden><svg class="icon" aria-hidden="true"><use href="#icon-close-book"/></svg> 책 덮기</button>
       </div>
 
       <div class="desk-body">
@@ -146,11 +145,14 @@
         </div>
 
         <div class="reader" hidden>
-          <nav class="bookmarks" aria-label="책갈피">
-            <button class="plate" type="button" data-page="0"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg> 현장</button>
-            <button class="plate" type="button" data-bookmark="hints"><svg class="icon" aria-hidden="true"><use href="#icon-key"/></svg> 힌트</button>
-            <button class="plate" type="button" data-bookmark="answer"><svg class="icon" aria-hidden="true"><use href="#icon-seal"/></svg> 정답</button>
-          </nav>
+          <div class="reader-toolbar">
+            <button class="close-book plate" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-close-book"/></svg> 책 덮기</button>
+            <nav class="bookmarks" aria-label="책갈피">
+              <button class="plate" type="button" data-page="0"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg> 현장</button>
+              <button class="plate" type="button" data-bookmark="hints"><svg class="icon" aria-hidden="true"><use href="#icon-key"/></svg> 힌트</button>
+              <button class="plate" type="button" data-bookmark="answer"><svg class="icon" aria-hidden="true"><use href="#icon-seal"/></svg> 정답</button>
+            </nav>
+          </div>
           <div class="book" aria-label="사건 기록 본문">
             <div class="spread"></div>
           </div>

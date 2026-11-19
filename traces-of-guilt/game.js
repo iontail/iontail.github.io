@@ -400,11 +400,7 @@ function showPage(page, animate = true) {
   }
   activePage = page;
   updateNavigation();
-  const title = incoming.querySelector("h3");
-  title.focus({ preventScroll: true });
-  if (!desk.classList.contains("is-reading") && book.getBoundingClientRect().top < 52) {
-    reader.scrollIntoView({ block: "start", behavior: "instant" });
-  }
+  incoming.querySelector("h3").focus({ preventScroll: true });
 }
 
 function showStage(stage) {
@@ -586,15 +582,15 @@ async function foldBook(opening) {
   }
 
   if (opening) {
+    closedBook.classList.add("under-reader");
+    desk.classList.add("is-open");
     reader.hidden = false;
-    closeButton.hidden = false;
     showPage(overviewPage, false);
   }
 
   const anchor = deskVolume.querySelector(".cover").getBoundingClientRect();
   const anchorWidth = deskVolume.offsetWidth;
   const anchorHeight = deskVolume.offsetHeight;
-  closedBook.classList.add("under-reader");
   if (!reduced) {
     const stacked = stackedPages.matches;
     const target = spread.querySelector(stacked ? ".paper-left" : ".paper-right").getBoundingClientRect();
@@ -656,7 +652,7 @@ async function foldBook(opening) {
     spread.querySelector("h3").focus({ preventScroll: true });
   } else {
     reader.hidden = true;
-    closeButton.hidden = true;
+    desk.classList.remove("is-open");
     closedBook.classList.remove("under-reader");
     spread.replaceChildren();
     if (desiredState === "closed") openButton.focus({ preventScroll: true });
