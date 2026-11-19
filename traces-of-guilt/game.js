@@ -6,6 +6,8 @@ const library = document.querySelector(".library");
 const shelfTitle = library.querySelector("h2");
 const records = [...library.querySelectorAll("[data-record]")];
 const exitButton = document.querySelector(".exit-room");
+const caseClock = document.querySelector(".case-clock");
+const caseClockValue = caseClock.querySelector("span");
 const desk = document.querySelector(".desk");
 const deskTitle = desk.querySelector("h2");
 const returnButton = document.querySelector(".return");
@@ -52,10 +54,33 @@ let desiredState = bookState;
 let moving = false;
 let readerZoom;
 let selectedHint;
+let attemptStartedAt;
+let completedSeconds = null;
+let clockInterval;
 let audioContext, musicGain, pendingMusic, activeMusic;
 
 const number = value => String(value).padStart(2, "0");
 const icon = name => `<svg class="icon" aria-hidden="true"><use href="#icon-${name}"/></svg>`;
+const elapsedSeconds = () => Math.floor((performance.now() - attemptStartedAt) / 1000);
+const normalizeAnswer = value => value.normalize("NFKC").replace(/\s+/g, "").toLowerCase();
+
+function updateClock() {
+  const seconds = completedSeconds ?? elapsedSeconds();
+  caseClockValue.textContent = `${number(Math.floor(seconds / 60))}:${number(seconds % 60)}`;
+}
+
+function setAttemptClock(active) {
+  clearInterval(clockInterval);
+  completedSeconds = null;
+  caseClock.hidden = !active;
+  caseClock.removeAttribute("data-complete");
+  caseClock.setAttribute("aria-label", "조사 시간");
+  if (active) {
+    attemptStartedAt = performance.now();
+    updateClock();
+    clockInterval = setInterval(updateClock, 1000);
+  }
+}
 
 function updateVolume() {
   volumeOutput.value = `${volumeControl.value}%`;
@@ -262,11 +287,24 @@ function hints(left, right, page) {
 }
 
 function solution(left, right, page) {
-  left.innerHTML = `${titleBlock("마지막 페이지", "정답", "사건의 답과 풀이가 들어갈 페이지입니다.")}
+  const { question, explanation } = caseFile.answer;
+  const complete = completedSeconds !== null;
+  left.innerHTML = `${titleBlock("연습 문제", "정답", question)}
+    ${complete
+      ? `<div class="case-result" tabindex="-1"><span>풀이 완료</span>
+          <strong>${Math.floor(completedSeconds / 60)}분 ${completedSeconds % 60}초</strong></div>`
+      : `<form class="answer-form">
+          <label for="case-answer">답안</label>
+          <div class="answer-entry">
+            <input id="case-answer" name="answer" required maxlength="100" autocomplete="off" aria-describedby="answer-feedback">
+            <button class="plate plate-paper" type="submit">정답 확인</button>
+          </div>
+          <p id="answer-feedback" role="status"></p>
+        </form>`}
     <button class="text-link plate plate-paper" type="button" data-page="0">${icon("back")} 현장 다시 보기</button>
     ${folio(page * 2 + 1, "정답")}`;
   right.innerHTML = `<div class="answer-sheet">
-      <h4>사건 해설</h4><dl><dt>범인</dt><dd>미정</dd><dt>결정적 증거</dt><dd>미정</dd><dt>사건의 전말</dt><dd>미정</dd></dl>
+      <h4>연습 문제 해설</h4><p>${complete ? explanation : "정답을 맞히면 해설이 열려요."}</p>
     </div>${folio(page * 2 + 2, "사건 해설")}`;
 }
 
@@ -463,6 +501,7 @@ function showStage(stage) {
   desk.hidden = stage !== "closed";
   exitButton.hidden = stage !== "shelf";
   returnButton.hidden = stage !== "closed";
+  setAttemptClock(stage === "closed" && !openButton.disabled);
   window.scrollTo(0, 0);
 }
 
@@ -865,6 +904,26 @@ reader.addEventListener("click", event => {
   } else if (button.hasAttribute("data-download")) {
     void saveIllustration(button.closest(".paper"));
   }
+});
+
+spread.addEventListener("submit", event => {
+  const form = event.target;
+  if (!form.matches(".answer-form")) return;
+  event.preventDefault();
+  const input = form.elements.answer;
+  const entry = normalizeAnswer(input.value);
+  if (!caseFile.answer.accepted.some(answer => normalizeAnswer(answer) === entry)) {
+    form.querySelector("#answer-feedback").textContent = "아직 정답이 아니에요. 단서를 다시 확인해 보세요.";
+    input.select();
+    return;
+  }
+  completedSeconds = elapsedSeconds();
+  clearInterval(clockInterval);
+  caseClock.setAttribute("data-complete", "");
+  caseClock.setAttribute("aria-label", "최종 풀이 시간");
+  updateClock();
+  spread.replaceChildren(renderPage(answerPage));
+  spread.querySelector(".case-result").focus();
 });
 
 hintConfirm.querySelector("form").addEventListener("submit", event => {
