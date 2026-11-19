@@ -1196,6 +1196,9 @@ main { overflow: clip; }
 .marker:hover::before, .marker:focus-visible::before { filter: brightness(1.16); }
 
 .art-caption { display: flex; align-items: center; justify-content: space-between; gap: .55rem; color: #625747; font-size: .76rem; }
+.art-caption > span { word-break: keep-all; }
+.art-controls { display: flex; align-items: center; gap: .4rem; }
+.download-status:not(:empty) { margin-block: .35rem; font-size: .82rem; }
 .art-caption button, .text-link {
   min-height: 2.75rem;
   padding: .45rem .95rem;
@@ -1446,15 +1449,19 @@ body:has(main .desk.is-open) { overflow: hidden; }
   background: #211e1a;
 }
 .viewer[open] { display: grid; grid-template-rows: auto minmax(0, 1fr); }
-.viewer header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem clamp(.8rem, 4vw, 3rem); border-bottom: 1px solid #d8b78348; }
-.viewer h2 { font-size: 1rem; }
-.viewer button { min-height: 2.75rem; padding: .5rem 1rem; white-space: nowrap; }
+.viewer header { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .75rem clamp(.8rem, 4vw, 3rem); border-bottom: 1px solid #d8b78348; }
+.viewer h2 { flex: 1 1 4rem; font-size: 1rem; word-break: keep-all; }
+.viewer .download-status { flex-basis: 100%; }
+.viewer .download-status:empty { display: none; }
+.viewer button { min-height: 2.75rem; padding: .5rem clamp(.55rem, 2vw, 1rem); white-space: nowrap; }
 .viewer-art { display: grid; place-items: center; padding: clamp(.6rem, 2.5vw, 2rem); min-height: 0; }
 .viewer-art .illustration { width: 100%; height: 100%; }
 body:has(.viewer[open], .hint-confirm[open], .audio-options[open]) { overflow: hidden; }
 .script-note { padding: 1rem; text-align: center; }
 
 @media (max-width: 760px) {
+  .art-caption button { gap: .3rem; padding-inline: .55rem; }
+  .download-label-prefix { display: none; }
   .reader { height: 100%; }
   .spread-layout { grid-template-columns: 1fr; }
   .paper { --margin: clamp(1rem, 4.8vw, 2rem); min-height: auto; border-radius: 4px 4px 0 0; }

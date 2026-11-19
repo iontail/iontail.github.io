@@ -22,6 +22,8 @@ const spread = document.querySelector(".spread");
 const spreadTemplate = document.querySelector("#spread-template");
 const pageCount = document.querySelector("#page-count");
 const viewer = document.querySelector(".viewer");
+const exportImage = new Image();
+exportImage.src = caseFile.scene.image.source;
 const hintConfirm = document.querySelector(".hint-confirm");
 const hintQuestion = document.querySelector("#hint-question");
 const soundSettings = document.querySelector(".audio-options");
@@ -160,9 +162,47 @@ trackControl.addEventListener("change", () => {
 function illustration(title, crop) {
   const { source, width, height } = caseFile.scene.image;
   const viewBox = crop ?? [0, 0, width, height];
+  const [x, y, frameWidth, frameHeight] = viewBox;
   return `<svg class="illustration" role="img" aria-label="${title}" viewBox="${viewBox.join(" ")}">
-    <image href="${source}" width="${width}" height="${height}"></image>
+    <svg x="${x}" y="${y}" width="${frameWidth}" height="${frameHeight}" viewBox="${viewBox.join(" ")}" overflow="hidden">
+      <image href="${source}" width="${width}" height="${height}"></image>
+    </svg>
   </svg>`;
+}
+
+function artCaption(title) {
+  return `<div class="art-caption"><span>${title}</span>
+    <div class="art-controls">
+      <button class="plate plate-paper" type="button" data-zoom aria-haspopup="dialog">전체 화면 ${icon("zoom")}</button>
+      <button class="plate plate-paper" type="button" data-download aria-label="이미지 저장">${icon("download")} <span><span class="download-label-prefix">이미지 </span>저장</span></button>
+    </div></div>
+    <p class="download-status" role="status"></p>`;
+}
+
+async function saveIllustration(container) {
+  const art = container.querySelector(".illustration");
+  const status = container.querySelector(".download-status");
+  status.textContent = "";
+  try {
+    if (!exportImage.complete || !exportImage.naturalWidth) await exportImage.decode();
+    const { x, y, width, height } = art.viewBox.baseVal;
+    const source = caseFile.scene.image;
+    const scale = 1920 / Math.max(width, height);
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(width * scale);
+    canvas.height = Math.round(height * scale);
+    const context = canvas.getContext("2d");
+    context.scale(canvas.width / width, canvas.height / height);
+    context.drawImage(exportImage, -x, -y, source.width, source.height);
+    const link = document.createElement("a");
+    link.download = `Traces-of-Guilt_${art.getAttribute("aria-label").replaceAll(" ", "-")}.png`;
+    link.href = canvas.toDataURL("image/png");
+    container.append(link);
+    link.click();
+    link.remove();
+  } catch {
+    status.textContent = "이미지를 저장하지 못했어요. 다시 시도해 주세요.";
+  }
 }
 
 function folio(index, title) {
@@ -186,7 +226,7 @@ function overview(left, right) {
     ${clues.map((clue, index) => `<button class="marker" type="button" data-page="${index + 1}"
       style="--x:${clue.position[0]}%;--y:${clue.position[1]}%" aria-label="${clue.action}">${index + 1}</button>`).join("")}
     </div></div>
-    <div class="art-caption"><span>녹음실 전체</span><button class="plate plate-paper" type="button" data-zoom>전체 화면 ${icon("zoom")}</button></div>
+    ${artCaption("녹음실 전체")}
     ${folio(2, "현장 도판")}`;
 }
 
@@ -201,7 +241,7 @@ function evidence(left, right, page) {
     <button class="text-link plate plate-paper" type="button" data-page="0">${icon("back")} 현장으로 돌아가기</button>
     ${folio(page * 2 + 1, "단서 기록")}`;
   right.innerHTML = `<figure class="evidence-art">${illustration(`${clue.title} 확대 그림`, clue.viewBox)}</figure>
-    <div class="art-caption"><span>${clue.title} 확대</span><button class="plate plate-paper" type="button" data-zoom>전체 화면 ${icon("zoom")}</button></div>
+    ${artCaption(`${clue.title} 확대`)}
     ${folio(page * 2 + 2, "단서 도판")}`;
 }
 
@@ -806,6 +846,8 @@ reader.addEventListener("click", event => {
     viewer.querySelector("h2").textContent = art.getAttribute("aria-label");
     viewer.querySelector(".viewer-art").replaceChildren(art.cloneNode(true));
     viewer.showModal();
+  } else if (button.hasAttribute("data-download")) {
+    void saveIllustration(button.closest(".paper"));
   }
 });
 
@@ -818,6 +860,10 @@ hintConfirm.querySelector("form").addEventListener("submit", event => {
   document.getElementById(button.getAttribute("aria-controls")).setAttribute("aria-hidden", "false");
 });
 
-viewer.addEventListener("close", () => viewer.querySelector(".viewer-art").replaceChildren());
+viewer.querySelector("[data-download]").addEventListener("click", () => void saveIllustration(viewer));
+viewer.addEventListener("close", () => {
+  viewer.querySelector(".viewer-art").replaceChildren();
+  viewer.querySelector(".download-status").textContent = "";
+});
 if (bookState === "closed") setDeskRecord(desiredRecord);
 showStage(bookState);
