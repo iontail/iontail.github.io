@@ -19,6 +19,7 @@ const closeButton = document.querySelector(".close-book");
 const reader = document.querySelector(".reader");
 const book = document.querySelector(".book");
 const spread = document.querySelector(".spread");
+const clueTabs = document.querySelector(".clue-tabs");
 const spreadTemplate = document.querySelector("#spread-template");
 const pageCount = document.querySelector("#page-count");
 const viewer = document.querySelector(".viewer");
@@ -232,6 +233,8 @@ function overview(left, right) {
 
 function evidence(left, right, page) {
   const clue = caseFile.clues[page - 1];
+  left.classList.add("clue-paper");
+  right.classList.add("clue-paper");
   left.innerHTML = `${titleBlock(`단서 ${number(page)}`, clue.title, clue.description)}
     ${clue.document ? `<table class="sample-log">
       <caption>출입 기록 양식</caption>
@@ -397,9 +400,16 @@ function updateNavigation() {
     const destination = activePage + Number(button.dataset.step);
     button.disabled = destination < overviewPage || destination > lastPage;
   }
-  for (const button of reader.querySelectorAll(".bookmarks [data-page]")) {
+  clueTabs.hidden = activePage < 1 || activePage >= hintsPage;
+  for (const button of reader.querySelectorAll(":is(.bookmarks, .clue-tabs) [data-page]")) {
     if (Number(button.dataset.page) === Math.max(0, activePage)) button.setAttribute("aria-current", "page");
     else button.removeAttribute("aria-current");
+  }
+  if (!clueTabs.hidden) {
+    const activeTab = clueTabs.children[activePage - 1];
+    const top = activeTab.offsetTop;
+    const bottom = top + activeTab.offsetHeight;
+    clueTabs.scrollTop = Math.min(top, Math.max(clueTabs.scrollTop, bottom - clueTabs.clientHeight));
   }
 }
 
@@ -828,6 +838,10 @@ closeButton.addEventListener("click", () => goTo("closed"));
 
 reader.querySelector('[data-bookmark="hints"]').dataset.page = hintsPage;
 reader.querySelector('[data-bookmark="answer"]').dataset.page = answerPage;
+clueTabs.innerHTML = caseFile.clues.map((clue, index) => {
+  const page = index + 1;
+  return `<button class="plate" type="button" data-page="${page}" aria-label="단서 ${page} ${clue.title}" title="${clue.title}">${page}</button>`;
+}).join("");
 reader.addEventListener("click", event => {
   const button = event.target.closest("button") ?? event.target.closest(".hint-card")?.querySelector(".hint-trigger");
   if (!button) return;

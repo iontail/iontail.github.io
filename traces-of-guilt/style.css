@@ -965,15 +965,48 @@ main { overflow: clip; }
 .bookmarks button::before { inset: 4px 5px 0; border: 1px dashed #f2d7a04c; border-bottom: 0; box-shadow: none; }
 .bookmarks button[data-bookmark="hints"] { --tab-cloth: #414d35; }
 .bookmarks button[data-bookmark="answer"] { --tab-cloth: #60382e; }
-.bookmarks button[aria-current] {
+.bookmarks button[aria-current], .clue-tabs button[aria-current] {
   --tab-cloth: #ba975f;
   --plate-ink: #311e12;
   border-color: #d9ba86 #a07e53 transparent;
   text-shadow: 0 1px #f3dca96b;
 }
-.bookmarks button[aria-current]::before { border-color: #5b4226a0; }
+:is(.bookmarks, .clue-tabs) button[aria-current]::before { border-color: #5b4226a0; }
 .bookmarks button[aria-current] .icon { color: #55371d; filter: none; }
 .bookmarks button:focus-visible { z-index: 3; }
+
+.clue-tabs {
+  position: absolute;
+  z-index: 3;
+  inset-block: clamp(.6rem, 7%, 2.2rem) var(--edge-depth);
+  inset-inline-start: calc(100% - .55rem);
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  gap: .32rem;
+  padding: 1px .3rem .4rem 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #a6814d #30241c;
+}
+.clue-tabs button {
+  flex: none;
+  min-width: 2.7rem;
+  min-height: 2.75rem;
+  padding: .25rem .5rem;
+  border-color: #98784e #755333 #442e1c;
+  border-radius: 1px 5px 5px 1px;
+  background: url("archive-cloth.jpg") center / 164px, var(--tab-cloth, #414a3f);
+  background-blend-mode: soft-light;
+  box-shadow: inset 5px 0 7px -5px #160e08, inset 0 1px #f3dab658, 2px 2px 4px #190d08a6;
+  font: 400 1.23rem/1 var(--display);
+  font-variant-numeric: lining-nums;
+}
+.clue-tabs button::before { inset: 4px 4px 4px 6px; border: 1px dashed #edd1a459; box-shadow: none; }
+.clue-tabs button[aria-current] { border-color: #dfbd85 #a07e53 #745436; }
+.clue-tabs button:focus-visible { outline-offset: -3px; }
+.desk:not(.is-reading) .clue-tabs { visibility: hidden; }
 
 .book {
   --edge-depth: clamp(13px, 1.55vw, 23px);
@@ -1460,6 +1493,9 @@ body:has(.viewer[open], .hint-confirm[open], .audio-options[open]) { overflow: h
 .script-note { padding: 1rem; text-align: center; }
 
 @media (max-width: 760px) {
+  .clue-tabs { inset-inline: auto -.18rem; padding-inline-end: 0; }
+  .clue-tabs button { min-width: 2.35rem; }
+  .clue-paper { padding-inline-end: max(var(--margin), 2.6rem); }
   .art-caption button { gap: .3rem; padding-inline: .55rem; }
   .download-label-prefix { display: none; }
   .reader { height: 100%; }
@@ -1520,6 +1556,7 @@ body:has(.viewer[open], .hint-confirm[open], .audio-options[open]) { overflow: h
 }
 
 @media (min-width: 761px) {
+  :root { --reader-gutter: clamp(2.55rem, 3.5vw, 4.25rem); }
   .paper-right :is(.scene-map, .evidence-art) {
     align-self: center;
     width: min(100%, max(12rem, calc((100dvh - 18rem) * var(--photo-ratio))));
