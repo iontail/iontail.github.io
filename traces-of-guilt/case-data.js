@@ -41,9 +41,16 @@ export const caseFile = {
     "출입 일지에서 나중에 비교할 항목을 찾아보세요.",
     "현장 전체 그림으로 돌아가 물건 사이의 위치를 확인해 보세요."
   ],
+  suspects: [
+    { id: "margaret", name: "마거릿 헤일", portrait: "suspects/margaret.svg" },
+    { id: "arthur", name: "아서 리드", portrait: "suspects/arthur.svg" },
+    { id: "clive", name: "클라이브 베넷", portrait: "suspects/clive.svg" },
+    { id: "julian", name: "줄리언 머서", portrait: "suspects/julian.svg" }
+  ],
   answer: {
-    question: "출입 기록 양식이 있는 단서의 이름은?",
-    text: "출입 일지",
-    explanation: "‘출입 일지’ 펼침면에서 시간, 이름, 비고를 적는 양식을 확인할 수 있어요."
+    practice: true,
+    question: "천문관 기술실장은 누구인가요?",
+    suspectId: "arthur",
+    explanation: "아서 리드는 천문관의 기술실장으로 투영기의 운용과 정비를 맡아요. 이 결과는 제출 기능을 확인하는 연습 문제에 해당해요."
   }
 };

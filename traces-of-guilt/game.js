@@ -30,6 +30,11 @@ exportImage.src = caseFile.scene.image.source;
 const hintConfirm = document.querySelector(".hint-confirm");
 const hintQuestion = document.querySelector("#hint-question");
 const answerConfirm = document.querySelector(".answer-confirm");
+const suspectPicker = document.querySelector(".suspect-picker");
+const suspectForm = suspectPicker.querySelector("form");
+const suspectSubmit = suspectForm.querySelector('button[type="submit"]');
+const suspectStatus = suspectForm.querySelector(".suspect-status");
+const submissionConfirm = document.querySelector(".submission-confirm");
 const soundSettings = document.querySelector(".audio-options");
 const volumeControl = soundSettings.querySelector("#bgm-volume");
 const volumeOutput = soundSettings.querySelector("output");
@@ -57,6 +62,7 @@ let readerZoom;
 let selectedHint;
 let attemptStartedAt;
 let completedSeconds = null;
+let submittedSuspect;
 let clockInterval;
 let audioContext, musicGain, pendingMusic, activeMusic;
 
@@ -73,6 +79,9 @@ function updateClock() {
 function setAttemptClock(active) {
   clearInterval(clockInterval);
   completedSeconds = null;
+  submittedSuspect = undefined;
+  suspectForm.reset();
+  updateSuspectSelection();
   caseClock.hidden = !active;
   caseClock.removeAttribute("data-complete");
   caseClock.setAttribute("aria-label", "조사 시간");
@@ -288,16 +297,21 @@ function hints(left, right, page) {
 }
 
 function solution(left, right, page) {
-  const { question, text, explanation } = caseFile.answer;
+  const { practice, suspectId, explanation } = caseFile.answer;
+  const correctSuspect = caseFile.suspects.find(suspect => suspect.id === suspectId);
+  const successful = submittedSuspect.id === suspectId;
+  const verdict = successful ? "지목 성공" : "지목 실패";
   const [hours, minutes, seconds] = durationParts(completedSeconds);
-  left.innerHTML = `${titleBlock("연습 문제", "정답", question)}
-    <p class="answer-value">${text}</p>
+  left.innerHTML = `<p class="paper-kicker">${practice ? "제출 시안 결과" : "사건 판정"}</p>
+    <h3 class="answer-verdict" data-outcome="${successful ? "success" : "failure"}" tabindex="-1">${practice ? verdict : `범인 ${verdict}`}</h3>
+    <p class="paper-description">내가 지목한 인물 <strong>${submittedSuspect.name}</strong></p>
+    <p class="answer-value">${practice ? "시연 정답" : "범인"} <strong>${correctSuspect.name}</strong></p>
     <div class="case-result"><span>풀이 시간</span>
       <strong>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</strong></div>
     <button class="text-link plate plate-paper" type="button" data-page="0">${icon("back")} 현장 다시 보기</button>
     ${folio(page * 2 + 1, "정답")}`;
   right.innerHTML = `<div class="answer-sheet">
-      <h4>연습 문제 해설</h4><p>${explanation}</p>
+      <h4>${practice ? "시연 해설" : "사건 해설"}</h4><p>${explanation}</p>
     </div>${folio(page * 2 + 2, "사건 해설")}`;
 }
 
@@ -659,8 +673,11 @@ async function travel(toDesk) {
 
 async function foldBook(opening) {
   const reduced = motionPreference.matches;
-  if (!opening && hintConfirm.open) hintConfirm.close("no");
-  if (!opening && answerConfirm.open) answerConfirm.close();
+  if (!opening) {
+    for (const dialog of [submissionConfirm, suspectPicker, answerConfirm, hintConfirm]) {
+      if (dialog.open) dialog.close();
+    }
+  }
   window.scrollTo(0, 0);
   removeTurns();
 
@@ -904,15 +921,55 @@ reader.addEventListener("click", event => {
   }
 });
 
+suspectForm.querySelector("#suspect-prompt").textContent = caseFile.answer.question;
+suspectForm.querySelector(".suspect-practice").hidden = !caseFile.answer.practice;
+suspectForm.querySelector(".suspect-lineup").innerHTML = caseFile.suspects.map(({ id, name, portrait }) => `
+  <label class="suspect-card">
+    <input type="radio" name="suspect" value="${id}" required>
+    <span class="suspect-portrait"><img src="${portrait}" alt="" draggable="false" decoding="async">
+      <span class="suspect-check" aria-hidden="true">${icon("check")}</span></span>
+    <span class="suspect-name">${name}</span>
+  </label>`).join("");
+
+function selectedSuspect() {
+  const id = suspectForm.querySelector('input[name="suspect"]:checked')?.value;
+  return caseFile.suspects.find(suspect => suspect.id === id);
+}
+
+function updateSuspectSelection() {
+  const suspect = selectedSuspect();
+  suspectSubmit.disabled = !suspect;
+  suspectStatus.textContent = suspect ? `${suspect.name} 선택됨` : "용의자를 한 명 선택해 주세요.";
+}
+
 answerConfirm.querySelector("form").addEventListener("submit", event => {
   if (event.submitter?.value !== "reveal") return;
   event.preventDefault();
+  answerConfirm.close("reveal");
+  suspectPicker.showModal();
+});
+
+suspectForm.querySelector("[data-close-picker]").addEventListener("click", () => suspectPicker.close());
+suspectForm.addEventListener("change", updateSuspectSelection);
+suspectForm.addEventListener("submit", event => {
+  event.preventDefault();
+  const suspect = selectedSuspect();
+  if (!suspect) return;
+  submissionConfirm.querySelector(".submission-name").textContent = suspect.name;
+  submissionConfirm.showModal();
+});
+
+submissionConfirm.querySelector("form").addEventListener("submit", event => {
+  if (event.submitter?.value !== "yes") return;
+  event.preventDefault();
+  submittedSuspect = selectedSuspect();
   completedSeconds = elapsedSeconds();
   clearInterval(clockInterval);
   caseClock.setAttribute("data-complete", "");
   caseClock.setAttribute("aria-label", "최종 풀이 시간");
   updateClock();
-  answerConfirm.close("reveal");
+  submissionConfirm.close("yes");
+  suspectPicker.close();
   showPage(answerPage);
 });
 
