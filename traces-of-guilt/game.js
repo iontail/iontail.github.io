@@ -233,8 +233,6 @@ function overview(left, right) {
 
 function evidence(left, right, page) {
   const clue = caseFile.clues[page - 1];
-  left.classList.add("clue-paper");
-  right.classList.add("clue-paper");
   left.innerHTML = `${titleBlock(`단서 ${number(page)}`, clue.title, clue.description)}
     ${clue.document ? `<table class="sample-log">
       <caption>출입 기록 양식</caption>
@@ -275,6 +273,10 @@ function solution(left, right, page) {
 function renderPage(page) {
   const layout = spreadTemplate.content.firstElementChild.cloneNode(true);
   const [left, right] = layout.children;
+  if (page < hintsPage && caseFile.clues.length) {
+    left.classList.add("indexed-paper");
+    right.classList.add("indexed-paper");
+  }
   if (page === 0) overview(left, right);
   else if (page === hintsPage) hints(left, right, page);
   else if (page === answerPage) solution(left, right, page);
@@ -400,17 +402,17 @@ function updateNavigation() {
     const destination = activePage + Number(button.dataset.step);
     button.disabled = destination < overviewPage || destination > lastPage;
   }
-  clueTabs.hidden = activePage < 1 || activePage >= hintsPage;
+  clueTabs.hidden = !caseFile.clues.length || activePage >= hintsPage;
   for (const button of reader.querySelectorAll(":is(.bookmarks, .clue-tabs) [data-page]")) {
     if (Number(button.dataset.page) === Math.max(0, activePage)) button.setAttribute("aria-current", "page");
     else button.removeAttribute("aria-current");
   }
-  if (!clueTabs.hidden) {
-    const activeTab = clueTabs.children[activePage - 1];
+  const activeTab = clueTabs.children[activePage - 1];
+  if (activeTab) {
     const top = activeTab.offsetTop;
     const bottom = top + activeTab.offsetHeight;
     clueTabs.scrollTop = Math.min(top, Math.max(clueTabs.scrollTop, bottom - clueTabs.clientHeight));
-  }
+  } else if (!clueTabs.hidden) clueTabs.scrollTop = 0;
 }
 
 function setReadingLayout(reading) {

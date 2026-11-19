@@ -1006,7 +1006,6 @@ main { overflow: clip; }
 .clue-tabs button::before { inset: 4px 4px 4px 6px; border: 1px dashed #edd1a459; box-shadow: none; }
 .clue-tabs button[aria-current] { border-color: #dfbd85 #a07e53 #745436; }
 .clue-tabs button:focus-visible { outline-offset: -3px; }
-.desk:not(.is-reading) .clue-tabs { visibility: hidden; }
 
 .book {
   --edge-depth: clamp(13px, 1.55vw, 23px);
@@ -1036,7 +1035,7 @@ main { overflow: clip; }
   clip-path: inset(-14% -18% -17% var(--binding-cut));
 }
 
-.is-folding :is(.reader-toolbar, .page-nav) { visibility: hidden; }
+.is-folding :is(.reader-toolbar, .clue-tabs, .page-nav) { visibility: hidden; }
 
 .spread {
   position: relative;
@@ -1495,7 +1494,7 @@ body:has(.viewer[open], .hint-confirm[open], .audio-options[open]) { overflow: h
 @media (max-width: 760px) {
   .clue-tabs { inset-inline: auto -.18rem; padding-inline-end: 0; }
   .clue-tabs button { min-width: 2.35rem; }
-  .clue-paper { padding-inline-end: max(var(--margin), 2.6rem); }
+  .indexed-paper { padding-inline-end: max(var(--margin), 2.6rem); }
   .art-caption button { gap: .3rem; padding-inline: .55rem; }
   .download-label-prefix { display: none; }
   .reader { height: 100%; }
