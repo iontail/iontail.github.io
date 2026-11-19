@@ -25,8 +25,7 @@ const clueTabs = document.querySelector(".clue-tabs");
 const spreadTemplate = document.querySelector("#spread-template");
 const pageCount = document.querySelector("#page-count");
 const viewer = document.querySelector(".viewer");
-const exportImage = new Image();
-exportImage.src = caseFile.scene.image.source;
+const viewerDownload = viewer.querySelector("[data-download]");
 const hintConfirm = document.querySelector(".hint-confirm");
 const hintQuestion = document.querySelector("#hint-question");
 const answerConfirm = document.querySelector(".answer-confirm");
@@ -46,12 +45,13 @@ const audioStatus = soundSettings.querySelector(".audio-status");
 const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
 const stackedPages = matchMedia("(max-width: 760px)");
 
-const hintsPage = caseFile.clues.length + 1;
+const hintsPage = Math.ceil(caseFile.clues.length / 2) + 1;
 const answerPage = hintsPage + 1;
 const lastPage = answerPage;
 const overviewPage = -1;
 const viewedHints = new Set();
 let activePage = overviewPage;
+let activeClue;
 const recordFromHash = () => records.findIndex(record => record.hash === location.hash);
 let desiredRecord = Math.max(0, recordFromHash());
 let deskRecord = 0;
@@ -71,7 +71,8 @@ const number = value => String(value).padStart(2, "0");
 const icon = name => `<svg class="icon" aria-hidden="true"><use href="#icon-${name}"/></svg>`;
 const elapsedSeconds = () => Math.floor((performance.now() - attemptStartedAt) / 1000);
 const durationParts = seconds => [Math.floor(seconds / 3600), Math.floor(seconds / 60) % 60, seconds % 60];
-const suspectLabel = suspect => `${caseFile.suspects.indexOf(suspect) + 1}번 인물`;
+const suspectLabel = suspect => `${caseFile.suspects.indexOf(suspect) + 1}번 용의자`;
+const clueSpread = clue => Math.ceil(clue / 2);
 
 function updateClock() {
   const seconds = completedSeconds ?? elapsedSeconds();
@@ -197,50 +198,17 @@ trackControl.addEventListener("change", () => {
   void startMusic();
 });
 
-function illustration(title, crop) {
-  const { source, width, height } = caseFile.scene.image;
-  const viewBox = crop ?? [0, 0, width, height];
-  const [x, y, frameWidth, frameHeight] = viewBox;
-  return `<svg class="illustration" role="img" aria-label="${title}" viewBox="${viewBox.join(" ")}">
-    <svg x="${x}" y="${y}" width="${frameWidth}" height="${frameHeight}" viewBox="${viewBox.join(" ")}" overflow="hidden">
-      <image href="${source}" width="${width}" height="${height}"></image>
-    </svg>
-  </svg>`;
+function illustration(title, image) {
+  return `<img class="illustration" src="${image}" alt="${title}" width="1600" height="1280" decoding="async">`;
 }
 
-function artCaption(title) {
-  return `<div class="art-caption"><span>${title}</span>
+function artCaption(title, image, caption = "") {
+  const filename = `Traces-of-Guilt_${title.replaceAll(" ", "-")}.png`;
+  return `<div class="art-caption">${caption ? `<span>${caption}</span>` : ""}
     <div class="art-controls">
       <button class="plate plate-paper" type="button" data-zoom aria-haspopup="dialog">전체 화면 ${icon("zoom")}</button>
-      <button class="plate plate-paper" type="button" data-download aria-label="이미지 저장">${icon("download")} <span><span class="download-label-prefix">이미지 </span>저장</span></button>
-    </div></div>
-    <p class="download-status" role="status"></p>`;
-}
-
-async function saveIllustration(container) {
-  const art = container.querySelector(".illustration");
-  const status = container.querySelector(".download-status");
-  status.textContent = "";
-  try {
-    if (!exportImage.complete || !exportImage.naturalWidth) await exportImage.decode();
-    const { x, y, width, height } = art.viewBox.baseVal;
-    const source = caseFile.scene.image;
-    const scale = 1920 / Math.max(width, height);
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.round(width * scale);
-    canvas.height = Math.round(height * scale);
-    const context = canvas.getContext("2d");
-    context.scale(canvas.width / width, canvas.height / height);
-    context.drawImage(exportImage, -x, -y, source.width, source.height);
-    const link = document.createElement("a");
-    link.download = `Traces-of-Guilt_${art.getAttribute("aria-label").replaceAll(" ", "-")}.png`;
-    link.href = canvas.toDataURL("image/png");
-    container.append(link);
-    link.click();
-    link.remove();
-  } catch {
-    status.textContent = "이미지를 저장하지 못했어요. 다시 시도해 주세요.";
-  }
+      <a class="plate plate-paper" href="${image}" download="${filename}" data-download aria-label="이미지 저장">${icon("download")} <span><span class="download-label-prefix">이미지 </span>저장</span></a>
+    </div></div>`;
 }
 
 function folio(index, title) {
@@ -252,35 +220,37 @@ function titleBlock(kicker, title, text) {
 }
 
 function overview(left, right) {
-  const { scene, clues } = caseFile;
-  left.innerHTML = `${titleBlock("사건 기록 01", scene.title, scene.description)}
-    <ol class="clue-index">${clues.map((clue, index) => `<li><button type="button" data-page="${index + 1}">
-      <span>${number(index + 1)}</span><span>${clue.action}</span>${icon("next")}</button></li>`).join("")}</ol>
-    ${folio(1, "현장 안내")}`;
-  const { width, height } = scene.image;
+  const { title, scene, clues } = caseFile;
+  left.classList.add("case-intro");
+  right.classList.add("map-paper");
+  left.innerHTML = `${titleBlock(scene.period, title, scene.description)}
+    <p class="case-objective">${scene.objective}</p>
+    <details class="overview-index"><summary>단서 목록</summary>
+      <ol class="clue-index">${clues.map((clue, index) => `<li><button type="button" data-clue="${index + 1}">
+        <span>${number(index + 1)}</span><span>${clue.action}</span></button></li>`).join("")}</ol>
+    </details>
+    ${folio(1, "사건 개요")}`;
   right.innerHTML = `<div class="scene-map">
-    <div class="scene-plane" style="--scene-ratio:${width / height}">
-    ${illustration("샘플 녹음실 전체 현장")}
-    ${clues.map((clue, index) => `<button class="marker" type="button" data-page="${index + 1}"
-      style="--x:${clue.position[0]}%;--y:${clue.position[1]}%" aria-label="${clue.action}">${index + 1}</button>`).join("")}
+    <div class="scene-plane">
+    ${illustration(`${scene.title} 사건 현장`, scene.image)}
+    ${clues.map((clue, index) => `<button class="marker" type="button" data-clue="${index + 1}" data-align="${clue.align ?? "start"}"
+      style="--x:${clue.position[0]}%;--y:${clue.position[1]}%" aria-label="${index + 1}. ${clue.action}">
+      <span class="marker-number">${index + 1}</span><span class="marker-label">${clue.action}</span></button>`).join("")}
     </div></div>
-    ${artCaption("녹음실 전체")}
+    ${artCaption(scene.title, scene.image, scene.title)}
     ${folio(2, "현장 도판")}`;
 }
 
-function evidence(left, right, page) {
-  const clue = caseFile.clues[page - 1];
-  left.innerHTML = `${titleBlock(`단서 ${number(page)}`, clue.title, clue.description)}
-    ${clue.document ? `<table class="sample-log">
-      <caption>출입 기록 양식</caption>
-      <thead><tr><th scope="col">시간</th><th scope="col">이름</th><th scope="col">비고</th></tr></thead>
-      <tbody><tr><td>—</td><td>—</td><td>—</td></tr><tr><td>—</td><td>—</td><td>—</td></tr></tbody>
-    </table>` : ""}
-    <button class="text-link plate plate-paper" type="button" data-page="0">${icon("back")} 현장으로 돌아가기</button>
-    ${folio(page * 2 + 1, "단서 기록")}`;
-  right.innerHTML = `<figure class="evidence-art">${illustration(`${clue.title} 확대 그림`, clue.viewBox)}</figure>
-    ${artCaption(`${clue.title} 확대`)}
-    ${folio(page * 2 + 2, "단서 도판")}`;
+function evidence(paper, index) {
+  const clue = caseFile.clues[index - 1];
+  if (!clue) return;
+  paper.classList.add("evidence-paper");
+  paper.dataset.clue = index;
+  paper.innerHTML = `<p class="paper-kicker">${clue.kind ?? "단서"} ${number(index)}</p>
+    <h3 tabindex="-1">${clue.title}</h3>
+    <figure class="evidence-art">${illustration(clue.title, clue.image)}</figure>
+    ${artCaption(clue.title, clue.image)}
+    ${folio(index + 2, clue.kind ? "장소 도판" : "단서 도판")}`;
 }
 
 function hints(left, right, page) {
@@ -327,7 +297,10 @@ function renderPage(page) {
   if (page === 0) overview(left, right);
   else if (page === hintsPage) hints(left, right, page);
   else if (page === answerPage) solution(left, right, page);
-  else evidence(left, right, page);
+  else {
+    evidence(left, page * 2 - 1);
+    evidence(right, page * 2);
+  }
   return layout;
 }
 
@@ -420,10 +393,11 @@ function curlPage(leaf, front, back, direction) {
   };
 }
 
-function turnPage(outgoing, incoming, forward) {
+function turnPage(outgoing, incoming, forward, nextClue) {
   if (motionPreference.matches) return;
   const stacked = stackedPages.matches;
-  const side = forward && !stacked ? 1 : 0;
+  const side = stacked ? Number(activeClue % 2 === 0) : Number(forward);
+  const landingSide = stacked ? Number(nextClue % 2 === 0) : 1 - side;
   const overlay = document.createElement("div");
   const leaf = document.createElement("div");
   overlay.className = "turn-overlay";
@@ -431,7 +405,7 @@ function turnPage(outgoing, incoming, forward) {
   overlay.setAttribute("aria-hidden", "true");
   leaf.className = `turn-leaf paper-turn ${forward ? "turn-right" : "turn-left"}`;
   if (stacked) {
-    overlay.style.height = `${incoming.children[0].offsetHeight}px`;
+    overlay.style.height = `${incoming.children[landingSide].offsetHeight}px`;
   } else {
     const stationary = outgoing.children[1 - side].cloneNode(true);
     stationary.classList.add("turn-still", forward ? "turn-left" : "turn-right");
@@ -440,7 +414,7 @@ function turnPage(outgoing, incoming, forward) {
   overlay.append(leaf);
   for (const element of overlay.querySelectorAll("[id]")) element.removeAttribute("id");
   book.append(overlay);
-  curlPage(leaf, outgoing.children[side], incoming.children[stacked ? 0 : 1 - side], forward ? -1 : 1);
+  curlPage(leaf, outgoing.children[side], incoming.children[landingSide], forward ? -1 : 1);
 }
 
 function updateNavigation() {
@@ -450,11 +424,15 @@ function updateNavigation() {
     button.disabled = destination < overviewPage || destination > lastPage;
   }
   clueTabs.hidden = !caseFile.clues.length || activePage >= hintsPage;
-  for (const button of reader.querySelectorAll(":is(.bookmarks, .clue-tabs) [data-page]")) {
+  for (const button of reader.querySelectorAll(".bookmarks [data-page]")) {
     if (Number(button.dataset.page) === Math.max(0, activePage)) button.setAttribute("aria-current", "page");
     else button.removeAttribute("aria-current");
   }
-  const activeTab = clueTabs.children[activePage - 1];
+  for (const button of clueTabs.children) {
+    if (Number(button.dataset.clue) === activeClue) button.setAttribute("aria-current", "page");
+    else button.removeAttribute("aria-current");
+  }
+  const activeTab = clueTabs.children[activeClue - 1];
   if (activeTab) {
     const top = activeTab.offsetTop;
     const bottom = top + activeTab.offsetHeight;
@@ -483,8 +461,22 @@ function setReadingLayout(reading) {
   return zoom;
 }
 
-function showPage(page, animate = true) {
-  if (page < overviewPage || page > lastPage || (page === activePage && spread.hasChildNodes())) return;
+function focusSheet(layout) {
+  const sheet = layout.querySelector(`.paper[data-clue="${activeClue}"]`);
+  (sheet ?? layout).querySelector("h3").focus({ preventScroll: true });
+  if (sheet && stackedPages.matches) layout.scrollTop = sheet.offsetTop;
+}
+
+function showPage(page, animate = true, clue) {
+  if (page < overviewPage || page > lastPage) return;
+  if (page === activePage && spread.hasChildNodes()) {
+    if (clue) {
+      activeClue = clue;
+      updateNavigation();
+      focusSheet(spread.firstElementChild);
+    }
+    return;
+  }
   if (page === answerPage && completedSeconds === null) {
     if (!answerConfirm.open) answerConfirm.showModal();
     return;
@@ -494,16 +486,18 @@ function showPage(page, animate = true) {
   const reading = page !== overviewPage;
   if (animate && outgoing && reading !== desk.classList.contains("is-reading")) setReadingLayout(reading);
   const contentPage = Math.max(0, page);
+  const nextClue = clue ?? (page > 0 && page < hintsPage ? page * 2 - 1 : undefined);
   const pageChanged = !outgoing || contentPage !== Math.max(0, activePage);
   let incoming = outgoing;
   if (pageChanged) {
     incoming = renderPage(contentPage);
     spread.replaceChildren(incoming);
-    if (animate && outgoing) turnPage(outgoing, incoming, page > activePage);
+    if (animate && outgoing) turnPage(outgoing, incoming, page > activePage, nextClue);
   }
   activePage = page;
+  activeClue = nextClue;
   updateNavigation();
-  incoming.querySelector("h3").focus({ preventScroll: true });
+  focusSheet(incoming);
 }
 
 function showStage(stage) {
@@ -897,13 +891,16 @@ closeButton.addEventListener("click", () => goTo("closed"));
 reader.querySelector('[data-bookmark="hints"]').dataset.page = hintsPage;
 reader.querySelector('[data-bookmark="answer"]').dataset.page = answerPage;
 clueTabs.innerHTML = caseFile.clues.map((clue, index) => {
-  const page = index + 1;
-  return `<button class="plate" type="button" data-page="${page}" aria-label="단서 ${page} ${clue.title}" title="${clue.title}">${page}</button>`;
+  const clueNumber = index + 1;
+  return `<button class="plate" type="button" data-clue="${clueNumber}" aria-label="${clueNumber}. ${clue.title}" title="${clue.title}">${clueNumber}</button>`;
 }).join("");
 reader.addEventListener("click", event => {
   const button = event.target.closest("button") ?? event.target.closest(".hint-card")?.querySelector(".hint-trigger");
   if (!button) return;
-  if (button.hasAttribute("data-page")) {
+  if (button.hasAttribute("data-clue")) {
+    const clue = Number(button.dataset.clue);
+    showPage(clueSpread(clue), true, clue);
+  } else if (button.hasAttribute("data-page")) {
     showPage(Number(button.dataset.page));
   } else if (button.hasAttribute("data-step")) {
     showPage(activePage + Number(button.dataset.step));
@@ -914,12 +911,14 @@ reader.addEventListener("click", event => {
     hintQuestion.textContent = `힌트 ${index + 1}번을 확인하시겠습니까?`;
     hintConfirm.showModal();
   } else if (button.hasAttribute("data-zoom")) {
-    const art = button.closest(".paper").querySelector(".illustration");
-    viewer.querySelector("h2").textContent = art.getAttribute("aria-label");
+    const paper = button.closest(".paper");
+    const art = paper.querySelector(".illustration");
+    const download = paper.querySelector("[data-download]");
+    viewer.querySelector("h2").textContent = art.alt;
+    viewerDownload.href = download.href;
+    viewerDownload.download = download.download;
     viewer.querySelector(".viewer-art").replaceChildren(art.cloneNode(true));
     viewer.showModal();
-  } else if (button.hasAttribute("data-download")) {
-    void saveIllustration(button.closest(".paper"));
   }
 });
 
@@ -997,10 +996,6 @@ hintConfirm.querySelector("form").addEventListener("submit", event => {
   document.getElementById(button.getAttribute("aria-controls")).setAttribute("aria-hidden", "false");
 });
 
-viewer.querySelector("[data-download]").addEventListener("click", () => void saveIllustration(viewer));
-viewer.addEventListener("close", () => {
-  viewer.querySelector(".viewer-art").replaceChildren();
-  viewer.querySelector(".download-status").textContent = "";
-});
+viewer.addEventListener("close", () => viewer.querySelector(".viewer-art").replaceChildren());
 if (bookState === "closed") setDeskRecord(desiredRecord);
 showStage(bookState);

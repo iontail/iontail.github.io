@@ -93,10 +93,10 @@
       <div class="shelf" aria-labelledby="library-title">
         <div class="shelf-books">
           <div class="shelf-slot is-active">
-            <a class="shelf-book" href="#case-01" data-record="0" aria-label="녹음실 사건 기록 꺼내기">
-              <span class="shelf-spine">
+            <a class="shelf-book" href="#case-01" data-record="0" aria-label="천문관의 마지막 리허설 꺼내기">
+              <span class="shelf-spine spine-planetarium">
                 <span class="spine-number" aria-hidden="true">01</span>
-                <span class="spine-title"><span>녹음실</span> <span>사건</span> <span>기록</span></span>
+                <span class="spine-title"><span>천문관의</span> <span>마지막</span> <span>리허설</span></span>
               </span>
             </a>
           </div>
@@ -131,7 +131,7 @@
         <img src="archive-desk.jpg" width="1672" height="941" alt="" decoding="async" fetchpriority="low">
       </picture>
       <div class="desk-heading">
-        <h2 id="desk-title" tabindex="-1">녹음실 사건 기록</h2>
+        <h2 id="desk-title" tabindex="-1">천문관의 마지막 리허설</h2>
       </div>
 
       <div class="desk-body">
@@ -142,10 +142,10 @@
                 <span class="paper-edge" aria-hidden="true"></span>
                 <span class="book-spine" aria-hidden="true"></span>
                 <span class="book-edge" aria-hidden="true"></span>
-                <span class="cover cover-teal">
+                <span class="cover cover-planetarium">
                   <span class="cover-index">사건 기록 01</span>
-                  <span class="cover-name">녹음실<br>사건 기록</span>
-                  <img src="cover-mark.svg" alt="">
+                  <span class="cover-name">천문관의<br>마지막 리허설</span>
+                  <img src="planetarium/cover-mark.svg" alt="">
                   <span class="cover-brand" lang="en">Traces of Guilt</span>
                 </span>
               </span>
@@ -184,10 +184,9 @@
     <header>
       <h2 id="viewer-title"></h2>
       <div class="art-controls">
-        <button class="plate" type="button" data-download><svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg> 이미지 저장</button>
+        <a class="plate" data-download download><svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg> 이미지 저장</a>
         <form method="dialog"><button class="plate" type="submit" aria-label="확대 화면 닫기" autofocus>닫기 <svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></form>
       </div>
-      <p class="download-status" role="status"></p>
     </header>
     <div class="viewer-art"></div>
   </dialog>

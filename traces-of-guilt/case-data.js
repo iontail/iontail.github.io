@@ -1,45 +1,73 @@
 export const caseFile = {
+  title: "천문관의 마지막 리허설",
   scene: {
-    title: "사건 현장",
-    description: "녹음실 전체를 둘러보고, 번호를 눌러 물건을 자세히 살펴보세요.",
-    image: { source: "recording-room.svg", width: 920, height: 620 }
+    title: "애스터 천문관",
+    period: "1932년 영국 · 애스터 천문연구소",
+    description: "새 행성 발표 리허설 중, 연구소장 에드워드 헤일은 갑자기 돌아간 투영기에 밀려 난간에 머리를 부딪혀 숨졌습니다.",
+    objective: "현장과 증언을 살펴보고 범인을 찾아보세요.",
+    image: "planetarium/main.png"
   },
   clues: [
     {
-      title: "벽시계",
-      action: "벽시계 자세히 보기",
-      description: "시곗바늘과 시계 주변을 확대해 보여주는 페이지입니다.",
-      position: [69, 39],
-      viewBox: [510, 145, 215, 190]
+      title: "목격자 증언 A",
+      action: "증언 A 확인하기",
+      image: "planetarium/witnesses-01.png",
+      position: [11, 85]
     },
     {
-      title: "릴 케이스",
-      action: "릴 케이스 자세히 보기",
-      description: "테이프 케이스와 표식을 확대해 보여주는 페이지입니다.",
-      position: [58, 70],
-      viewBox: [408, 361, 200, 122]
+      title: "목격자 증언 B",
+      action: "증언 B 확인하기",
+      image: "planetarium/witnesses-02.png",
+      position: [94, 57],
+      align: "end"
     },
     {
-      title: "출입 일지",
-      action: "출입 일지 자세히 보기",
-      description: "출입 일지의 외형과 내부 기록을 살펴보는 페이지입니다.",
-      position: [81, 55],
-      viewBox: [673, 305, 120, 120],
-      document: true
+      title: "리허설 진행표",
+      action: "진행표 확인하기",
+      image: "planetarium/schedule.png",
+      position: [8, 26]
     },
     {
-      title: "조정실 창문",
-      action: "조정실 창문 자세히 보기",
-      description: "창문과 창문 너머의 공간을 확대해 보여주는 페이지입니다.",
-      position: [13, 31],
-      viewBox: [8, 100, 150, 280]
+      title: "투영기 조작대",
+      action: "조작대 확인하기",
+      image: "planetarium/console.png",
+      position: [8, 62]
+    },
+    {
+      title: "리허설 사진",
+      action: "리허설 사진 보기",
+      image: "planetarium/photo.png",
+      position: [94, 76],
+      align: "end"
+    },
+    {
+      title: "연구소장 집무실",
+      action: "소장실 둘러보기",
+      image: "planetarium/office.png",
+      position: [94, 24],
+      align: "end",
+      kind: "장소"
+    },
+    {
+      title: "연구소장실 서랍",
+      action: "서랍 확인하기",
+      image: "planetarium/drawer.png",
+      position: [94, 34],
+      align: "end"
+    },
+    {
+      title: "기사 교정쇄",
+      action: "교정쇄 확인하기",
+      image: "planetarium/proof.png",
+      position: [94, 44],
+      align: "end"
     }
   ],
   hints: [
-    "시계의 바늘과 멈춘 위치를 살펴보세요.",
-    "케이스에 붙어 있는 표식을 확인해 보세요.",
-    "출입 일지에서 나중에 비교할 항목을 찾아보세요.",
-    "현장 전체 그림으로 돌아가 물건 사이의 위치를 확인해 보세요."
+    "두 증언을 나란히 읽고 각 사람이 직접 보고 들은 내용에 주목하세요.",
+    "현장 도판에서 조작대와 투영기, 소장실 문이 어디에 있는지 확인해 보세요.",
+    "리허설 진행표와 사진에서 확인할 수 있는 사실을 비교해 보세요.",
+    "소장실의 서류와 기사 교정쇄를 함께 살펴보세요."
   ],
   suspects: [
     { id: "margaret", portrait: "suspects/margaret.svg" },
