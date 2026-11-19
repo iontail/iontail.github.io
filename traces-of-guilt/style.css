@@ -76,8 +76,10 @@
   --book-ratio: 1.42;
   --binding-ratio: .19;
   --cover-width: clamp(15rem, 37vw, 34rem);
+  --cover-perspective: 93.75rem;
   --photo-ratio: 16 / 9;
   --stage-width: 82rem;
+  --reader-gutter: clamp(.45rem, 1.5vw, 1.8rem);
   --archive-edge: max(clamp(1rem, 6.5vw, 6.5rem), calc((100% - 76rem) / 2));
   font: 100%/1.5 var(--sans);
   color: var(--ivory);
@@ -169,17 +171,17 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 }
 
 :is(.masthead .plate, .plate-primary, .open-label, .preview-label, .close-book, .page-nav .plate)::after {
-  --hardware-size: 11px;
-  --hardware-inset: 5px;
+  --hardware-size: .6875rem;
+  --hardware-inset: .3125rem;
   background:
     var(--screw-head) left var(--hardware-inset) center / var(--hardware-size) no-repeat,
     var(--screw-head) right var(--hardware-inset) center / var(--hardware-size) no-repeat;
 }
-:is(.masthead .plate, .close-book)::after { --hardware-size: 9px; --hardware-inset: 3px; }
+:is(.masthead .plate, .close-book)::after { --hardware-size: .5625rem; --hardware-inset: .1875rem; }
 :is(.shelf-controls .plate, .options-close)::after {
   background:
-    var(--screw-head) left 3px top 3px / 7px no-repeat,
-    var(--screw-head) right 3px bottom 3px / 7px no-repeat;
+    var(--screw-head) left .1875rem top .1875rem / .4375rem no-repeat,
+    var(--screw-head) right .1875rem bottom .1875rem / .4375rem no-repeat;
 }
 
 .plate-primary {
@@ -363,8 +365,8 @@ main { overflow: clip; }
 }
 .settings-button::after {
   background:
-    var(--screw-head) center top 3px / 8px no-repeat,
-    var(--screw-head) center bottom 3px / 8px no-repeat;
+    var(--screw-head) center top .1875rem / .5rem no-repeat,
+    var(--screw-head) center bottom .1875rem / .5rem no-repeat;
 }
 .settings-button:is(:hover, :focus-visible) { opacity: 1; border-color: #d6ae79; }
 
@@ -854,7 +856,7 @@ main { overflow: clip; }
   border: 0;
   color: inherit;
   background: transparent;
-  perspective: 1500px;
+  perspective: var(--cover-perspective);
   perspective-origin: 50% calc(var(--cover-width) / var(--book-ratio) / 2);
 }
 .open-book:focus-visible { outline: none; }
@@ -915,7 +917,7 @@ main { overflow: clip; }
   z-index: 10;
   margin: 0;
   pointer-events: none;
-  perspective: 1500px;
+  perspective: var(--cover-perspective);
 }
 
 .flying-volume .desk-volume { width: 100%; height: 100%; transition: none; }
@@ -965,7 +967,7 @@ main { overflow: clip; }
   position: relative;
   isolation: isolate;
   padding: 5px 6px calc(var(--edge-depth) + 8px);
-  perspective: 2150px;
+  perspective: 134.375rem;
   border-radius: 8px;
 }
 
@@ -1306,7 +1308,6 @@ main { overflow: clip; }
 body:has(main .desk.is-reading) { overflow: hidden; }
 
 .desk.is-reading {
-  --reader-gutter: clamp(.45rem, 1.5vw, 1.8rem);
   height: calc(100dvh - 3.65rem);
   min-height: 0;
   padding: .45rem var(--reader-gutter);
@@ -1535,6 +1536,30 @@ body:has(.viewer[open], .hint-confirm[open], .audio-options[open]) { overflow: h
   .shelf-slot-empty .empty-cover :first-child { font-size: 1.45rem; }
   .hint-grid { gap: .55rem; padding-block: .75rem; }
   .hint-card { --hint-pad: .7rem; }
+}
+
+@media (min-width: 1600px) and (min-height: 900px) {
+  :root {
+    font-size: clamp(100%, min(1.087vw, 1.754svh), 220%);
+    --archive-edge: clamp(3rem, 7.6vw, 10rem);
+  }
+
+  .entrance-content { margin-inline: var(--archive-edge) auto; }
+  body:has(main .desk.is-reading) .masthead { padding-inline: var(--reader-gutter); }
+  .clue-index { max-width: 38rem; }
+  .open-book .open-label, .preview-label { margin-top: 1.55rem; }
+}
+
+@media (min-width: 1800px) {
+  :root { --wide-reader-width: max(69rem, calc((100dvh - 10.7rem) * 2.28)); }
+
+  body:has(main .desk.is-reading) .masthead {
+    padding-inline: max(var(--reader-gutter), calc((100% - var(--wide-reader-width)) / 2));
+  }
+  .is-reading .reader { max-width: var(--wide-reader-width); }
+  .is-reading .desk-heading {
+    right: max(var(--reader-gutter), calc((100% - var(--wide-reader-width)) / 2));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
