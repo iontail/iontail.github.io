@@ -1,76 +1,221 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko" data-type="software">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Explore an illustrated crime scene, connect the evidence and name your suspect.">
+  <meta name="description" content="책장에서 사건 기록을 골라 현장을 살펴보고 단서를 조사하는 웹 추리 게임.">
+  <meta name="page-type" content="software">
+  <meta name="site-kind" content="gaming">
   <title>Traces of Guilt</title>
   <link rel="canonical" href="https://iontail.github.io/traces-of-guilt/">
   <link rel="stylesheet" href="style.css">
-  <script src="game.js" defer></script>
+  <script src="game.js" type="module"></script>
 </head>
 <body>
-  <header class="site-header">
-    <a class="back-link" href="/app/"><span aria-hidden="true">←</span> Apps &amp; Sites</a>
-    <a class="header-link" href="#evidence">Evidence log</a>
+  <svg class="icon-definitions" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-back" viewBox="0 0 24 24">
+      <path d="M18 12H6m5-5-5 5 5 5"/>
+    </symbol>
+    <symbol id="icon-next" viewBox="0 0 24 24">
+      <path d="M6 12h12m-5-5 5 5-5 5"/>
+    </symbol>
+    <symbol id="icon-chevron" viewBox="0 0 24 24">
+      <path d="m7 10 5 5 5-5"/>
+    </symbol>
+    <symbol id="icon-book" viewBox="0 0 24 24">
+      <path d="M12 6.4C9.1 4.3 6.1 4.1 3 5.4v12.1c3.3-1.3 6.3-1 9 .9 2.7-1.9 5.7-2.2 9-.9V5.4c-3.1-1.3-6.1-1.1-9 1Zm0 0v12M6 8.5c1-.2 1.9 0 2.8.4m6.4 0c.9-.4 1.8-.6 2.8-.4"/>
+    </symbol>
+    <symbol id="icon-close-book" viewBox="0 0 24 24">
+      <path d="M6 4h12v14H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 14a1 1 0 0 0 0 2h12M7 4v14m4-8h4m-2-2v4"/>
+    </symbol>
+    <symbol id="icon-zoom" viewBox="0 0 24 24">
+      <path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5M12 8.5 15.5 12 12 15.5 8.5 12 12 8.5Z"/>
+    </symbol>
+    <symbol id="icon-key" viewBox="0 0 24 24">
+      <path d="M14.8 13.4a4.2 4.2 0 1 0-4.3-6.9 4.2 4.2 0 0 0 0 5.7L4 18.7V21h2.3l1.6-1.6V17h2.4l2.6-2.6m1-5.6h.1"/>
+    </symbol>
+    <symbol id="icon-seal" viewBox="0 0 24 24">
+      <path d="M12 3.2 15 4l3.1 1.6 1 3.3 1.6 3.1-1.6 3.1-1 3.3L15 20l-3 .8-3-.8-3.1-1.6-1-3.3L3.3 12l1.6-3.1 1-3.3L9 4l3-.8Zm0 4.3L16.5 12 12 16.5 7.5 12 12 7.5Z"/>
+    </symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24">
+      <path d="m7 7 10 10m0-10L7 17M4 4h3M4 4v3m16-3h-3m3 0v3M4 20h3m-3 0v-3m16 3h-3m3 0v-3"/>
+    </symbol>
+    <symbol id="icon-options" viewBox="0 0 24 24">
+      <path d="M4 6h5m4 0h7M4 12h9m4 0h3M4 18h2m4 0h10"/>
+      <path d="m9 6 2-2 2 2-2 2-2-2Zm4 6 2-2 2 2-2 2-2-2Zm-7 6 2-2 2 2-2 2-2-2Z"/>
+    </symbol>
+  </svg>
+  <header class="masthead">
+    <span class="masthead-wordmark" lang="en">Traces of Guilt</span>
+    <button class="exit-room plate" type="button" hidden><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg> 입구로</button>
+    <button class="return plate" type="button" hidden><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg> 기록실로</button>
+    <button class="settings-button" type="button" data-options aria-label="설정" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#icon-options"/></svg></button>
   </header>
 
-  <main class="page">
-    <section class="opening" aria-labelledby="case-title">
-      <div class="brief">
-        <h1>Traces<br>of Guilt<span>.</span></h1>
-        <div class="case-brief">
-          <p class="case-number">Case 01 <span> / </span> Demo</p>
-          <h2 id="case-title">The Missing Master</h2>
-          <p>The master reel vanished from Studio B just before closing. Three people signed the studio log that night. Find out who walked out with it.</p>
-          <a class="start-link" href="#scene">Investigate the scene <span aria-hidden="true">↘</span></a>
+  <main>
+    <section class="entrance" aria-labelledby="entrance-title">
+      <div class="archive-scene" aria-hidden="true">
+        <div class="archive-shot">
+          <img class="archive-room" src="archive-room.jpg" fetchpriority="high" width="1672" height="941" alt="">
+          <img class="archive-presence" src="archive-room-lit.jpg" decoding="async" width="1672" height="941" alt="">
         </div>
       </div>
 
-      <figure class="scene" id="scene">
-        <div class="scene-image">
-          <img src="recording-room.svg" alt="Studio B at night, with a wall clock, an empty tape case on the desk and a sign-in sheet by the door.">
-          <button class="marker marker-clock" type="button" data-clue="clock" aria-label="Inspect the wall clock">1</button>
-          <button class="marker marker-case" type="button" data-clue="case" aria-label="Inspect the reel case">2</button>
-          <button class="marker marker-log" type="button" data-clue="log" aria-label="Inspect the sign-in sheet">3</button>
+      <div class="entrance-content">
+        <h1 id="entrance-title" lang="en"><span>Traces</span> <span><em>of</em> Guilt</span></h1>
+        <div class="entrance-actions">
+          <a class="enter-room plate plate-primary" href="#investigation">사건조사실로 가기 <span aria-hidden="true"><svg class="icon"><use href="#icon-next"/></svg></span></a>
+          <button class="settings-button" type="button" data-options aria-label="설정" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="#icon-options"/></svg></button>
         </div>
-        <figcaption>
-          <span>Studio B <span aria-hidden="true">/</span> Recording room</span>
-          <span id="progress" role="status">0 of 3 clues found</span>
-        </figcaption>
-      </figure>
+      </div>
     </section>
 
-    <section class="investigation" id="evidence" aria-labelledby="evidence-title">
-      <div>
-        <h2 id="evidence-title">Evidence log</h2>
-        <p>Select a marker in the room or inspect a clue below.</p>
-        <ol class="clues">
-          <li><button type="button" data-clue="clock"><span>01</span> Wall clock</button></li>
-          <li><button type="button" data-clue="case"><span>02</span> Reel case</button></li>
-          <li><button type="button" data-clue="log"><span>03</span> Sign-in sheet</button></li>
-        </ol>
+    <section class="library" id="investigation" aria-labelledby="library-title" hidden>
+      <picture class="library-scene" aria-hidden="true">
+        <source media="(max-width: 720px) and (orientation: portrait)" srcset="archive-cabinet-portrait.jpg">
+        <img src="archive-cabinet.jpg" width="1672" height="941" alt="" decoding="async" fetchpriority="low">
+      </picture>
+      <div class="library-heading">
+        <h2 id="library-title" tabindex="-1">사건 기록</h2>
       </div>
 
-      <form class="suspects">
-        <fieldset>
-          <legend>Name your suspect</legend>
-          <label><input type="radio" name="suspect" value="iris" required> <span>Iris Reed</span><small>Singer</small></label>
-          <label><input type="radio" name="suspect" value="mara"> <span>Mara Voss</span><small>Engineer</small></label>
-          <label><input type="radio" name="suspect" value="leon"> <span>Leon Bell</span><small>Producer</small></label>
-        </fieldset>
-        <button class="submit" type="submit">Submit theory</button>
-        <p class="result" role="status"></p>
-      </form>
-      <noscript><p>Enable JavaScript to inspect the evidence and submit a theory.</p></noscript>
+      <div class="shelf" aria-labelledby="library-title">
+        <div class="shelf-books">
+          <div class="shelf-slot is-active">
+            <a class="shelf-book" href="#case-01" data-record="0" aria-label="녹음실 사건 기록 꺼내기">
+              <span class="shelf-spine">
+                <span class="spine-number" aria-hidden="true">01</span>
+                <span class="spine-title"><span>녹음실</span> <span>사건</span> <span>기록</span></span>
+              </span>
+            </a>
+          </div>
+
+          <div class="shelf-slot">
+            <a class="shelf-book" href="#case-02" data-record="1" aria-label="폐관 후의 전시실 표지 보기">
+              <span class="shelf-spine spine-rust">
+                <span class="spine-number" aria-hidden="true">02</span>
+                <span class="spine-title"><span>폐관</span> <span>후의</span> <span>전시실</span></span>
+              </span>
+            </a>
+          </div>
+
+          <div class="shelf-slot shelf-slot-empty">
+            <div class="empty-cover">
+              <span aria-hidden="true">+</span>
+              <span>추가 예정</span>
+            </div>
+          </div>
+        </div>
+        <div class="shelf-controls">
+          <button class="plate" type="button" data-shelf-step="-1" aria-label="이전 기록" disabled><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button>
+          <p class="shelf-caption" aria-live="polite">읽을 사건 기록을 골라보세요.</p>
+          <button class="plate" type="button" data-shelf-step="1" aria-label="다음 기록"><svg class="icon" aria-hidden="true"><use href="#icon-next"/></svg></button>
+        </div>
+      </div>
     </section>
+
+    <section class="desk" id="case-01" aria-labelledby="desk-title" hidden>
+      <picture class="desk-scene" aria-hidden="true">
+        <source media="(max-width: 720px) and (orientation: portrait)" srcset="archive-desk-portrait.jpg">
+        <img src="archive-desk.jpg" width="1672" height="941" alt="" decoding="async" fetchpriority="low">
+      </picture>
+      <div class="desk-heading">
+        <h2 id="desk-title" tabindex="-1">녹음실 사건 기록</h2>
+        <button class="close-book plate" type="button" hidden><svg class="icon" aria-hidden="true"><use href="#icon-close-book"/></svg> 책 덮기</button>
+      </div>
+
+      <div class="desk-body">
+        <div class="closed-book">
+          <div class="desk-jacket">
+            <button class="open-book" type="button" aria-label="사건기록 열람하기">
+              <span class="desk-volume">
+                <span class="paper-edge" aria-hidden="true"></span>
+                <span class="book-spine" aria-hidden="true"></span>
+                <span class="book-edge" aria-hidden="true"></span>
+                <span class="cover cover-teal">
+                  <span class="cover-index">사건 기록 01</span>
+                  <span class="cover-name">녹음실<br>사건 기록</span>
+                  <img src="cover-mark.svg" alt="">
+                  <span class="cover-brand" lang="en">Traces of Guilt</span>
+                </span>
+              </span>
+              <span class="open-label plate"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg> 사건기록 열람하기</span>
+            </button>
+            <p class="preview-label plate" hidden>표지 미리보기</p>
+          </div>
+        </div>
+
+        <div class="reader" hidden>
+          <nav class="bookmarks" aria-label="책갈피">
+            <button class="plate" type="button" data-page="0"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg> 현장</button>
+            <button class="plate" type="button" data-bookmark="hints"><svg class="icon" aria-hidden="true"><use href="#icon-key"/></svg> 힌트</button>
+            <button class="plate" type="button" data-bookmark="answer"><svg class="icon" aria-hidden="true"><use href="#icon-seal"/></svg> 정답</button>
+          </nav>
+          <div class="book" aria-label="사건 기록 본문">
+            <div class="spread"></div>
+          </div>
+          <nav class="page-nav" aria-label="페이지 이동">
+            <button class="plate" type="button" data-step="-1"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg> 이전</button>
+            <span id="page-count" role="status"></span>
+            <button class="plate" type="button" data-step="1">다음 <svg class="icon" aria-hidden="true"><use href="#icon-next"/></svg></button>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <noscript><p class="script-note">책을 펼치려면 브라우저에서 자바스크립트를 켜 주세요.</p></noscript>
   </main>
 
-  <dialog class="clue-dialog" aria-labelledby="clue-title">
-    <form method="dialog"><button class="close" aria-label="Close evidence">×</button></form>
-    <p class="case-number" id="clue-number"></p>
-    <h2 id="clue-title"></h2>
-    <p id="clue-description"></p>
+  <dialog class="viewer" aria-labelledby="viewer-title">
+    <header>
+      <h2 id="viewer-title"></h2>
+      <form method="dialog"><button class="plate" type="submit" aria-label="확대 화면 닫기">닫기 <svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></form>
+    </header>
+    <div class="viewer-art"></div>
   </dialog>
+
+  <dialog class="hint-confirm" aria-labelledby="hint-question">
+    <svg class="icon" aria-hidden="true"><use href="#icon-key"/></svg>
+    <h2 id="hint-question"></h2>
+    <form method="dialog">
+      <button class="plate plate-primary" type="submit" value="yes">예</button>
+      <button class="plate" type="submit" value="no" autofocus>아니요</button>
+    </form>
+  </dialog>
+
+  <dialog class="audio-options" aria-labelledby="options-title">
+    <div class="options-heading">
+      <h2 id="options-title">설정</h2>
+      <form method="dialog"><button class="plate options-close" type="submit" aria-label="설정 닫기"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></form>
+    </div>
+    <label class="music-label" for="bgm-track">배경 음악</label>
+    <div class="music-picker">
+      <select id="bgm-track">
+        <option value="vanishing" data-track="archive-bgm.m4a" data-isrc="USUAN1600050" data-edited>Vanishing</option>
+        <option value="mystery" data-track="archive-bgm-piano.m4a" data-isrc="USUAN1100536">Comfortable Mystery 3</option>
+        <option value="dread" data-track="archive-bgm-dread.m4a" data-isrc="USUAN1100048" data-edited>The Dread</option>
+      </select>
+      <svg class="icon" aria-hidden="true"><use href="#icon-chevron"/></svg>
+    </div>
+    <div class="volume-heading"><label for="bgm-volume">볼륨</label><output for="bgm-volume">5%</output></div>
+    <input id="bgm-volume" type="range" min="0" max="100" value="5">
+    <p class="audio-status" role="status" hidden>배경 음악을 불러올 수 없어요.</p>
+    <p class="music-credit"><a class="track-credit" href="https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1600050" target="_blank" rel="noopener">Vanishing · Kevin MacLeod</a><br><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a><span class="track-edit-note"> · 일부 구간 편집</span></p>
+  </dialog>
+
+  <template id="spread-template">
+    <div class="spread-layout">
+      <section class="paper paper-left"></section>
+      <section class="paper paper-right"></section>
+    </div>
+  </template>
+  <template id="preview-cover">
+    <span class="cover cover-rust">
+      <span class="cover-index">사건 기록 02</span>
+      <span class="cover-name">폐관 후의<br>전시실</span>
+      <span class="gallery-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="cover-brand" lang="en">Traces of Guilt</span>
+    </span>
+  </template>
 </body>
 </html>

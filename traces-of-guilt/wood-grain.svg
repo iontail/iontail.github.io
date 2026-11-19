@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440">
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".007 .24" numOctaves="3" seed="11" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncR type="gamma" amplitude=".58" exponent="1.7" offset=".13"/>
+        <feFuncG type="gamma" amplitude=".46" exponent="1.8" offset=".10"/>
+        <feFuncB type="gamma" amplitude=".36" exponent="1.9" offset=".07"/>
+        <feFuncA type="linear" slope=".59"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <path fill="#806044" d="M0 0h960v440H0z"/>
+  <path filter="url(#grain)" d="M0 0h960v440H0z"/>
+  <g fill="none" stroke="#3c2516" opacity=".21">
+    <path d="M-4 84c138-4 195-9 324-3s199 12 341 3 225-7 303-5M-3 92c149-5 217-7 333-1s212 7 325 1 226-10 307-4m-962 40c133 2 258 6 334-2s109-11 153-7 127 6 223 3 174-7 252-3"/>
+    <path d="M-6 292c138 3 261-1 369-9s236-5 350-1 195 1 253-6M0 300c137 4 243-1 353-8 105-8 155-17 201-4s177 7 214 4 122 1 200-6m-963 31c215-2 392-22 496-17 108 6 240-1 367 1 35 1 67 0 99-4"/>
+    <path d="M562 288c17-7 38-8 52-3 11 4 27 4 43 3-27 7-54 9-68 4-8-3-22-3-27-4z"/>
+  </g>
+</svg>
