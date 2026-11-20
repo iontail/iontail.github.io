@@ -8,14 +8,14 @@ export const caseFile = {
       "당시 현장에는 연구소 사무국장 마거릿 헤일, 천문관 기술실장 아서 리드, 선임연구원 클라이브 베넷, 과학 전문 기자 줄리언 머서가 있었습니다."
     ],
     objective: "발표는 취소됐습니다. 현장의 단서와 네 사람의 증언을 대조해 그날의 리허설을 재구성해 보세요.",
-    image: "planetarium/main.png?v=character-faces"
+    image: "planetarium/main.png?v=rehearsal-slide-handoff"
   },
   clues: [
     {
       title: "목격자 증언 A",
       action: "증언 확인하기",
       mapLabel: "증언",
-      image: "planetarium/witnesses-01.png?v=character-faces",
+      image: "planetarium/witnesses-01.png?v=rehearsal-slide-handoff",
       position: [4, 94.8]
     },
     {
