@@ -1,4 +1,4 @@
-import { caseFile } from "./case-data.js?v=slide-sequence";
+import { caseFile } from "./case-data.js?v=case-evidence-review";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -26,6 +26,7 @@ const spreadTemplate = document.querySelector("#spread-template");
 const pageCount = document.querySelector("#page-count");
 const viewer = document.querySelector(".viewer");
 const viewerDownload = viewer.querySelector("[data-download]");
+const evidenceDialog = document.querySelector(".evidence-dialog");
 const hintConfirm = document.querySelector(".hint-confirm");
 const hintQuestion = document.querySelector("#hint-question");
 const answerConfirm = document.querySelector(".answer-confirm");
@@ -255,6 +256,13 @@ function overview(left, right) {
     ${sceneArt(`${scene.title} 사건 현장`, scene.image)}`;
 }
 
+function evidenceNoteLinks(ids = []) {
+  if (!ids.length) return "";
+  return `<div class="evidence-note-links">${ids.map(id =>
+    `<button type="button" data-evidence-note="${id}" aria-haspopup="dialog">${caseFile.evidenceNotes[id].title}</button>`
+  ).join("")}</div>`;
+}
+
 function evidence(paper, index) {
   const clue = sheets[index - 1];
   if (!clue) return;
@@ -263,7 +271,7 @@ function evidence(paper, index) {
   const art = clue.map
     ? sceneArt(clue.title, clue.image, clue.map)
     : `<div class="art-window"><figure class="art-board">${illustration(clue.title, clue.image)}</figure></div>`;
-  paper.innerHTML = `${sheetHeading(clue.title, clue.image, clue)}${art}`;
+  paper.innerHTML = `<div>${sheetHeading(clue.title, clue.image, clue)}${evidenceNoteLinks(clue.notes)}</div>${art}`;
 }
 
 function hints(left, right) {
@@ -301,6 +309,15 @@ function cipherTable(rows, title, filled) {
   </table>`;
 }
 
+function cipherGuide(cipher) {
+  return `<p>빈 도형은 자음, 검게 채운 도형은 모음이에요. 점의 위치와 개수로 자모를 구별해요. 짧은 세로선은 음절을 나누고, 넓은 여백은 어절을 나눠요.</p>
+    <p><strong>점이 두 개면</strong> 자음은 ㄱ → ㄲ처럼 겹쳐 쓰고, 모음은 ㅏ → ㅑ처럼 획을 하나 더해요.</p>
+    <div class="cipher-tables">
+      ${cipherTable(cipher.consonants, "자음 · 빈 도형", false)}
+      ${cipherTable(cipher.vowels, "모음 · 검은 도형", true)}
+    </div>`;
+}
+
 function solution(layout) {
   const { practice, suspectId, explanation, video = {}, cipher, stepsTitle = "장면별 해설", steps = [] } = caseFile.answer;
   const correctSuspect = caseFile.suspects.find(suspect => suspect.id === suspectId);
@@ -333,6 +350,7 @@ function solution(layout) {
           </div>
           <h5>${suspect.name}</h5>
           <p>${suspect.role}</p>
+          ${suspect.relationship ? `<p class="solution-cast-relationship">${suspect.relationship}</p>` : ""}
         </li>`).join("")}</ol>
       </section>
       <section class="solution-reconstruction" aria-labelledby="solution-film-title">
@@ -358,12 +376,7 @@ function solution(layout) {
       </section>
       ${cipher ? `<section class="solution-cipher" aria-labelledby="solution-cipher-title">
         <h4 id="solution-cipher-title" tabindex="-1">비밀암호 대응표</h4>
-        <p>빈 도형은 자음, 검게 채운 도형은 모음이에요. 점의 위치와 개수로 자모를 구별해요. 짧은 세로선은 음절을 나누고, 넓은 여백은 어절을 나눠요.</p>
-        <p><strong>점이 두 개면</strong> 자음은 ㄱ → ㄲ처럼 겹쳐 쓰고, 모음은 ㅏ → ㅑ처럼 획을 하나 더해요.</p>
-        <div class="cipher-tables">
-          ${cipherTable(cipher.consonants, "자음 · 빈 도형", false)}
-          ${cipherTable(cipher.vowels, "모음 · 검은 도형", true)}
-        </div>
+        ${cipherGuide(cipher)}
       </section>` : ""}
       ${steps.length ? `<section class="solution-sequence" aria-labelledby="solution-steps">
         <h4 id="solution-steps" tabindex="-1">${stepsTitle}</h4>
@@ -374,7 +387,7 @@ function solution(layout) {
           </button>
           <div class="solution-step-text">
             <span class="solution-step-number" aria-hidden="true">${number(index + 1)}</span>
-            <div><h5>${step.title}</h5><p>${step.text}</p></div>
+            <div><h5>${step.title}</h5><p>${step.text}</p>${evidenceNoteLinks(step.notes)}</div>
           </div>
         </li>`).join("")}</ol>
       </section>` : ""}
@@ -1026,6 +1039,14 @@ reader.addEventListener("click", event => {
     showPage(Number(button.dataset.page));
   } else if (button.hasAttribute("data-step")) {
     stepSpread(Number(button.dataset.step));
+  } else if (button.hasAttribute("data-evidence-note")) {
+    const note = caseFile.evidenceNotes[button.dataset.evidenceNote];
+    evidenceDialog.querySelector("h2").textContent = note.title;
+    evidenceDialog.querySelector(".evidence-dialog-body").innerHTML = note.cipher
+      ? cipherGuide(caseFile.answer.cipher)
+      : note.paragraphs.map(({ speaker, text }) => `<p>${speaker ? `<strong>${speaker}</strong>` : ""}${text}</p>`).join("");
+    evidenceDialog.showModal();
+    evidenceDialog.scrollTop = 0;
   } else if (button.hasAttribute("data-solution-jump")) {
     spread.querySelector(".solution-video")?.pause();
     const heading = document.getElementById(button.dataset.solutionJump);
