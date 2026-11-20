@@ -1771,8 +1771,14 @@ main { overflow: clip; }
 .cipher-table thead th { background: #dbc29a; }
 .cipher-table th:first-child { width: 24%; }
 .cipher-table tbody th span { display: block; color: #624830; font-weight: 400; }
+.cipher-table tr[data-dots="2"] { --cipher-paper: #f1d7aa; background: var(--cipher-paper); }
+.cipher-table tr[data-dots="2"] th span { font-weight: 700; }
 .cipher-match { display: flex; align-items: center; justify-content: center; gap: .1rem; font-weight: 700; }
-.cipher-glyph { position: relative; display: grid; flex: none; place-items: center; width: 1.6rem; height: 1.6rem; }
+.cipher-table tr[data-dots="2"] .cipher-match { flex-direction: column; gap: 0; }
+.cipher-letter { white-space: nowrap; }
+.cipher-table tr[data-dots="2"] .cipher-letter { font-size: clamp(.875rem, 4.1vw, 1rem); }
+.cipher-base { color: #624830; font-weight: 400; }
+.cipher-glyph { position: relative; display: grid; flex: none; place-items: center; width: 1.8rem; height: 1.8rem; }
 .cipher-glyph[data-shape="triangle"] { --cipher-outline: polygon(50% 0, 100% 100%, 0 100%); }
 .cipher-glyph[data-shape="diamond"] { --cipher-outline: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
 .cipher-glyph[data-shape="circle"] { --cipher-outline: circle(50%); }
@@ -1784,8 +1790,8 @@ main { overflow: clip; }
   background: var(--cipher-paper);
   content: "";
 }
-.cipher-dots { position: absolute; display: flex; gap: .09rem; }
-.cipher-dots i { width: .16rem; height: .16rem; border-radius: 50%; background: currentColor; }
+.cipher-dots { position: absolute; display: flex; gap: .15rem; }
+.cipher-dots i { width: .22rem; height: .22rem; border-radius: 50%; background: currentColor; }
 .cipher-glyph[data-direction="north"] .cipher-dots { top: .08rem; left: 50%; translate: -50% 0; }
 .cipher-glyph[data-direction="east"] .cipher-dots { right: .08rem; top: 50%; translate: 0 -50%; flex-direction: column; }
 .cipher-glyph[data-direction="south"] .cipher-dots { bottom: .08rem; left: 50%; translate: -50% 0; }

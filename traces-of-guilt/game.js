@@ -283,17 +283,18 @@ function hints(left, right) {
 function cipherTable(rows, title, filled) {
   const directions = [["north", "위"], ["east", "오른쪽"], ["south", "아래"], ["west", "왼쪽"]];
   const shapeNames = { square: "사각형", triangle: "삼각형", diamond: "마름모", circle: "원" };
+  const baseLetters = new Map(rows.filter(([, dots]) => dots === 1).map(([shape, , letters]) => [shape, letters]));
   return `<table class="cipher-table">
     <caption>${title}</caption>
     <thead><tr><th scope="col">도형 · 점</th>${directions.map(([, label]) => `<th scope="col">${label}</th>`).join("")}</tr></thead>
-    <tbody>${rows.map(([shape, dots, letters]) => `<tr>
-      <th scope="row">${shapeNames[shape]} <span>${dots}점</span></th>
+    <tbody>${rows.map(([shape, dots, letters]) => `<tr data-dots="${dots}">
+      <th scope="row">${shapeNames[shape]} <span>점 ${dots}개</span></th>
       ${[...letters].map((letter, index) => letter === "-" ? '<td aria-label="미배정">–</td>' : `<td>
         <span class="cipher-match">
           <span class="cipher-glyph" data-shape="${shape}" data-direction="${directions[index][0]}" data-filled="${filled}" aria-hidden="true">
             <span class="cipher-shape"></span><span class="cipher-dots"><i></i>${dots === 2 ? "<i></i>" : ""}</span>
           </span>
-          <span>${letter}</span>
+          <span class="cipher-letter">${dots === 2 ? `<span class="cipher-base">${baseLetters.get(shape)[index]} → </span>` : ""}${letter}</span>
         </span>
       </td>`).join("")}
     </tr>`).join("")}</tbody>
@@ -358,6 +359,7 @@ function solution(layout) {
       ${cipher ? `<section class="solution-cipher" aria-labelledby="solution-cipher-title">
         <h4 id="solution-cipher-title" tabindex="-1">비밀암호 대응표</h4>
         <p>빈 도형은 자음, 검게 채운 도형은 모음이에요. 점의 위치와 개수로 자모를 구별해요. 짧은 세로선은 음절을 나누고, 넓은 여백은 어절을 나눠요.</p>
+        <p><strong>점이 두 개면</strong> 자음은 ㄱ → ㄲ처럼 겹쳐 쓰고, 모음은 ㅏ → ㅑ처럼 획을 하나 더해요.</p>
         <div class="cipher-tables">
           ${cipherTable(cipher.consonants, "자음 · 빈 도형", false)}
           ${cipherTable(cipher.vowels, "모음 · 검은 도형", true)}
