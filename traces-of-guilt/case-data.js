@@ -5,7 +5,7 @@ export const caseFile = {
     period: "1932년 영국 · 애스터 천문연구소",
     description: "새 행성 발표 리허설 중, 연구소장 에드워드 헤일은 갑자기 돌아간 투영기에 밀려 난간에 머리를 부딪혀 숨졌습니다.",
     objective: "현장과 증언을 살펴보고 범인을 찾아보세요.",
-    image: "planetarium/main.png"
+    image: "planetarium/main.png?v=wall-schedule"
   },
   clues: [
     {
@@ -24,7 +24,8 @@ export const caseFile = {
       action: "진행표 확인하기",
       mapLabel: "진행표",
       image: "planetarium/schedule.png",
-      position: [10, 30]
+      position: [12.7, 36.7],
+      compactPosition: [12.7, 37.7]
     },
     {
       title: "투영기 조작대",
