@@ -1,4 +1,4 @@
-import { caseFile } from "./case-data.js?v=rehearsal-hints";
+import { caseFile } from "./case-data.js?v=case-explanation";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -280,8 +280,28 @@ function hints(left, right) {
   right.innerHTML = `<div class="hint-grid">${cards.slice(2).join("")}</div>`;
 }
 
+function cipherTable(rows, title, filled) {
+  const directions = [["north", "위"], ["east", "오른쪽"], ["south", "아래"], ["west", "왼쪽"]];
+  const shapeNames = { square: "사각형", triangle: "삼각형", diamond: "마름모", circle: "원" };
+  return `<table class="cipher-table">
+    <caption>${title}</caption>
+    <thead><tr><th scope="col">도형 · 점</th>${directions.map(([, label]) => `<th scope="col">${label}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map(([shape, dots, letters]) => `<tr>
+      <th scope="row">${shapeNames[shape]} <span>${dots}점</span></th>
+      ${[...letters].map((letter, index) => letter === "-" ? '<td aria-label="미배정">–</td>' : `<td>
+        <span class="cipher-match">
+          <span class="cipher-glyph" data-shape="${shape}" data-direction="${directions[index][0]}" data-filled="${filled}" aria-hidden="true">
+            <span class="cipher-shape"></span><span class="cipher-dots"><i></i>${dots === 2 ? "<i></i>" : ""}</span>
+          </span>
+          <span>${letter}</span>
+        </span>
+      </td>`).join("")}
+    </tr>`).join("")}</tbody>
+  </table>`;
+}
+
 function solution(layout) {
-  const { practice, suspectId, explanation, video = {}, stepsTitle = "장면별 해설", steps = [] } = caseFile.answer;
+  const { practice, suspectId, explanation, video = {}, cipher, stepsTitle = "장면별 해설", steps = [] } = caseFile.answer;
   const correctSuspect = caseFile.suspects.find(suspect => suspect.id === suspectId);
   const successful = submittedSuspect.id === suspectId;
   const verdict = `${practice ? "시연 지목" : "범인 검거"} ${successful ? "성공" : "실패"}`;
@@ -296,6 +316,7 @@ function solution(layout) {
         </div>
         <div class="solution-links">
           <button class="solution-jump" type="button" data-solution-jump="solution-film-title">재구성 영상 보기</button>
+          ${cipher ? '<button class="solution-jump" type="button" data-solution-jump="solution-cipher-title">비밀암호 대응표 보기</button>' : ""}
           ${steps.length ? '<button class="solution-jump" type="button" data-solution-jump="solution-steps">장면별 해설 보기</button>' : ""}
         </div>
       </header>
@@ -334,10 +355,22 @@ function solution(layout) {
           <dt>풀이 시간</dt><dd>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</dd>
         </dl>
       </section>
+      ${cipher ? `<section class="solution-cipher" aria-labelledby="solution-cipher-title">
+        <h4 id="solution-cipher-title" tabindex="-1">비밀암호 대응표</h4>
+        <p>빈 도형은 자음, 검게 채운 도형은 모음이에요. 점의 위치와 개수로 자모를 구별해요. 짧은 세로선은 음절을 나누고, 넓은 여백은 어절을 나눠요.</p>
+        <div class="cipher-tables">
+          ${cipherTable(cipher.consonants, "자음 · 빈 도형", false)}
+          ${cipherTable(cipher.vowels, "모음 · 검은 도형", true)}
+        </div>
+      </section>` : ""}
       ${steps.length ? `<section class="solution-sequence" aria-labelledby="solution-steps">
         <h4 id="solution-steps" tabindex="-1">${stepsTitle}</h4>
         <ol class="solution-steps">${steps.map((step, index) => `<li>
-          <img src="${step.image}" alt="${step.alt ?? ""}" loading="lazy" decoding="async">
+          <button class="solution-step-image" type="button" data-zoom aria-haspopup="dialog"
+            aria-label="${step.title} 단서 이미지 확대"${step.crop ? ` style="--step-scale:${step.crop[0]};--step-origin:${step.crop[1]}"` : ""}>
+            <img src="${step.image}" alt="${step.alt ?? ""}" width="1600" height="1280" loading="lazy" decoding="async">
+            <span class="solution-step-zoom">${icon("zoom")}</span>
+          </button>
           <div class="solution-step-text">
             <span class="solution-step-number" aria-hidden="true">${number(index + 1)}</span>
             <div><h5>${step.title}</h5><p>${step.text}</p></div>
@@ -1005,11 +1038,11 @@ reader.addEventListener("click", event => {
     hintConfirm.showModal();
   } else if (button.hasAttribute("data-zoom")) {
     const paper = button.closest(".paper");
-    const art = paper.querySelector(".illustration");
+    const art = button.querySelector("img") ?? paper.querySelector(".illustration");
     const download = paper.querySelector("[data-download]");
     viewer.querySelector("h2").textContent = art.alt;
-    viewerDownload.href = download.href;
-    viewerDownload.download = download.download;
+    viewerDownload.href = download?.href ?? art.src;
+    viewerDownload.download = download?.download ?? "";
     viewer.querySelector(".viewer-art").replaceChildren(art.cloneNode(true));
     viewer.showModal();
   }
