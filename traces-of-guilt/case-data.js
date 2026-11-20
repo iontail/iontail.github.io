@@ -76,8 +76,8 @@ export const caseFile = {
       action: "진행표 확인하기",
       mapLabel: "진행표",
       image: illustrations.schedule,
-      position: [12.7, 36.7],
-      compactPosition: [12.7, 37.7]
+      position: [12.7, 19.25],
+      compactPosition: [12.7, 18]
     },
     {
       title: "리허설 사진",
