@@ -1,4 +1,4 @@
-import { caseFile } from "./case-data.js?v=witness-proof";
+import { caseFile } from "./case-data.js?v=solution-source";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -26,7 +26,6 @@ const spreadTemplate = document.querySelector("#spread-template");
 const pageCount = document.querySelector("#page-count");
 const viewer = document.querySelector(".viewer");
 const viewerDownload = viewer.querySelector("[data-download]");
-const evidenceDialog = document.querySelector(".evidence-dialog");
 const hintConfirm = document.querySelector(".hint-confirm");
 const hintQuestion = document.querySelector("#hint-question");
 const answerConfirm = document.querySelector(".answer-confirm");
@@ -256,13 +255,6 @@ function overview(left, right) {
     ${sceneArt(`${scene.title} 사건 현장`, scene.image)}`;
 }
 
-function evidenceNoteLinks(ids = []) {
-  if (!ids.length) return "";
-  return `<div class="evidence-note-links">${ids.map(id =>
-    `<button type="button" data-evidence-note="${id}" aria-haspopup="dialog">${caseFile.evidenceNotes[id].title}</button>`
-  ).join("")}</div>`;
-}
-
 function evidence(paper, index) {
   const clue = sheets[index - 1];
   if (!clue) return;
@@ -271,7 +263,7 @@ function evidence(paper, index) {
   const art = clue.map
     ? sceneArt(clue.title, clue.image, clue.map)
     : `<div class="art-window"><figure class="art-board">${illustration(clue.title, clue.image)}</figure></div>`;
-  paper.innerHTML = `<div>${sheetHeading(clue.title, clue.image, clue)}${evidenceNoteLinks(clue.notes)}</div>${art}`;
+  paper.innerHTML = `${sheetHeading(clue.title, clue.image, clue)}${art}`;
 }
 
 function hints(left, right) {
@@ -387,7 +379,7 @@ function solution(layout) {
           </button>
           <div class="solution-step-text">
             <span class="solution-step-number" aria-hidden="true">${number(index + 1)}</span>
-            <div><h5>${step.title}</h5><p>${step.text}</p>${evidenceNoteLinks(step.notes)}</div>
+            <div><h5>${step.title}</h5><p>${step.text}</p></div>
           </div>
         </li>`).join("")}</ol>
       </section>` : ""}
@@ -1039,14 +1031,6 @@ reader.addEventListener("click", event => {
     showPage(Number(button.dataset.page));
   } else if (button.hasAttribute("data-step")) {
     stepSpread(Number(button.dataset.step));
-  } else if (button.hasAttribute("data-evidence-note")) {
-    const note = caseFile.evidenceNotes[button.dataset.evidenceNote];
-    evidenceDialog.querySelector("h2").textContent = note.title;
-    evidenceDialog.querySelector(".evidence-dialog-body").innerHTML = note.cipher
-      ? cipherGuide(caseFile.answer.cipher)
-      : note.paragraphs.map(({ speaker, text }) => `<p>${speaker ? `<strong>${speaker}</strong>` : ""}${text}</p>`).join("");
-    evidenceDialog.showModal();
-    evidenceDialog.scrollTop = 0;
   } else if (button.hasAttribute("data-solution-jump")) {
     spread.querySelector(".solution-video")?.pause();
     const heading = document.getElementById(button.dataset.solutionJump);
