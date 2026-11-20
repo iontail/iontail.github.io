@@ -1,4 +1,4 @@
-import { caseFile } from "./case-data.js?v=office-evening";
+import { caseFile } from "./case-data.js?v=case-intro";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -223,7 +223,7 @@ function overview(left, right) {
   right.classList.add("art-page");
   left.innerHTML = `<p class="paper-kicker">${scene.period}</p>
     <h3 tabindex="-1">${title}</h3>
-    <p class="paper-description">${scene.description}</p>
+    ${scene.description.map(paragraph => `<p class="paper-description">${paragraph}</p>`).join("")}
     <p class="case-objective">${scene.objective}</p>
     <details class="overview-index"><summary>단서 목록</summary>
       <ol class="clue-index">${clueLinks.map(({ clueNumber, action }) => `<li><button type="button" data-clue="${clueNumber}">
