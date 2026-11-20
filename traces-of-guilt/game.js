@@ -842,10 +842,21 @@ for (const step of shelfSteps) {
   step.addEventListener("click", () => selectRecord(selectedRecord + Number(step.dataset.shelfStep)));
 }
 document.addEventListener("keydown", event => {
-  if (bookState !== "shelf" || moving || event.altKey || event.metaKey || event.ctrlKey) return;
-  if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+  const { key, target } = event;
+  const space = key === " ";
+  if (!space && key !== "ArrowLeft" && key !== "ArrowRight") return;
+  if (moving || event.defaultPrevented || event.isComposing || event.altKey || event.metaKey || event.ctrlKey || event.shiftKey) return;
+  if (document.querySelector("dialog[open]")) return;
+
+  const step = key === "ArrowLeft" ? -1 : 1;
+  if (bookState === "shelf" && !space) {
     event.preventDefault();
-    selectRecord(selectedRecord + (event.key === "ArrowRight" ? 1 : -1));
+    selectRecord(selectedRecord + step);
+  } else if (bookState === "open") {
+    if (target.isContentEditable || target.closest("input, select, textarea")) return;
+    if (space && target.closest("button, summary, [role='button']")) return;
+    event.preventDefault();
+    if (!event.repeat) showPage(activePage + step);
   }
 });
 
