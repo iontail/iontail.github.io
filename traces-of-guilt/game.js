@@ -1,4 +1,4 @@
-import { caseFile } from "./case-data.js?v=case-explanation";
+import { caseFile } from "./case-data.js?v=solution-details";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -366,9 +366,8 @@ function solution(layout) {
       ${steps.length ? `<section class="solution-sequence" aria-labelledby="solution-steps">
         <h4 id="solution-steps" tabindex="-1">${stepsTitle}</h4>
         <ol class="solution-steps">${steps.map((step, index) => `<li>
-          <button class="solution-step-image" type="button" data-zoom aria-haspopup="dialog"
-            aria-label="${step.title} 단서 이미지 확대"${step.crop ? ` style="--step-scale:${step.crop[0]};--step-origin:${step.crop[1]}"` : ""}>
-            <img src="${step.image}" alt="${step.alt ?? ""}" width="1600" height="1280" loading="lazy" decoding="async">
+          <button class="solution-step-image" type="button" data-zoom aria-haspopup="dialog" aria-label="${step.title} 단서 이미지 확대">
+            <img class="illustration" src="${step.image}" alt="${step.alt ?? ""}" loading="lazy" decoding="async">
             <span class="solution-step-zoom">${icon("zoom")}</span>
           </button>
           <div class="solution-step-text">
