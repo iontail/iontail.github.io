@@ -297,7 +297,7 @@ function solution(layout) {
         </div>
         <dl class="case-result">
           <dt>내가 지목한 용의자</dt><dd>${suspectLabel(submittedSuspect)}</dd>
-          <dt>${practice ? "시연 정답" : "범인"}</dt><dd>${suspectLabel(correctSuspect)}</dd>
+          <dt>${practice ? "시연 정답" : "범인"}</dt><dd>${suspectLabel(correctSuspect)} (${correctSuspect.name})</dd>
           <dt>풀이 시간</dt><dd>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</dd>
         </dl>
       </section>

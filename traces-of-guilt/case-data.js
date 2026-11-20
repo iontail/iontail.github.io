@@ -76,10 +76,10 @@ export const caseFile = {
     "소장실의 서류와 기사 교정쇄를 함께 살펴보세요."
   ],
   suspects: [
-    { id: "margaret", portrait: "suspects/margaret.svg" },
-    { id: "arthur", portrait: "suspects/arthur.svg" },
-    { id: "clive", portrait: "suspects/clive.svg" },
-    { id: "julian", portrait: "suspects/julian.svg" }
+    { id: "margaret", name: "마거릿 헤일", portrait: "suspects/margaret.svg" },
+    { id: "arthur", name: "아서 리드", portrait: "suspects/arthur.svg" },
+    { id: "clive", name: "클라이브 베넷", portrait: "suspects/clive.svg" },
+    { id: "julian", name: "줄리언 머서", portrait: "suspects/julian.svg" }
   ],
   answer: {
     practice: true,
