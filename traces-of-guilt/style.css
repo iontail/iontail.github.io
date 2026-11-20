@@ -1226,6 +1226,7 @@ main { overflow: clip; }
   font: 400 1rem/1 var(--display);
   font-variant-numeric: lining-nums;
 }
+.sheet-location { flex: none; color: #744925; font-size: .72rem; font-weight: 700; }
 .art-window { display: grid; place-items: center; min-height: 0; }
 .art-board {
   display: grid;
@@ -1276,6 +1277,7 @@ main { overflow: clip; }
   font-size: .68rem;
 }
 .marker .marker-short { display: none; }
+.marker-location :is(.marker-label, .marker-short) { padding-inline: .35rem; }
 .marker:is(:hover, :focus-visible) { z-index: 1; background: #344b5a; border-color: #f0cf96; outline-offset: 2px; }
 .marker:is(:hover, :focus-visible) .marker-number { background: #ebcb92; }
 @container (max-width: 25.5rem) {
@@ -1286,7 +1288,7 @@ main { overflow: clip; }
   .marker { --marker-x: var(--compact-x, var(--x)); --marker-y: var(--compact-y, var(--y)); }
 }
 @container (max-width: 15rem) {
-  .marker .marker-short { display: none; }
+  .marker:not(.marker-location) .marker-short { display: none; }
   .marker .marker-number { border-radius: 2px; }
 }
 

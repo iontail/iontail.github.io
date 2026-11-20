@@ -45,10 +45,15 @@ const audioStatus = soundSettings.querySelector(".audio-status");
 const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
 const stackedPages = matchMedia("(max-width: 760px)");
 
-const clueLinks = caseFile.clues.flatMap((clue, index) =>
-  clue.action ? [{ ...clue, clueNumber: index + 1 }] : []
-);
-const hintsPage = Math.ceil(caseFile.clues.length / 2) + 1;
+let clueCount = 0;
+const sheets = caseFile.clues.map((clue, index) => ({
+  ...clue,
+  sheetIndex: index + 1,
+  clueNumber: clue.map ? null : ++clueCount
+}));
+const sceneLinks = sheets.filter(clue => clue.action);
+const clueLinks = sceneLinks.filter(clue => clue.clueNumber);
+const hintsPage = Math.ceil(sheets.length / 2) + 1;
 const answerPage = hintsPage + 1;
 const lastPage = answerPage;
 const overviewPage = -1;
@@ -206,11 +211,12 @@ function illustration(title, image) {
   return `<img class="illustration" src="${image}" alt="${title}" width="1600" height="1280" decoding="async">`;
 }
 
-function sheetHeading(title, image, index) {
+function sheetHeading(title, image, { clueNumber, map } = {}) {
   const filename = `Traces-of-Guilt_${title.replaceAll(" ", "-")}.png`;
   return `<header class="sheet-heading">
-    ${index ? `<span class="sheet-number" aria-hidden="true">${number(index)}</span>` : ""}
+    ${clueNumber ? `<span class="sheet-number" aria-hidden="true">${number(clueNumber)}</span>` : ""}
     <h3 tabindex="-1">${title}</h3>
+    ${map ? '<span class="sheet-location">조사 장소</span>' : ""}
     <div class="art-controls sheet-actions">
       <button type="button" data-zoom aria-haspopup="dialog" aria-label="전체 화면" title="전체 화면">${icon("zoom")} <span>확대</span></button>
       <a href="${image}" download="${filename}" data-download aria-label="이미지 저장" title="이미지 저장">${icon("download")} <span>저장</span></a>
@@ -218,15 +224,15 @@ function sheetHeading(title, image, index) {
 }
 
 function sceneArt(title, image, location) {
-  const markers = clueLinks.filter(clue => clue.location === location);
+  const markers = sceneLinks.filter(clue => clue.location === location);
   return `<div class="art-window"><figure class="art-board scene-map">
       <div class="scene-plane">
         ${illustration(title, image)}
-        ${markers.map(clue => `<button class="marker" type="button" data-clue="${clue.clueNumber}" data-align="${clue.align ?? "start"}"
+        ${markers.map(clue => `<button class="marker${clue.map ? " marker-location" : ""}" type="button" data-clue="${clue.sheetIndex}" data-align="${clue.align ?? "start"}"
           style="--x:${clue.position[0]}%;--y:${clue.position[1]}%;
             ${clue.compactPosition ? `--compact-x:${clue.compactPosition[0]}%;--compact-y:${clue.compactPosition[1]}%` : ""}"
-          aria-label="${clue.clueNumber}. ${clue.action}">
-          <span class="marker-number">${clue.clueNumber}</span>
+          aria-label="${clue.clueNumber ? `${clue.clueNumber}. ` : ""}${clue.action}">
+          ${clue.clueNumber ? `<span class="marker-number">${clue.clueNumber}</span>` : ""}
           <span class="marker-label">${clue.action}</span><span class="marker-short">${clue.mapLabel ?? clue.action}</span>
         </button>`).join("")}
       </div>
@@ -242,7 +248,7 @@ function overview(left, right) {
     ${scene.description.map(paragraph => `<p class="paper-description">${paragraph}</p>`).join("")}
     <p class="case-objective">${scene.objective}</p>
     <details class="overview-index"><summary>단서 목록</summary>
-      <ol class="clue-index">${clueLinks.map(({ clueNumber, action }) => `<li><button type="button" data-clue="${clueNumber}">
+      <ol class="clue-index">${clueLinks.map(({ sheetIndex, clueNumber, action }) => `<li><button type="button" data-clue="${sheetIndex}">
         <span>${number(clueNumber)}</span><span>${action}</span></button></li>`).join("")}</ol>
     </details>`;
   right.innerHTML = `${sheetHeading(scene.title, scene.image)}
@@ -250,14 +256,14 @@ function overview(left, right) {
 }
 
 function evidence(paper, index) {
-  const clue = caseFile.clues[index - 1];
+  const clue = sheets[index - 1];
   if (!clue) return;
   paper.classList.add("art-page");
   paper.dataset.clue = index;
   const art = clue.map
     ? sceneArt(clue.title, clue.image, clue.map)
     : `<div class="art-window"><figure class="art-board">${illustration(clue.title, clue.image)}</figure></div>`;
-  paper.innerHTML = `${sheetHeading(clue.title, clue.image, index)}${art}`;
+  paper.innerHTML = `${sheetHeading(clue.title, clue.image, clue)}${art}`;
 }
 
 function hints(left, right) {
@@ -351,7 +357,7 @@ function solution(layout) {
 function renderPage(page) {
   const layout = spreadTemplate.content.firstElementChild.cloneNode(true);
   const [left, right] = layout.children;
-  if (page < hintsPage && caseFile.clues.length) {
+  if (page < hintsPage && clueLinks.length) {
     left.classList.add("indexed-paper");
     right.classList.add("indexed-paper");
   }
@@ -485,7 +491,7 @@ function updateNavigation() {
     const destination = currentPage + Number(button.dataset.step);
     button.disabled = destination < 0 || destination > lastPage;
   }
-  clueTabs.hidden = !caseFile.clues.length || activePage >= hintsPage;
+  clueTabs.hidden = !clueLinks.length || activePage >= hintsPage;
   for (const button of reader.querySelectorAll(".bookmarks [data-page]")) {
     if (Number(button.dataset.page) === currentPage) button.setAttribute("aria-current", "page");
     else button.removeAttribute("aria-current");
@@ -972,8 +978,8 @@ closeButton.addEventListener("click", () => goTo("closed"));
 
 reader.querySelector('[data-bookmark="hints"]').dataset.page = hintsPage;
 reader.querySelector('[data-bookmark="answer"]').dataset.page = answerPage;
-clueTabs.innerHTML = clueLinks.map(({ clueNumber, action }) =>
-  `<button class="plate" type="button" data-clue="${clueNumber}" aria-label="${clueNumber}. ${action}" title="${action}">${clueNumber}</button>`
+clueTabs.innerHTML = clueLinks.map(({ sheetIndex, clueNumber, action }) =>
+  `<button class="plate" type="button" data-clue="${sheetIndex}" aria-label="${clueNumber}. ${action}" title="${action}">${clueNumber}</button>`
 ).join("");
 for (const event of ["play", "pause", "ended"]) spread.addEventListener(event, updateVolume, true);
 reader.addEventListener("click", event => {
