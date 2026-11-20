@@ -2,7 +2,7 @@ const illustrations = {
   scene: "planetarium/main.png?v=rehearsal-slide-handoff",
   testimonyA: "planetarium/witnesses-01.png?v=witness-proof",
   testimonyB: "planetarium/witnesses-02.png?v=character-faces",
-  schedule: "planetarium/schedule.png?v=clue-art-refresh",
+  schedule: "planetarium/schedule.png?v=book-overview",
   console: "planetarium/console.png?v=clue-art-refresh",
   photo: "planetarium/photo.png?v=clue-art-refresh",
   drawer: "planetarium/drawer.png?v=clue-art-refresh",
@@ -130,10 +130,10 @@ export const caseFile = {
     stepsTitle: "장면별 해설",
     steps: [
       {
-        image: "planetarium/solution/01-rehearsal-schedule.jpg",
-        alt: "19시 49분 리허설 A와 19시 56분 리허설 B가 적힌 진행표",
+        image: "planetarium/solution/01-rehearsal-schedule.jpg?v=book-overview",
+        alt: "리허설 A, 에드워드 헤일이 맡은 Ⅱ번 장착과 초점 확인, 리허설 B가 적힌 진행표",
         title: "예정된 리허설 순서",
-        text: "19시 49분에는 투영기에 먼저 끼운 Ⅰ번으로 발견 전 사진을 띄울 예정이었어요. Ⅱ번은 19시 53분에 장착하고 19시 56분에 보여주는 순서였죠. 화살표와 거리는 Ⅱ번 화면을 확인한 뒤에 표시하기로 했어요."
+        text: "19시 49분에는 투영기에 먼저 끼운 Ⅰ번으로 발견 전 사진을 띄울 예정이었어요. 에드워드 헤일은 19시 53분에 Ⅱ번을 장착하고 초점을 확인한 뒤, 19시 56분에 사진을 보여주기로 했어요. 화살표와 거리는 Ⅱ번 화면을 확인한 뒤에 표시하는 순서였어요."
       },
       {
         image: "planetarium/solution/02-margaret-testimony.jpg",

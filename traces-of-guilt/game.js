@@ -1,4 +1,4 @@
-import { caseFile } from "./case-data.js?v=solution-slide-switch";
+import { caseFile } from "./case-data.js?v=book-overview";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -243,14 +243,15 @@ function overview(left, right) {
   const { title, scene } = caseFile;
   left.classList.add("case-intro");
   right.classList.add("art-page");
-  left.innerHTML = `<p class="paper-kicker">${scene.period}</p>
+  left.innerHTML = `<div class="case-intro-content">
+    <p class="paper-kicker">${scene.period}</p>
     <h3 tabindex="-1">${title}</h3>
     ${scene.description.map(paragraph => `<p class="paper-description">${paragraph}</p>`).join("")}
     <p class="case-objective">${scene.objective}</p>
     <details class="overview-index"><summary>단서 목록</summary>
       <ol class="clue-index">${clueLinks.map(({ sheetIndex, clueNumber, action }) => `<li><button type="button" data-clue="${sheetIndex}">
         <span>${number(clueNumber)}</span><span>${action}</span></button></li>`).join("")}</ol>
-    </details>`;
+    </details></div>`;
   right.innerHTML = `${sheetHeading(scene.title, scene.image)}
     ${sceneArt(`${scene.title} 사건 현장`, scene.image)}`;
 }
@@ -525,10 +526,10 @@ function turnPage(outgoing, incoming, forward, nextClue) {
 
 function updateNavigation() {
   const currentPage = Math.max(0, activePage);
-  pageCount.textContent = `${currentPage + 1} / ${lastPage + 1} 펼침면`;
+  pageCount.textContent = activePage === overviewPage ? "사건 개요" : `${activePage + 1} / ${lastPage + 1} 펼침면`;
   for (const button of reader.querySelectorAll("[data-step]")) {
-    const destination = currentPage + Number(button.dataset.step);
-    button.disabled = destination < 0 || destination > lastPage;
+    const destination = activePage + Number(button.dataset.step);
+    button.disabled = destination < overviewPage || destination > lastPage;
   }
   clueTabs.hidden = !clueLinks.length || activePage >= hintsPage;
   for (const button of reader.querySelectorAll(".bookmarks [data-page]")) {
@@ -575,8 +576,7 @@ function focusSheet(layout) {
 }
 
 function stepSpread(step) {
-  const destination = Math.max(0, activePage) + step;
-  if (destination >= 0) showPage(destination);
+  showPage(activePage + step);
 }
 
 function showPage(page, animate = true, clue) {
