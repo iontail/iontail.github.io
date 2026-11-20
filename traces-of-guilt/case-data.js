@@ -26,7 +26,7 @@ export const caseFile = {
       title: "리허설 진행표",
       action: "진행표 확인하기",
       mapLabel: "진행표",
-      image: "planetarium/schedule.png",
+      image: "planetarium/schedule.png?v=clue-art-refresh",
       position: [12.7, 36.7],
       compactPosition: [12.7, 37.7]
     },
@@ -34,14 +34,14 @@ export const caseFile = {
       title: "투영기 조작대",
       action: "조작대 확인하기",
       mapLabel: "조작대",
-      image: "planetarium/console.png",
+      image: "planetarium/console.png?v=clue-art-refresh",
       position: [2.25, 68.5]
     },
     {
       title: "리허설 사진",
       action: "리허설 사진 보기",
       mapLabel: "사진",
-      image: "planetarium/photo.png",
+      image: "planetarium/photo.png?v=clue-art-refresh",
       position: [96, 70.5],
       compactPosition: [98.5, 70.5],
       align: "end"
@@ -59,7 +59,7 @@ export const caseFile = {
       title: "연구소장실 서랍",
       action: "서랍 확인하기",
       mapLabel: "서랍",
-      image: "planetarium/drawer.png",
+      image: "planetarium/drawer.png?v=clue-art-refresh",
       position: [72, 25.3],
       compactPosition: [94, 11.4],
       align: "end"
@@ -93,24 +93,24 @@ export const caseFile = {
     video: {
       // Add the edited MP4 as src and, if available, Korean WebVTT as captions.
       src: "",
-      poster: "planetarium/photo.png"
+      poster: "planetarium/photo.png?v=clue-art-refresh"
     },
     stepsTitle: "장면별 해설 예시",
     steps: [
       {
-        image: "planetarium/schedule.png",
+        image: "planetarium/schedule.png?v=clue-art-refresh",
         alt: "나무 게시판에 집게로 고정한 진행표",
         title: "리허설 진행표",
         text: "진행표에는 리허설의 예정 순서와 시간을 기록해요."
       },
       {
-        image: "planetarium/photo.png",
+        image: "planetarium/photo.png?v=clue-art-refresh",
         alt: "별이 비친 천장 앞에 투영기의 검은 윤곽이 보이는 사진",
         title: "기자의 리허설 사진",
         text: "기자의 카메라에 당시 투영 화면이 담겼어요."
       },
       {
-        image: "planetarium/console.png",
+        image: "planetarium/console.png?v=clue-art-refresh",
         alt: "원형 계기판 세 개와 오른쪽의 긴 손잡이가 달린 조작대",
         title: "투영기 조작대",
         text: "조작대에서 리허설에 사용한 손잡이와 스위치를 살펴볼 수 있어요."

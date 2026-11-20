@@ -1,4 +1,4 @@
-import { caseFile } from "./case-data.js?v=rehearsal-slide-handoff";
+import { caseFile } from "./case-data.js?v=clue-art-refresh";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
