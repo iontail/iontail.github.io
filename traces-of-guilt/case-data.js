@@ -10,17 +10,14 @@ export const caseFile = {
   clues: [
     {
       title: "목격자 증언 A",
-      action: "증언 A 확인하기",
-      mapLabel: "증언 A",
+      action: "증언 확인하기",
+      mapLabel: "증언",
       image: "planetarium/witnesses-01.png",
       position: [4, 94.8]
     },
     {
       title: "목격자 증언 B",
-      action: "증언 B 확인하기",
-      mapLabel: "증언 B",
-      image: "planetarium/witnesses-02.png",
-      position: [45.5, 95]
+      image: "planetarium/witnesses-02.png"
     },
     {
       title: "리허설 진행표",
@@ -41,7 +38,8 @@ export const caseFile = {
       action: "리허설 사진 보기",
       mapLabel: "사진",
       image: "planetarium/photo.png",
-      position: [96, 96],
+      position: [96, 70.5],
+      compactPosition: [98.5, 70.5],
       align: "end"
     },
     {

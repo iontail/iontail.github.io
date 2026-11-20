@@ -45,6 +45,9 @@ const audioStatus = soundSettings.querySelector(".audio-status");
 const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
 const stackedPages = matchMedia("(max-width: 760px)");
 
+const clueLinks = caseFile.clues.flatMap((clue, index) =>
+  clue.action ? [{ ...clue, clueNumber: index + 1 }] : []
+);
 const hintsPage = Math.ceil(caseFile.clues.length / 2) + 1;
 const answerPage = hintsPage + 1;
 const lastPage = answerPage;
@@ -214,7 +217,7 @@ function sheetHeading(title, image, index) {
 }
 
 function overview(left, right) {
-  const { title, scene, clues } = caseFile;
+  const { title, scene } = caseFile;
   left.classList.add("case-intro");
   right.classList.add("art-page");
   left.innerHTML = `<p class="paper-kicker">${scene.period}</p>
@@ -222,18 +225,18 @@ function overview(left, right) {
     <p class="paper-description">${scene.description}</p>
     <p class="case-objective">${scene.objective}</p>
     <details class="overview-index"><summary>단서 목록</summary>
-      <ol class="clue-index">${clues.map((clue, index) => `<li><button type="button" data-clue="${index + 1}">
-        <span>${number(index + 1)}</span><span>${clue.action}</span></button></li>`).join("")}</ol>
+      <ol class="clue-index">${clueLinks.map(({ clueNumber, action }) => `<li><button type="button" data-clue="${clueNumber}">
+        <span>${number(clueNumber)}</span><span>${action}</span></button></li>`).join("")}</ol>
     </details>`;
   right.innerHTML = `${sheetHeading(scene.title, scene.image)}
     <div class="art-window"><figure class="art-board scene-map">
       <div class="scene-plane">
         ${illustration(`${scene.title} 사건 현장`, scene.image)}
-        ${clues.map((clue, index) => `<button class="marker" type="button" data-clue="${index + 1}" data-align="${clue.align ?? "start"}"
+        ${clueLinks.map(clue => `<button class="marker" type="button" data-clue="${clue.clueNumber}" data-align="${clue.align ?? "start"}"
           style="--x:${clue.position[0]}%;--y:${clue.position[1]}%;
             ${clue.compactPosition ? `--compact-x:${clue.compactPosition[0]}%;--compact-y:${clue.compactPosition[1]}%` : ""}"
-          aria-label="${index + 1}. ${clue.action}">
-          <span class="marker-number">${index + 1}</span>
+          aria-label="${clue.clueNumber}. ${clue.action}">
+          <span class="marker-number">${clue.clueNumber}</span>
           <span class="marker-label">${clue.action}</span><span class="marker-short">${clue.mapLabel ?? clue.action}</span>
         </button>`).join("")}
       </div>
@@ -428,7 +431,7 @@ function updateNavigation() {
     if (Number(button.dataset.clue) === activeClue) button.setAttribute("aria-current", "page");
     else button.removeAttribute("aria-current");
   }
-  const activeTab = clueTabs.children[activeClue - 1];
+  const activeTab = clueTabs.querySelector('[aria-current="page"]');
   if (activeTab) {
     const top = activeTab.offsetTop;
     const bottom = top + activeTab.offsetHeight;
@@ -897,10 +900,9 @@ closeButton.addEventListener("click", () => goTo("closed"));
 
 reader.querySelector('[data-bookmark="hints"]').dataset.page = hintsPage;
 reader.querySelector('[data-bookmark="answer"]').dataset.page = answerPage;
-clueTabs.innerHTML = caseFile.clues.map((clue, index) => {
-  const clueNumber = index + 1;
-  return `<button class="plate" type="button" data-clue="${clueNumber}" aria-label="${clueNumber}. ${clue.title}" title="${clue.title}">${clueNumber}</button>`;
-}).join("");
+clueTabs.innerHTML = clueLinks.map(({ clueNumber, action }) =>
+  `<button class="plate" type="button" data-clue="${clueNumber}" aria-label="${clueNumber}. ${action}" title="${action}">${clueNumber}</button>`
+).join("");
 reader.addEventListener("click", event => {
   const button = event.target.closest("button") ?? event.target.closest(".hint-card")?.querySelector(".hint-trigger");
   if (!button) return;
