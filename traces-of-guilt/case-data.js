@@ -93,7 +93,7 @@ export const caseFile = {
   ],
   suspects: [
     { id: "margaret", name: "마거릿 헤일", role: "사무국장 겸 공동 설립자", portrait: "suspects/margaret.svg?v=character-faces", relationship: "에드워드의 배우자. 함께 세운 연구소에서 결재권과 장부를 넘길 처지였어요." },
-    { id: "arthur", name: "아서 리드", role: "천문관 기술실장", portrait: "suspects/arthur.svg", relationship: "베넷과 오랫동안 일했어요. 리드가 서명한 건판 반납 기록에는 빈 케이스에 해당하는 무게가 적혀 있어요." },
+    { id: "arthur", name: "아서 리드", role: "천문관 기술실장", portrait: "suspects/arthur.svg", relationship: "폐기 예정 건판을 몰래 빼돌려 팔아 돈을 벌다가 소장에게 들켰어요." },
     { id: "clive", name: "클라이브 베넷", role: "선임연구원", portrait: "suspects/clive.svg", relationship: "에드워드의 옛 제자이자 새 천체를 처음 발견한 연구원. 발표에서 이름이 빠질 상황이었어요." },
     { id: "julian", name: "줄리언 머서", role: "과학 전문 기자", portrait: "suspects/julian.svg", relationship: "발표를 취재하는 기자. 소장은 후원자에게 보낸 편지를 돌려주는 조건으로 기사 수정을 요구하려 했어요." }
   ],
