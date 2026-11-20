@@ -50,7 +50,7 @@ export const caseFile = {
       title: "연구소장 집무실",
       action: "소장실 둘러보기",
       mapLabel: "소장실",
-      image: "planetarium/office.png?v=office-overview",
+      image: "planetarium/office.png?v=desk-details",
       position: [72, 18.5],
       align: "end",
       kind: "장소"
@@ -68,7 +68,7 @@ export const caseFile = {
       title: "기사 교정쇄",
       action: "교정쇄 확인하기",
       mapLabel: "교정쇄",
-      image: "planetarium/proof.png?v=character-faces",
+      image: "planetarium/proof.png?v=desk-details",
       position: [72, 32.1],
       align: "end"
     }
