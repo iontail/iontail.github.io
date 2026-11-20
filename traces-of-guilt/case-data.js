@@ -1,6 +1,6 @@
 const illustrations = {
   scene: "planetarium/main.png?v=rehearsal-slide-handoff",
-  testimonyA: "planetarium/witnesses-01.png?v=rehearsal-slide-handoff",
+  testimonyA: "planetarium/witnesses-01.png?v=witness-proof",
   testimonyB: "planetarium/witnesses-02.png?v=character-faces",
   schedule: "planetarium/schedule.png?v=clue-art-refresh",
   console: "planetarium/console.png?v=clue-art-refresh",
@@ -68,8 +68,7 @@ export const caseFile = {
       image: illustrations.proof,
       position: [57, 65],
       align: "end",
-      location: "office",
-      notes: ["reporter-notes", "cipher-guide"]
+      location: "office"
     },
     {
       title: "리허설 진행표",
@@ -197,16 +196,16 @@ export const caseFile = {
         text: "마거릿은 후반에 나오는 화살표를 보고 리허설이 끝날 때쯤이라고 생각했어요. 사진을 대조하면 그 표시가 정상 Ⅱ번과 다른 화면 위에 떠 있었음을 알 수 있어요. 이 차이는 그때 소장이 왜 정상 Ⅰ번을 다시 찾았는지 설명할 실마리예요."
       },
       {
-        image: "planetarium/solution/06-reid-testimony.jpg",
+        image: "planetarium/solution/06-reid-testimony.jpg?v=witness-proof",
         alt: "소장에게서 제대로 된 1번을 가져오라는 말을 들은 리드의 증언",
-        title: "예정에 없던 Ⅰ번 전달",
-        text: "첫 사진이 뜬 뒤 소장이 “리드, 제대로 된 1번 가져와!”라고 외쳤어요. 리드는 객석 뒤에서 정상 Ⅰ번을 꺼내 통로 입구에서 소장에게 건넸어요. 진행표에서 다음에 쓸 슬라이드는 Ⅱ번이에요. 소장은 왜 Ⅰ번을 급히 다시 받았을까요?"
+        title: "소장이 예정에 없던 Ⅰ번을 찾았어요",
+        text: "첫 사진이 뜬 뒤 소장이 “리드, 제대로 된 1번 가져와!”라고 외쳤어요. 리드는 객석 뒤에서 Ⅰ번을 꺼내 소장에게 가려던 중 충돌음을 들었다고 처음에 진술했어요. 진행표의 다음 순서는 Ⅱ번인데, 왜 소장은 Ⅰ번을 급히 찾았을까요?"
       },
       {
-        image: "planetarium/solution/07-slide-handoff.jpg",
-        alt: "리드가 Ⅰ번을 소장에게 건넸다는 증언과 소장의 손에 남은 Ⅰ번과 Ⅱ번 슬라이드",
+        image: "planetarium/solution/07-slide-handoff.jpg?v=witness-proof",
+        alt: "리드가 Ⅰ번을 가지러 갔다는 증언과 소장의 손에 남은 Ⅰ번과 Ⅱ번 슬라이드",
         title: "소장은 이미 Ⅱ번을 가지고 있었어요",
-        text: "소장의 손에는 다음 순서에 쓸 Ⅱ번과 리드에게서 받은 Ⅰ번이 함께 남아 있었어요. 예정대로였다면 가지고 있던 Ⅱ번으로 넘어갈 수 있었어요. 정상 Ⅰ번을 급히 다시 받았다는 건 첫 화면에 문제가 생겨 바로잡으려 했다는 단서예요."
+        text: "리드는 추가 진술에서 충돌 전에 Ⅰ번을 건넸다고 했어요. 점검 기록에서도 소장의 손에 Ⅰ번과 Ⅱ번이 함께 있었음이 확인돼요. 예정대로였다면 소장은 이미 들고 있던 Ⅱ번으로 넘어갈 수 있었어요. Ⅰ번을 급히 찾은 건 첫 화면을 바로잡으려 했다는 단서예요."
       },
       {
         image: "planetarium/solution/08-console-warning.jpg",
@@ -239,7 +238,7 @@ export const caseFile = {
         image: "planetarium/solution/12-cipher-addressee.jpg",
         alt: "줄리언 머서의 기자 이름과 To.로 시작하는 암호 편지",
         title: "수신인 이름으로 암호 풀기",
-        text: "교정쇄의 ‘줄리언 머서’를 편지의 To. 뒤에 대입하면 수신인을 알 수 있어요. ‘줄’의 ㅈ·ㅜ·ㄹ이 첫 음절의 문양 세 개와 맞아요. 교정쇄에 딸린 문양 해독표로 이 방식을 본문에 적용할 수 있어요.",
+        text: "교정쇄의 ‘줄리언 머서’를 편지의 To. 뒤에 대입하면 수신인을 알 수 있어요. ‘줄’의 ㅈ·ㅜ·ㄹ이 첫 음절의 문양 세 개와 맞아요. 아래 문양 해독표를 열면 이 방식을 본문에도 적용할 수 있어요.",
         notes: ["cipher-guide"]
       },
       {
