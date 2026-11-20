@@ -12,6 +12,22 @@ export const caseFile = {
   },
   clues: [
     {
+      title: "연구소장 집무실",
+      action: "소장실 둘러보기",
+      mapLabel: "소장실",
+      image: "planetarium/office.png?v=desk-details",
+      position: [72, 18.5],
+      align: "end",
+      map: "office"
+    },
+    {
+      title: "투영기 조작대",
+      action: "조작대 확인하기",
+      mapLabel: "조작대",
+      image: "planetarium/console.png?v=clue-art-refresh",
+      position: [2.25, 68.5]
+    },
+    {
       title: "목격자 증언 A",
       action: "증언 확인하기",
       mapLabel: "증언",
@@ -23,6 +39,24 @@ export const caseFile = {
       image: "planetarium/witnesses-02.png?v=character-faces"
     },
     {
+      title: "연구소장실 서랍",
+      action: "서랍 확인하기",
+      mapLabel: "서랍",
+      image: "planetarium/drawer.png?v=clue-art-refresh",
+      position: [50, 93],
+      align: "end",
+      location: "office"
+    },
+    {
+      title: "기사 교정쇄",
+      action: "교정쇄 확인하기",
+      mapLabel: "교정쇄",
+      image: "planetarium/proof.png?v=desk-details",
+      position: [57, 65],
+      align: "end",
+      location: "office"
+    },
+    {
       title: "리허설 진행표",
       action: "진행표 확인하기",
       mapLabel: "진행표",
@@ -31,45 +65,12 @@ export const caseFile = {
       compactPosition: [12.7, 37.7]
     },
     {
-      title: "투영기 조작대",
-      action: "조작대 확인하기",
-      mapLabel: "조작대",
-      image: "planetarium/console.png?v=clue-art-refresh",
-      position: [2.25, 68.5]
-    },
-    {
       title: "리허설 사진",
       action: "리허설 사진 보기",
       mapLabel: "사진",
       image: "planetarium/photo.png?v=clue-art-refresh",
       position: [96, 70.5],
       compactPosition: [98.5, 70.5],
-      align: "end"
-    },
-    {
-      title: "연구소장 집무실",
-      action: "소장실 둘러보기",
-      mapLabel: "소장실",
-      image: "planetarium/office.png?v=desk-details",
-      position: [72, 18.5],
-      align: "end",
-      kind: "장소"
-    },
-    {
-      title: "연구소장실 서랍",
-      action: "서랍 확인하기",
-      mapLabel: "서랍",
-      image: "planetarium/drawer.png?v=clue-art-refresh",
-      position: [72, 25.3],
-      compactPosition: [94, 11.4],
-      align: "end"
-    },
-    {
-      title: "기사 교정쇄",
-      action: "교정쇄 확인하기",
-      mapLabel: "교정쇄",
-      image: "planetarium/proof.png?v=desk-details",
-      position: [72, 32.1],
       align: "end"
     }
   ],

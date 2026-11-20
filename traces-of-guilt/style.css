@@ -1290,6 +1290,16 @@ main { overflow: clip; }
   .marker .marker-number { border-radius: 2px; }
 }
 
+.art-page[data-clue] .marker { --marker-height: 1.75rem; font-size: .76rem; }
+.art-page[data-clue] .marker::after { inset: -.5rem -.25rem; }
+.art-page[data-clue] .marker .marker-number { min-width: 1.25rem; }
+.art-page[data-clue] .marker .marker-label { display: grid; padding-inline: .4rem; }
+.art-page[data-clue] .marker .marker-short { display: none; }
+@container (max-width: 15rem) {
+  .art-page[data-clue] .marker .marker-label { display: none; }
+  .art-page[data-clue] .marker .marker-short { display: grid; padding-inline: .4rem; }
+}
+
 .art-controls { display: flex; align-items: center; gap: .4rem; margin-inline-start: auto; }
 .sheet-actions { gap: .12rem; flex: none; }
 .sheet-actions :is(a, button) {

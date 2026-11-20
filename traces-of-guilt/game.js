@@ -1,4 +1,4 @@
-import { caseFile } from "./case-data.js?v=clue-art-refresh";
+import { caseFile } from "./case-data.js?v=office-clues";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -217,6 +217,22 @@ function sheetHeading(title, image, index) {
     </div></header>`;
 }
 
+function sceneArt(title, image, location) {
+  const markers = clueLinks.filter(clue => clue.location === location);
+  return `<div class="art-window"><figure class="art-board scene-map">
+      <div class="scene-plane">
+        ${illustration(title, image)}
+        ${markers.map(clue => `<button class="marker" type="button" data-clue="${clue.clueNumber}" data-align="${clue.align ?? "start"}"
+          style="--x:${clue.position[0]}%;--y:${clue.position[1]}%;
+            ${clue.compactPosition ? `--compact-x:${clue.compactPosition[0]}%;--compact-y:${clue.compactPosition[1]}%` : ""}"
+          aria-label="${clue.clueNumber}. ${clue.action}">
+          <span class="marker-number">${clue.clueNumber}</span>
+          <span class="marker-label">${clue.action}</span><span class="marker-short">${clue.mapLabel ?? clue.action}</span>
+        </button>`).join("")}
+      </div>
+    </figure></div>`;
+}
+
 function overview(left, right) {
   const { title, scene } = caseFile;
   left.classList.add("case-intro");
@@ -230,18 +246,7 @@ function overview(left, right) {
         <span>${number(clueNumber)}</span><span>${action}</span></button></li>`).join("")}</ol>
     </details>`;
   right.innerHTML = `${sheetHeading(scene.title, scene.image)}
-    <div class="art-window"><figure class="art-board scene-map">
-      <div class="scene-plane">
-        ${illustration(`${scene.title} 사건 현장`, scene.image)}
-        ${clueLinks.map(clue => `<button class="marker" type="button" data-clue="${clue.clueNumber}" data-align="${clue.align ?? "start"}"
-          style="--x:${clue.position[0]}%;--y:${clue.position[1]}%;
-            ${clue.compactPosition ? `--compact-x:${clue.compactPosition[0]}%;--compact-y:${clue.compactPosition[1]}%` : ""}"
-          aria-label="${clue.clueNumber}. ${clue.action}">
-          <span class="marker-number">${clue.clueNumber}</span>
-          <span class="marker-label">${clue.action}</span><span class="marker-short">${clue.mapLabel ?? clue.action}</span>
-        </button>`).join("")}
-      </div>
-    </figure></div>`;
+    ${sceneArt(`${scene.title} 사건 현장`, scene.image)}`;
 }
 
 function evidence(paper, index) {
@@ -249,8 +254,10 @@ function evidence(paper, index) {
   if (!clue) return;
   paper.classList.add("art-page");
   paper.dataset.clue = index;
-  paper.innerHTML = `${sheetHeading(clue.title, clue.image, index)}
-    <div class="art-window"><figure class="art-board">${illustration(clue.title, clue.image)}</figure></div>`;
+  const art = clue.map
+    ? sceneArt(clue.title, clue.image, clue.map)
+    : `<div class="art-window"><figure class="art-board">${illustration(clue.title, clue.image)}</figure></div>`;
+  paper.innerHTML = `${sheetHeading(clue.title, clue.image, index)}${art}`;
 }
 
 function hints(left, right) {
@@ -472,14 +479,15 @@ function turnPage(outgoing, incoming, forward, nextClue) {
 }
 
 function updateNavigation() {
-  pageCount.textContent = activePage === overviewPage ? "사건 개요" : `${activePage + 1} / ${lastPage + 1} 펼침면`;
+  const currentPage = Math.max(0, activePage);
+  pageCount.textContent = `${currentPage + 1} / ${lastPage + 1} 펼침면`;
   for (const button of reader.querySelectorAll("[data-step]")) {
-    const destination = activePage + Number(button.dataset.step);
-    button.disabled = destination < overviewPage || destination > lastPage;
+    const destination = currentPage + Number(button.dataset.step);
+    button.disabled = destination < 0 || destination > lastPage;
   }
   clueTabs.hidden = !caseFile.clues.length || activePage >= hintsPage;
   for (const button of reader.querySelectorAll(".bookmarks [data-page]")) {
-    if (Number(button.dataset.page) === Math.max(0, activePage)) button.setAttribute("aria-current", "page");
+    if (Number(button.dataset.page) === currentPage) button.setAttribute("aria-current", "page");
     else button.removeAttribute("aria-current");
   }
   for (const button of clueTabs.children) {
@@ -519,6 +527,11 @@ function focusSheet(layout) {
   const sheet = layout.querySelector(`.paper[data-clue="${activeClue}"]`);
   (sheet ?? layout).querySelector("h3").focus({ preventScroll: true });
   if (sheet && stackedPages.matches) layout.scrollTop = sheet.offsetTop;
+}
+
+function stepSpread(step) {
+  const destination = Math.max(0, activePage) + step;
+  if (destination >= 0) showPage(destination);
 }
 
 function showPage(page, animate = true, clue) {
@@ -918,7 +931,7 @@ document.addEventListener("keydown", event => {
     if (space && target.closest(".answer-page")) return;
     if (space && target.closest("button, summary, [role='button']")) return;
     event.preventDefault();
-    if (!event.repeat) showPage(activePage + step);
+    if (!event.repeat) stepSpread(step);
   }
 });
 
@@ -972,7 +985,7 @@ reader.addEventListener("click", event => {
   } else if (button.hasAttribute("data-page")) {
     showPage(Number(button.dataset.page));
   } else if (button.hasAttribute("data-step")) {
-    showPage(activePage + Number(button.dataset.step));
+    stepSpread(Number(button.dataset.step));
   } else if (button.hasAttribute("data-solution-jump")) {
     spread.querySelector(".solution-video")?.pause();
     const heading = document.getElementById(button.dataset.solutionJump);
