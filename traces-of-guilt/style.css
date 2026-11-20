@@ -1602,6 +1602,7 @@ main { overflow: clip; }
   font-size: clamp(1.65rem, 3.4vw, 2.8rem);
   letter-spacing: -.035em;
 }
+.solution-links { display: flex; flex-wrap: wrap; gap: 0 1rem; }
 .solution-jump {
   min-height: 2.75rem;
   padding: 0;
@@ -1670,7 +1671,60 @@ main { overflow: clip; }
   font-size: .95rem;
 }
 .case-result dd { margin: 0; font-weight: 700; }
-.solution-sequence h4 { margin-bottom: 1rem; scroll-margin-block-start: 1rem; font: 700 1.4rem/1.35 var(--ink-display); }
+:is(.solution-cast, .solution-sequence) h4 {
+  margin-bottom: 1rem;
+  scroll-margin-block-start: 1rem;
+  font: 700 1.4rem/1.35 var(--ink-display);
+}
+.solution-cast { margin-bottom: clamp(1.6rem, 4vw, 3rem); }
+.solution-cast-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.2rem clamp(.6rem, 1.8vw, 1.25rem);
+  margin: 0;
+  padding: 0;
+}
+.solution-cast-list li::marker { font-size: 0; }
+.solution-portrait {
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  place-items: center;
+  position: relative;
+  aspect-ratio: 5 / 6;
+  border: 1px solid #a48153;
+  background: url("archive-paper.jpg") center / 460px #ebddbf;
+  background-blend-mode: multiply;
+}
+.solution-portrait img { width: 82%; height: 87%; object-fit: contain; }
+.solution-cast-number {
+  position: absolute;
+  inset: .45rem auto auto .45rem;
+  display: grid;
+  place-items: center;
+  min-width: 1.55rem;
+  min-height: 1.55rem;
+  background: #24313b;
+  color: #fff0d0;
+  font: 400 1.08rem/1 var(--display);
+  font-variant-numeric: lining-nums;
+}
+.solution-cast-list h5 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .24rem .45rem;
+  margin: .55rem 0 .18rem;
+  font: 700 1rem/1.45 var(--archive-serif);
+  word-break: keep-all;
+}
+.solution-cast-list p { color: #e1d5c2; font-size: .9rem; line-height: 1.45; word-break: keep-all; overflow-wrap: anywhere; }
+.solution-culprit {
+  padding: .13rem .38rem;
+  border: 1px solid #d68b71;
+  background: #773f31;
+  color: #fff0de;
+  font-size: .8rem;
+}
 .solution-steps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1700,6 +1754,9 @@ main { overflow: clip; }
 
 @media (max-width: 900px) {
   .solution-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .solution-cast-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 560px) {
   .solution-result, .solution-steps { grid-template-columns: minmax(0, 1fr); }

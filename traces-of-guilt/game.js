@@ -268,7 +268,7 @@ function hints(left, right) {
 }
 
 function solution(layout) {
-  const { practice, suspectId, explanation, video = {}, steps = [] } = caseFile.answer;
+  const { practice, suspectId, culpritId, explanation, video = {}, steps = [] } = caseFile.answer;
   const correctSuspect = caseFile.suspects.find(suspect => suspect.id === suspectId);
   const successful = submittedSuspect.id === suspectId;
   const verdict = successful ? "지목 성공" : "지목 실패";
@@ -278,7 +278,10 @@ function solution(layout) {
     <div class="solution-content">
       <header class="solution-heading">
         <h3 id="solution-title" tabindex="-1">사건 재구성</h3>
-        ${steps.length ? '<button class="solution-jump" type="button" data-solution-steps>장면별 해설 보기</button>' : ""}
+        <div class="solution-links">
+          <button class="solution-jump" type="button" data-solution-jump="solution-cast">인물표 보기</button>
+          ${steps.length ? '<button class="solution-jump" type="button" data-solution-jump="solution-steps">장면별 해설 보기</button>' : ""}
+        </div>
       </header>
       <div class="solution-film">
         ${video.src ? `<video class="solution-video" src="${video.src}"${video.poster ? ` poster="${video.poster}"` : ""}
@@ -300,6 +303,17 @@ function solution(layout) {
           <dt>${practice ? "시연 정답" : "범인"}</dt><dd>${suspectLabel(correctSuspect)} (${correctSuspect.name})</dd>
           <dt>풀이 시간</dt><dd>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</dd>
         </dl>
+      </section>
+      <section class="solution-cast" aria-labelledby="solution-cast">
+        <h4 id="solution-cast" tabindex="-1">용의자 인물표</h4>
+        <ol class="solution-cast-list">${caseFile.suspects.map((suspect, index) => `<li>
+          <div class="solution-portrait">
+            <span class="solution-cast-number" aria-hidden="true">${index + 1}</span>
+            <img src="${suspect.portrait}" alt="" loading="lazy" decoding="async">
+          </div>
+          <h5>${suspect.name}${suspect.id === culpritId ? ' <span class="solution-culprit">살인자</span>' : ""}</h5>
+          <p>${suspect.role}</p>
+        </li>`).join("")}</ol>
       </section>
       ${steps.length ? `<section class="solution-sequence" aria-labelledby="solution-steps">
         <h4 id="solution-steps" tabindex="-1">${practice ? "장면별 해설 예시" : "장면별 해설"}</h4>
@@ -953,9 +967,9 @@ reader.addEventListener("click", event => {
     showPage(Number(button.dataset.page));
   } else if (button.hasAttribute("data-step")) {
     showPage(activePage + Number(button.dataset.step));
-  } else if (button.hasAttribute("data-solution-steps")) {
+  } else if (button.hasAttribute("data-solution-jump")) {
     spread.querySelector(".solution-video")?.pause();
-    const heading = spread.querySelector("#solution-steps");
+    const heading = document.getElementById(button.dataset.solutionJump);
     heading.scrollIntoView({ block: "start" });
     heading.focus({ preventScroll: true });
   } else if (button.hasAttribute("data-hint")) {

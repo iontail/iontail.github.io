@@ -76,15 +76,16 @@ export const caseFile = {
     "소장실의 서류와 기사 교정쇄를 함께 살펴보세요."
   ],
   suspects: [
-    { id: "margaret", name: "마거릿 헤일", portrait: "suspects/margaret.svg" },
-    { id: "arthur", name: "아서 리드", portrait: "suspects/arthur.svg" },
-    { id: "clive", name: "클라이브 베넷", portrait: "suspects/clive.svg" },
-    { id: "julian", name: "줄리언 머서", portrait: "suspects/julian.svg" }
+    { id: "margaret", name: "마거릿 헤일", role: "사무국장 겸 공동 설립자", portrait: "suspects/margaret.svg" },
+    { id: "arthur", name: "아서 리드", role: "천문관 기술실장", portrait: "suspects/arthur.svg" },
+    { id: "clive", name: "클라이브 베넷", role: "선임연구원", portrait: "suspects/clive.svg" },
+    { id: "julian", name: "줄리언 머서", role: "과학 전문 기자", portrait: "suspects/julian.svg" }
   ],
   answer: {
     practice: true,
     question: "천문관 기술실장은 누구인가요?",
     suspectId: "arthur",
+    culpritId: "clive",
     explanation: "기술실장은 투영기의 운용과 정비를 맡아요. 이 결과는 제출 기능을 확인하는 연습 문제에 해당해요.",
     video: {
       // Add the edited MP4 as src and, if available, Korean WebVTT as captions.
