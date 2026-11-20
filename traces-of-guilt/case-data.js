@@ -8,19 +8,19 @@ export const caseFile = {
       "당시 현장에는 연구소 사무국장 마거릿 헤일, 천문관 기술실장 아서 리드, 선임연구원 클라이브 베넷, 과학 전문 기자 줄리언 머서가 있었습니다."
     ],
     objective: "발표는 취소됐습니다. 현장의 단서와 네 사람의 증언을 대조해 그날의 리허설을 재구성해 보세요.",
-    image: "planetarium/main.png?v=wall-schedule"
+    image: "planetarium/main.png?v=character-faces"
   },
   clues: [
     {
       title: "목격자 증언 A",
       action: "증언 확인하기",
       mapLabel: "증언",
-      image: "planetarium/witnesses-01.png",
+      image: "planetarium/witnesses-01.png?v=character-faces",
       position: [4, 94.8]
     },
     {
       title: "목격자 증언 B",
-      image: "planetarium/witnesses-02.png"
+      image: "planetarium/witnesses-02.png?v=character-faces"
     },
     {
       title: "리허설 진행표",
@@ -50,7 +50,7 @@ export const caseFile = {
       title: "연구소장 집무실",
       action: "소장실 둘러보기",
       mapLabel: "소장실",
-      image: "planetarium/office.png?v=office-evening",
+      image: "planetarium/office.png?v=character-faces",
       position: [72, 18.5],
       align: "end",
       kind: "장소"
@@ -68,7 +68,7 @@ export const caseFile = {
       title: "기사 교정쇄",
       action: "교정쇄 확인하기",
       mapLabel: "교정쇄",
-      image: "planetarium/proof.png",
+      image: "planetarium/proof.png?v=character-faces",
       position: [72, 32.1],
       align: "end"
     }
@@ -80,7 +80,7 @@ export const caseFile = {
     "소장실의 서류와 기사 교정쇄를 함께 살펴보세요."
   ],
   suspects: [
-    { id: "margaret", name: "마거릿 헤일", role: "사무국장 겸 공동 설립자", portrait: "suspects/margaret.svg" },
+    { id: "margaret", name: "마거릿 헤일", role: "사무국장 겸 공동 설립자", portrait: "suspects/margaret.svg?v=character-faces" },
     { id: "arthur", name: "아서 리드", role: "천문관 기술실장", portrait: "suspects/arthur.svg" },
     { id: "clive", name: "클라이브 베넷", role: "선임연구원", portrait: "suspects/clive.svg" },
     { id: "julian", name: "줄리언 머서", role: "과학 전문 기자", portrait: "suspects/julian.svg" }
