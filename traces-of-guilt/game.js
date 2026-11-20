@@ -1,4 +1,4 @@
-import { caseFile } from "./case-data.js?v=solution-footsteps";
+import { caseFile } from "./case-data.js?v=solution-slide-switch";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
