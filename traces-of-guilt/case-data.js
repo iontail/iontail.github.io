@@ -1,7 +1,7 @@
 const illustrations = {
   scene: "planetarium/main.png?v=rehearsal-slide-handoff",
   testimonyA: "planetarium/witnesses-01.png?v=witness-proof",
-  testimonyB: "planetarium/witnesses-02.png?v=character-faces",
+  testimonyB: "planetarium/witnesses-02.png?v=bennett-meeting",
   schedule: "planetarium/schedule.png?v=book-overview",
   console: "planetarium/console.png?v=clue-art-refresh",
   photo: "planetarium/photo.png?v=clue-art-refresh",
@@ -214,16 +214,16 @@ export const caseFile = {
         text: "공문에는 에드워드가 직접 주도한 연구 실적을 입증해야 연임할 수 있다고 적혀 있어요. 발견자 이름을 자기 이름으로 바꾸라는 편지를 함께 보면, 소장이 베넷의 발견을 자기 실적으로 발표하려 한 이유가 드러나요."
       },
       {
-        image: "planetarium/solution/15-bennett-testimony.jpg",
-        alt: "암전 직전 소장을 봤고 충돌 때 스위치 앞이었다고 말한 베넷의 증언",
-        title: "베넷은 어디에 있었을까요?",
-        text: "베넷은 벽의 조명 스위치 앞에서 기다리다 충돌음을 들었다고 했어요. 리드는 불이 꺼진 뒤 첫 사진이 떴을 때 베넷이 조작대 앞 자기 곁에서 발견 이야기를 했다고 해요. 현장 그림에서 스위치와 조작대는 서로 떨어져 있어요. 베넷의 말에는 암전 중 조작대에 있었던 시간이 빠져 있어요."
+        image: "planetarium/solution/15-bennett-testimony.jpg?v=bennett-meeting",
+        alt: "소장이 오후에 차려입고 미팅에 나갔다는 말과 리허설 직전에 처음 봤다는 베넷의 증언",
+        title: "베넷은 소장을 언제 처음 봤을까요?",
+        text: "베넷은 리드가 소장실에 들어간 때가 소장이 차려입고 미팅에 나선 직후였다고 했어요. 오후의 차림과 나간 시점까지 묘사한 건, 베넷이 이미 그때 소장을 봤다는 단서예요. 바로 뒤에 ‘리허설에서 불을 끄기 직전이 처음’이라고 한 말과 맞지 않아요."
       },
       {
         image: "planetarium/solution/16-schedule-and-testimony.jpg",
         alt: "암전 담당 리드와 리허설 A 담당 베넷이 적힌 진행표, 당일 조명을 맡았다는 베넷의 증언",
         title: "슬라이드, 조명, 조작대가 한 사람에게 이어져요",
-        text: "첫 관측 사진의 담당자는 베넷이에요. 암전 담당은 진행표에 리드로 적혀 있지만, 베넷은 당일 조명을 자신이 맡았다고 했어요. 리드가 잘못된 첫 화면 때문에 자리를 뜰 때 베넷은 조작대 곁에 있었어요. 슬라이드를 준비하고, 불을 끄고, 비게 될 조작대까지 쓸 기회가 한 사람에게 모여요."
+        text: "진행표에서 첫 사진은 베넷, 암전은 리드 담당이에요. 베넷은 당일 조명을 맡았고 스위치 앞에서 충돌음을 들었다고 했어요. 리드의 증언에는 암전 뒤 첫 사진이 떴을 때 베넷이 조작대 곁에 있었던 순간이 나와요. 리드가 잘못된 첫 화면 때문에 자리를 뜨자, 첫 슬라이드와 조명에 관여한 베넷에게 조작대를 쓸 기회도 생겼어요."
       },
       {
         image: "planetarium/solution/lever-crack.png",
