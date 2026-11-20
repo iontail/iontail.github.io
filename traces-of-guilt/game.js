@@ -271,13 +271,16 @@ function solution(layout) {
   const { practice, suspectId, explanation, video = {}, stepsTitle = "장면별 해설", steps = [] } = caseFile.answer;
   const correctSuspect = caseFile.suspects.find(suspect => suspect.id === suspectId);
   const successful = submittedSuspect.id === suspectId;
-  const verdict = successful ? "지목 성공" : "지목 실패";
+  const verdict = `${practice ? "시연 지목" : "범인 검거"} ${successful ? "성공" : "실패"}`;
   const [hours, minutes, seconds] = durationParts(completedSeconds);
   layout.classList.add("solution-layout");
   layout.innerHTML = `<section class="paper answer-page" aria-labelledby="solution-title">
     <div class="solution-content">
       <header class="solution-heading">
-        <h3 id="solution-title" tabindex="-1">사건 해결</h3>
+        <div class="solution-title-line">
+          <h3 id="solution-title" tabindex="-1" aria-describedby="solution-verdict">사건 해결</h3>
+          <p id="solution-verdict" class="answer-verdict" data-outcome="${successful ? "success" : "failure"}">${verdict}</p>
+        </div>
         <div class="solution-links">
           <button class="solution-jump" type="button" data-solution-jump="solution-film-title">재구성 영상 보기</button>
           ${steps.length ? '<button class="solution-jump" type="button" data-solution-jump="solution-steps">장면별 해설 보기</button>' : ""}
@@ -310,11 +313,8 @@ function solution(layout) {
           </div>
         </div>
       </section>
-      <section class="solution-result" aria-labelledby="solution-verdict">
-        <div>
-          <h4 id="solution-verdict" class="answer-verdict" data-outcome="${successful ? "success" : "failure"}">${practice ? `시연 결과 · ${verdict}` : `범인 ${verdict}`}</h4>
-          <p>${explanation}</p>
-        </div>
+      <section class="solution-result" aria-label="지목 결과 상세">
+        <p>${explanation}</p>
         <dl class="case-result">
           <dt>내가 지목한 용의자</dt><dd>${suspectLabel(submittedSuspect)}</dd>
           <dt>${practice ? "시연 정답" : "범인"}</dt><dd>${suspectLabel(correctSuspect)} (${correctSuspect.name})</dd>

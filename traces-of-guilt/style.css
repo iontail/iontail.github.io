@@ -1602,6 +1602,7 @@ main { overflow: clip; }
   font-size: clamp(1.65rem, 3.4vw, 2.8rem);
   letter-spacing: -.035em;
 }
+.solution-title-line { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .75rem; }
 .solution-links { display: flex; flex-wrap: wrap; gap: 0 1rem; }
 .solution-jump {
   min-height: 2.75rem;
@@ -1651,9 +1652,18 @@ main { overflow: clip; }
   padding-block: .95rem;
   border-block: 1px solid #a481537a;
 }
-.answer-verdict { font: 700 1.15rem/1.45 var(--archive-serif); }
-.answer-verdict[data-outcome="success"] { color: #cddcb5; }
-.answer-verdict[data-outcome="failure"] { color: #f0b59d; }
+.answer-verdict {
+  margin: 0;
+  padding: .3rem .55rem;
+  border: 1px solid var(--verdict-border);
+  border-radius: 3px;
+  background: var(--verdict-background);
+  color: var(--verdict-ink);
+  font: 700 clamp(.9rem, 1.6vw, 1.1rem)/1.35 var(--archive-serif);
+  white-space: nowrap;
+}
+.answer-verdict[data-outcome="success"] { --verdict-border: #679879; --verdict-background: #233c30; --verdict-ink: #c5eccd; }
+.answer-verdict[data-outcome="failure"] { --verdict-border: #ac6b61; --verdict-background: #482b2c; --verdict-ink: #ffc3b1; }
 .solution-result p, .solution-step-text p {
   color: #e1d5c2;
   font-size: 1rem;
@@ -1661,7 +1671,6 @@ main { overflow: clip; }
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
-.solution-result p { margin-top: .25rem; }
 .case-result {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
