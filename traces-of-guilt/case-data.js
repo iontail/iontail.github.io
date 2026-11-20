@@ -85,6 +85,31 @@ export const caseFile = {
     practice: true,
     question: "천문관 기술실장은 누구인가요?",
     suspectId: "arthur",
-    explanation: "기술실장은 투영기의 운용과 정비를 맡아요. 이 결과는 제출 기능을 확인하는 연습 문제에 해당해요."
+    explanation: "기술실장은 투영기의 운용과 정비를 맡아요. 이 결과는 제출 기능을 확인하는 연습 문제에 해당해요.",
+    video: {
+      // Add the edited MP4 as src and, if available, Korean WebVTT as captions.
+      src: "",
+      poster: "planetarium/photo.png"
+    },
+    steps: [
+      {
+        image: "planetarium/schedule.png",
+        alt: "나무 게시판에 집게로 고정한 진행표",
+        title: "리허설 진행표",
+        text: "진행표에는 리허설의 예정 순서와 시간을 기록해요."
+      },
+      {
+        image: "planetarium/photo.png",
+        alt: "별이 비친 천장 앞에 투영기의 검은 윤곽이 보이는 사진",
+        title: "기자의 리허설 사진",
+        text: "기자의 카메라에 당시 투영 화면이 담겼어요."
+      },
+      {
+        image: "planetarium/console.png",
+        alt: "원형 계기판 세 개와 오른쪽의 긴 손잡이가 달린 조작대",
+        title: "투영기 조작대",
+        text: "조작대에서 리허설에 사용한 손잡이와 스위치를 살펴볼 수 있어요."
+      }
+    ]
   }
 };

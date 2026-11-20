@@ -76,6 +76,7 @@ const elapsedSeconds = () => Math.floor((performance.now() - attemptStartedAt) /
 const durationParts = seconds => [Math.floor(seconds / 3600), Math.floor(seconds / 60) % 60, seconds % 60];
 const suspectLabel = suspect => `${caseFile.suspects.indexOf(suspect) + 1}번 용의자`;
 const clueSpread = clue => Math.ceil(clue / 2);
+const backgroundVolume = () => spread.querySelector(".solution-video")?.paused === false ? 0 : volumeControl.valueAsNumber / 100;
 
 function updateClock() {
   const seconds = completedSeconds ?? elapsedSeconds();
@@ -100,7 +101,7 @@ function setAttemptClock(active) {
 
 function updateVolume() {
   volumeOutput.value = `${volumeControl.value}%`;
-  musicGain?.gain.setTargetAtTime(volumeControl.valueAsNumber / 100, audioContext.currentTime, .035);
+  musicGain?.gain.setTargetAtTime(backgroundVolume(), audioContext.currentTime, .035);
 }
 
 async function startMusic() {
@@ -112,7 +113,7 @@ async function startMusic() {
     audioContext ??= new AudioContext();
     if (!musicGain) {
       musicGain = audioContext.createGain();
-      musicGain.gain.value = volumeControl.valueAsNumber / 100;
+      musicGain.gain.value = backgroundVolume();
       musicGain.connect(audioContext.destination);
     }
     const ready = audioContext.resume();
@@ -266,24 +267,58 @@ function hints(left, right) {
   right.innerHTML = `<div class="hint-grid">${cards.slice(2).join("")}</div>`;
 }
 
-function solution(left, right) {
-  const { practice, suspectId, explanation } = caseFile.answer;
+function solution(layout) {
+  const { practice, suspectId, explanation, video = {}, steps = [] } = caseFile.answer;
   const correctSuspect = caseFile.suspects.find(suspect => suspect.id === suspectId);
   const successful = submittedSuspect.id === suspectId;
   const verdict = successful ? "지목 성공" : "지목 실패";
   const [hours, minutes, seconds] = durationParts(completedSeconds);
-  left.classList.add("answer-page");
-  right.classList.add("answer-page");
-  left.innerHTML = `<p class="paper-kicker">${practice ? "제출 시안 결과" : "사건 판정"}</p>
-    <h3 class="answer-verdict" data-outcome="${successful ? "success" : "failure"}" tabindex="-1">${practice ? verdict : `범인 ${verdict}`}</h3>
-    <dl class="case-result">
-      <dt>내가 지목한 용의자</dt><dd>${suspectLabel(submittedSuspect)}</dd>
-      <dt>${practice ? "시연 정답" : "범인"}</dt><dd>${suspectLabel(correctSuspect)}</dd>
-      <dt>풀이 시간</dt><dd>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</dd>
-    </dl>`;
-  right.innerHTML = `<div class="answer-sheet">
-      <h4>${practice ? "시연 해설" : "사건 해설"}</h4><p>${explanation}</p>
-    </div>`;
+  layout.classList.add("solution-layout");
+  layout.innerHTML = `<section class="paper answer-page" aria-labelledby="solution-title">
+    <div class="solution-content">
+      <header class="solution-heading">
+        <h3 id="solution-title" tabindex="-1">사건 재구성</h3>
+        ${steps.length ? '<button class="solution-jump" type="button" data-solution-steps>장면별 해설 보기</button>' : ""}
+      </header>
+      <div class="solution-film">
+        ${video.src ? `<video class="solution-video" src="${video.src}"${video.poster ? ` poster="${video.poster}"` : ""}
+          controls playsinline preload="metadata" aria-labelledby="solution-title">
+          ${video.captions ? `<track kind="captions" src="${video.captions}" srclang="ko" label="한국어">` : ""}
+        </video>` : ""}
+        <div class="solution-film-still"${video.src ? " hidden" : ""}>
+          ${video.poster ? `<img src="${video.poster}" alt="" decoding="async">` : ""}
+          <p>${video.src ? "재구성 영상을 불러올 수 없어요." : "재구성 영상 준비 중"}</p>
+        </div>
+      </div>
+      <section class="solution-result" aria-labelledby="solution-verdict">
+        <div>
+          <h4 id="solution-verdict" class="answer-verdict" data-outcome="${successful ? "success" : "failure"}">${practice ? `시연 결과 · ${verdict}` : `범인 ${verdict}`}</h4>
+          <p>${explanation}</p>
+        </div>
+        <dl class="case-result">
+          <dt>내가 지목한 용의자</dt><dd>${suspectLabel(submittedSuspect)}</dd>
+          <dt>${practice ? "시연 정답" : "범인"}</dt><dd>${suspectLabel(correctSuspect)}</dd>
+          <dt>풀이 시간</dt><dd>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</dd>
+        </dl>
+      </section>
+      ${steps.length ? `<section class="solution-sequence" aria-labelledby="solution-steps">
+        <h4 id="solution-steps" tabindex="-1">${practice ? "장면별 해설 예시" : "장면별 해설"}</h4>
+        <ol class="solution-steps">${steps.map((step, index) => `<li>
+          <img src="${step.image}" alt="${step.alt ?? ""}" loading="lazy" decoding="async">
+          <div class="solution-step-text">
+            <span class="solution-step-number" aria-hidden="true">${number(index + 1)}</span>
+            <div><h5>${step.title}</h5><p>${step.text}</p></div>
+          </div>
+        </li>`).join("")}</ol>
+      </section>` : ""}
+    </div>
+  </section>`;
+  const player = layout.querySelector(".solution-video");
+  player?.addEventListener("error", () => {
+    player.hidden = true;
+    layout.querySelector(".solution-film-still").hidden = false;
+    updateVolume();
+  });
 }
 
 function renderPage(page) {
@@ -295,7 +330,7 @@ function renderPage(page) {
   }
   if (page === 0) overview(left, right);
   else if (page === hintsPage) hints(left, right);
-  else if (page === answerPage) solution(left, right);
+  else if (page === answerPage) solution(layout);
   else {
     evidence(left, page * 2 - 1);
     evidence(right, page * 2);
@@ -393,7 +428,7 @@ function curlPage(leaf, front, back, direction) {
 }
 
 function turnPage(outgoing, incoming, forward, nextClue) {
-  if (motionPreference.matches) return;
+  if (motionPreference.matches || outgoing.matches(".solution-layout") || incoming.matches(".solution-layout")) return;
   const stacked = stackedPages.matches;
   const side = stacked ? Number(activeClue % 2 === 0) : Number(forward);
   const landingSide = stacked ? Number(nextClue % 2 === 0) : 1 - side;
@@ -489,8 +524,10 @@ function showPage(page, animate = true, clue) {
   const pageChanged = !outgoing || contentPage !== Math.max(0, activePage);
   let incoming = outgoing;
   if (pageChanged) {
+    outgoing?.querySelector(".solution-video")?.pause();
     incoming = renderPage(contentPage);
     spread.replaceChildren(incoming);
+    if (activePage === answerPage) updateVolume();
     if (animate && outgoing) turnPage(outgoing, incoming, page > activePage, nextClue);
   }
   activePage = page;
@@ -672,6 +709,7 @@ async function foldBook(opening) {
     for (const dialog of [submissionConfirm, suspectPicker, answerConfirm, hintConfirm]) {
       if (dialog.open) dialog.close();
     }
+    if (activePage === answerPage) showPage(overviewPage, false);
   }
   window.scrollTo(0, 0);
   removeTurns();
@@ -856,7 +894,8 @@ document.addEventListener("keydown", event => {
     event.preventDefault();
     selectRecord(selectedRecord + step);
   } else if (bookState === "open") {
-    if (target.isContentEditable || target.closest("input, select, textarea")) return;
+    if (target.isContentEditable || target.closest("input, select, textarea, video")) return;
+    if (space && target.closest(".answer-page")) return;
     if (space && target.closest("button, summary, [role='button']")) return;
     event.preventDefault();
     if (!event.repeat) showPage(activePage + step);
@@ -903,6 +942,7 @@ reader.querySelector('[data-bookmark="answer"]').dataset.page = answerPage;
 clueTabs.innerHTML = clueLinks.map(({ clueNumber, action }) =>
   `<button class="plate" type="button" data-clue="${clueNumber}" aria-label="${clueNumber}. ${action}" title="${action}">${clueNumber}</button>`
 ).join("");
+for (const event of ["play", "pause", "ended"]) spread.addEventListener(event, updateVolume, true);
 reader.addEventListener("click", event => {
   const button = event.target.closest("button") ?? event.target.closest(".hint-card")?.querySelector(".hint-trigger");
   if (!button) return;
@@ -913,6 +953,11 @@ reader.addEventListener("click", event => {
     showPage(Number(button.dataset.page));
   } else if (button.hasAttribute("data-step")) {
     showPage(activePage + Number(button.dataset.step));
+  } else if (button.hasAttribute("data-solution-steps")) {
+    spread.querySelector(".solution-video")?.pause();
+    const heading = spread.querySelector("#solution-steps");
+    heading.scrollIntoView({ block: "start" });
+    heading.focus({ preventScroll: true });
   } else if (button.hasAttribute("data-hint")) {
     const index = Number(button.dataset.hint);
     if (viewedHints.has(index) || hintConfirm.open) return;
