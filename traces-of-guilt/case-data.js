@@ -47,7 +47,7 @@ export const caseFile = {
       title: "연구소장 집무실",
       action: "소장실 둘러보기",
       mapLabel: "소장실",
-      image: "planetarium/office.png?v=office-illustration",
+      image: "planetarium/office.png?v=office-evening",
       position: [72, 18.5],
       align: "end",
       kind: "장소"
