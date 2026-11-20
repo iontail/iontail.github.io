@@ -1,4 +1,4 @@
-import { caseFile } from "./case-data.js?v=wall-schedule";
+import { caseFile } from "./case-data.js?v=office-illustration";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
