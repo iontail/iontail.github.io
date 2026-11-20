@@ -82,16 +82,16 @@ export const caseFile = {
     { id: "julian", name: "줄리언 머서", role: "과학 전문 기자", portrait: "suspects/julian.svg" }
   ],
   answer: {
-    practice: true,
-    question: "천문관 기술실장은 누구인가요?",
-    suspectId: "arthur",
-    culpritId: "clive",
-    explanation: "기술실장은 투영기의 운용과 정비를 맡아요. 이 결과는 제출 기능을 확인하는 연습 문제에 해당해요.",
+    practice: false,
+    question: "에드워드 헤일을 살해한 사람은 누구인가요?",
+    suspectId: "clive",
+    explanation: "에드워드 헤일은 클라이브 베넷이 발견한 새 천체를 자신의 성과로 발표하려 했어요. 베넷은 발견 공로를 빼앗기는 걸 막으려 에드워드를 살해했어요.",
     video: {
       // Add the edited MP4 as src and, if available, Korean WebVTT as captions.
       src: "",
       poster: "planetarium/photo.png"
     },
+    stepsTitle: "장면별 해설 예시",
     steps: [
       {
         image: "planetarium/schedule.png",

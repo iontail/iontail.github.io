@@ -1671,7 +1671,7 @@ main { overflow: clip; }
   font-size: .95rem;
 }
 .case-result dd { margin: 0; font-weight: 700; }
-:is(.solution-cast, .solution-sequence) h4 {
+:is(.solution-cast, .solution-reconstruction, .solution-sequence) h4 {
   margin-bottom: 1rem;
   scroll-margin-block-start: 1rem;
   font: 700 1.4rem/1.35 var(--ink-display);
@@ -1690,40 +1690,43 @@ main { overflow: clip; }
   grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   place-items: center;
   position: relative;
-  aspect-ratio: 5 / 6;
+  aspect-ratio: 1;
   border: 1px solid #a48153;
   background: url("archive-paper.jpg") center / 460px #ebddbf;
   background-blend-mode: multiply;
 }
 .solution-portrait img { width: 82%; height: 87%; object-fit: contain; }
-.solution-cast-number {
+.solution-portrait-label {
   position: absolute;
   inset: .45rem auto auto .45rem;
+  display: flex;
+  gap: .25rem;
+}
+.solution-cast-number {
   display: grid;
   place-items: center;
-  min-width: 1.55rem;
-  min-height: 1.55rem;
+  min-width: 1.7rem;
+  min-height: 1.8rem;
   background: #24313b;
   color: #fff0d0;
   font: 400 1.08rem/1 var(--display);
   font-variant-numeric: lining-nums;
 }
 .solution-cast-list h5 {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: .24rem .45rem;
   margin: .55rem 0 .18rem;
   font: 700 1rem/1.45 var(--archive-serif);
   word-break: keep-all;
 }
 .solution-cast-list p { color: #e1d5c2; font-size: .9rem; line-height: 1.45; word-break: keep-all; overflow-wrap: anywhere; }
 .solution-culprit {
-  padding: .13rem .38rem;
+  display: grid;
+  place-items: center;
+  padding: .12rem .48rem;
   border: 1px solid #d68b71;
   background: #773f31;
   color: #fff0de;
-  font-size: .8rem;
+  font: 700 clamp(.9rem, 1.5vw, 1.15rem)/1.2 var(--archive-serif);
+  white-space: nowrap;
 }
 .solution-steps {
   display: grid;
@@ -1757,6 +1760,7 @@ main { overflow: clip; }
 }
 @media (max-width: 760px) {
   .solution-cast-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .solution-portrait { aspect-ratio: 5 / 6; }
 }
 @media (max-width: 560px) {
   .solution-result, .solution-steps { grid-template-columns: minmax(0, 1fr); }

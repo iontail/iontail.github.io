@@ -1,4 +1,4 @@
-import { caseFile } from "./case-data.js";
+import { caseFile } from "./case-data.js?v=planetarium-answer";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -268,7 +268,7 @@ function hints(left, right) {
 }
 
 function solution(layout) {
-  const { practice, suspectId, culpritId, explanation, video = {}, steps = [] } = caseFile.answer;
+  const { practice, suspectId, explanation, video = {}, stepsTitle = "장면별 해설", steps = [] } = caseFile.answer;
   const correctSuspect = caseFile.suspects.find(suspect => suspect.id === suspectId);
   const successful = submittedSuspect.id === suspectId;
   const verdict = successful ? "지목 성공" : "지목 실패";
@@ -277,22 +277,39 @@ function solution(layout) {
   layout.innerHTML = `<section class="paper answer-page" aria-labelledby="solution-title">
     <div class="solution-content">
       <header class="solution-heading">
-        <h3 id="solution-title" tabindex="-1">사건 재구성</h3>
+        <h3 id="solution-title" tabindex="-1">사건 해결</h3>
         <div class="solution-links">
-          <button class="solution-jump" type="button" data-solution-jump="solution-cast">인물표 보기</button>
+          <button class="solution-jump" type="button" data-solution-jump="solution-film-title">재구성 영상 보기</button>
           ${steps.length ? '<button class="solution-jump" type="button" data-solution-jump="solution-steps">장면별 해설 보기</button>' : ""}
         </div>
       </header>
-      <div class="solution-film">
-        ${video.src ? `<video class="solution-video" src="${video.src}"${video.poster ? ` poster="${video.poster}"` : ""}
-          controls playsinline preload="metadata" aria-labelledby="solution-title">
-          ${video.captions ? `<track kind="captions" src="${video.captions}" srclang="ko" label="한국어">` : ""}
-        </video>` : ""}
-        <div class="solution-film-still"${video.src ? " hidden" : ""}>
-          ${video.poster ? `<img src="${video.poster}" alt="" decoding="async">` : ""}
-          <p>${video.src ? "재구성 영상을 불러올 수 없어요." : "재구성 영상 준비 중"}</p>
+      <section class="solution-cast" aria-labelledby="solution-cast">
+        <h4 id="solution-cast">용의자 인물표</h4>
+        <ol class="solution-cast-list">${caseFile.suspects.map((suspect, index) => `<li>
+          <div class="solution-portrait">
+            <div class="solution-portrait-label">
+              <span class="solution-cast-number" aria-hidden="true">${index + 1}</span>
+              ${!practice && suspect.id === suspectId ? '<span class="solution-culprit">살인자</span>' : ""}
+            </div>
+            <img src="${suspect.portrait}" alt="" loading="lazy" decoding="async">
+          </div>
+          <h5>${suspect.name}</h5>
+          <p>${suspect.role}</p>
+        </li>`).join("")}</ol>
+      </section>
+      <section class="solution-reconstruction" aria-labelledby="solution-film-title">
+        <h4 id="solution-film-title" tabindex="-1">사건 재구성 영상</h4>
+        <div class="solution-film">
+          ${video.src ? `<video class="solution-video" src="${video.src}"${video.poster ? ` poster="${video.poster}"` : ""}
+            controls playsinline preload="metadata" aria-labelledby="solution-film-title">
+            ${video.captions ? `<track kind="captions" src="${video.captions}" srclang="ko" label="한국어">` : ""}
+          </video>` : ""}
+          <div class="solution-film-still"${video.src ? " hidden" : ""}>
+            ${video.poster ? `<img src="${video.poster}" alt="" decoding="async">` : ""}
+            <p>${video.src ? "재구성 영상을 불러올 수 없어요." : "재구성 영상 준비 중"}</p>
+          </div>
         </div>
-      </div>
+      </section>
       <section class="solution-result" aria-labelledby="solution-verdict">
         <div>
           <h4 id="solution-verdict" class="answer-verdict" data-outcome="${successful ? "success" : "failure"}">${practice ? `시연 결과 · ${verdict}` : `범인 ${verdict}`}</h4>
@@ -304,19 +321,8 @@ function solution(layout) {
           <dt>풀이 시간</dt><dd>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</dd>
         </dl>
       </section>
-      <section class="solution-cast" aria-labelledby="solution-cast">
-        <h4 id="solution-cast" tabindex="-1">용의자 인물표</h4>
-        <ol class="solution-cast-list">${caseFile.suspects.map((suspect, index) => `<li>
-          <div class="solution-portrait">
-            <span class="solution-cast-number" aria-hidden="true">${index + 1}</span>
-            <img src="${suspect.portrait}" alt="" loading="lazy" decoding="async">
-          </div>
-          <h5>${suspect.name}${suspect.id === culpritId ? ' <span class="solution-culprit">살인자</span>' : ""}</h5>
-          <p>${suspect.role}</p>
-        </li>`).join("")}</ol>
-      </section>
       ${steps.length ? `<section class="solution-sequence" aria-labelledby="solution-steps">
-        <h4 id="solution-steps" tabindex="-1">${practice ? "장면별 해설 예시" : "장면별 해설"}</h4>
+        <h4 id="solution-steps" tabindex="-1">${stepsTitle}</h4>
         <ol class="solution-steps">${steps.map((step, index) => `<li>
           <img src="${step.image}" alt="${step.alt ?? ""}" loading="lazy" decoding="async">
           <div class="solution-step-text">
