@@ -1,7 +1,7 @@
 const illustrations = {
-  scene: "planetarium/main.png?v=rail-and-eyes",
+  scene: "planetarium/main.png?v=reporter-expression",
   testimonyA: "planetarium/witnesses-01.png?v=witness-proof",
-  testimonyB: "planetarium/witnesses-02.png?v=bennett-meeting",
+  testimonyB: "planetarium/witnesses-02.png?v=complete-testimony",
   schedule: "planetarium/schedule.png?v=updated-assignments",
   console: "planetarium/console.png?v=clue-art-refresh",
   photo: "planetarium/photo.png?v=clue-art-refresh",
@@ -189,7 +189,7 @@ export const caseFile = {
         text: "리드는 P-07을 1매 반납했다고 쓰고 붉은색으로 1.26 kg을 적었어요. 소장이 따로 잰 검은색 0.94 kg에는 동그라미가 있고, 다른 세 건은 기재값과 실측값이 같아 체크돼 있어요. 0.94 kg은 빈 케이스의 무게예요. P-07은 폐기 예정 건판이에요. 리드가 충돌 직전에 객석 뒤에서 꺼낸 정상 Ⅰ번은 별개의 슬라이드였어요."
       },
       {
-        image: "planetarium/solution/11-julian-testimony.jpg",
+        image: "planetarium/solution/11-julian-testimony.jpg?v=complete-testimony",
         alt: "객석 통로에서 사진을 찍었고 소장실에 다시 가지 않았다는 줄리언의 증언",
         title: "줄리언이 사건 직전에 한 일",
         text: "줄리언은 리허설 전에 기사 교정쇄를 소장실에 두고 나왔어요. 불이 꺼진 뒤에는 객석 통로에서 천장을 찍었고, 카메라를 내리기도 전에 충돌음을 들었다고 했어요. 그녀를 의심하게 만드는 건 책상에 남은 암호 편지예요."
@@ -231,7 +231,7 @@ export const caseFile = {
         text: "마거릿이 들은 급한 발소리는 베넷이 어둠 속에서 조작대로 뛰어가는 소리였어요. 곧이어 충돌음이 났죠. 조작대 그림을 확대하면 레버 손잡이 고리 아래 금속 막대에 가는 금이 보여요. 베넷이 달려와 레버를 세게 당길 때 남은 흔적이에요."
       },
       {
-        image: "planetarium/solution/17-projection-platform.jpg?v=rail-and-eyes",
+        image: "planetarium/solution/17-projection-platform.jpg?v=reporter-expression",
         alt: "천문관 중앙 투영기와 난간, 그 옆에 쓰러진 에드워드 헤일",
         title: "충돌 순간의 재구성",
         text: "정상 Ⅰ번이 끼워져 있었다면 리드는 조작대에서 다음 순서를 준비했을 거예요. 베넷은 Ⅰ번을 바꿔 끼워 리드가 자리를 비우게 했어요. 그리고 암전 상태에서 빈 조작대로 달려가 몰래 역회전 레버를 세게 당겼어요. 소장은 울타리에 걸려 뒤로 넘어지며 판에 머리를 부딪쳤고, 베넷은 충돌 뒤에 불을 켰어요."
