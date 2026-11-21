@@ -1799,7 +1799,6 @@ main { overflow: clip; }
 .cipher-glyph[data-shape="triangle"] { --cipher-outline: polygon(50% 0, 100% 100%, 0 100%); }
 .cipher-glyph[data-shape="diamond"] { --cipher-outline: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
 .cipher-glyph[data-shape="circle"] { --cipher-outline: circle(50%); }
-.cipher-glyph[data-shape="pentagon"] { --cipher-outline: polygon(50% 0, 100% 38%, 81% 100%, 19% 100%, 0 38%); }
 .cipher-shape, .cipher-shape::after { clip-path: var(--cipher-outline, inset(0)); }
 .cipher-shape { display: grid; place-items: center; width: .86rem; height: .86rem; background: currentColor; }
 .cipher-glyph[data-filled="false"] .cipher-shape::after {

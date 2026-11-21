@@ -6,7 +6,7 @@ const illustrations = {
   console: "planetarium/console.png?v=clue-art-refresh",
   photo: "planetarium/photo.png?v=clue-art-refresh",
   drawer: "planetarium/drawer.png?v=weight-columns",
-  proof: "planetarium/proof.png?v=ordered-vowels"
+  proof: "planetarium/proof.png?v=stroke-vowels"
 };
 
 export const caseFile = {
@@ -88,7 +88,7 @@ export const caseFile = {
   hints: [
     "진행표에 적힌 순서와 실제 리허설이 일치하는지 확인해 보세요.",
     "기자가 찍은 리허설 사진과 서랍 속 관측 자료 대조표를 비교해 보세요. 두 자료에서 어떤 사실을 확인할 수 있을까요?",
-    "교정쇄 옆 편지는 누구에게 보내려던 걸까요? ‘To.’ 뒤에 기자의 이름을 대입해 보세요. 검은 도형은 ㅏ·ㅐ·ㅑ·ㅒ부터 시작하는 한글 모음 순서예요. 사각형, 삼각형, 마름모, 원, 오각형 차례로 위·오른쪽·아래·왼쪽을 채워요.",
+    "교정쇄 옆 편지는 누구에게 보내려던 걸까요?",
     "소리가 나기 직전의 증언을 나란히 읽어 보세요. 각자가 있던 자리와 보고 들은 내용을 비교하면, 서로 맞지 않는 대목이 있나요?"
   ],
   suspects: [
@@ -118,12 +118,12 @@ export const caseFile = {
         ["diamond", 2, "ㅉ---"]
       ],
       vowels: [
-        ["square", 1, "ㅏㅐㅑㅒ"],
-        ["triangle", 1, "ㅓㅔㅕㅖ"],
-        ["diamond", 1, "ㅗㅘㅙㅚ"],
-        ["circle", 1, "ㅛㅜㅝㅞ"],
-        ["pentagon", 1, "ㅟㅠㅡㅢ"],
-        ["square", 2, "ㅣ---"]
+        ["square", 1, "ㅏㅑㅓㅕ"],
+        ["triangle", 1, "ㅗㅛㅜㅠ"],
+        ["diamond", 1, "ㅡㅣㅘㅝ"],
+        ["square", 2, "ㅐㅒㅔㅖ"],
+        ["triangle", 2, "ㅚ-ㅟ-"],
+        ["diamond", 2, "ㅢ-ㅙㅞ"]
       ]
     },
     stepsTitle: "장면별 해설",
@@ -195,19 +195,19 @@ export const caseFile = {
         text: "줄리언은 리허설 전에 기사 교정쇄를 소장실에 두고 나왔어요. 불이 꺼진 뒤에는 객석 통로에서 천장을 찍었고, 카메라를 내리기도 전에 충돌음을 들었다고 했어요. 그녀를 의심하게 만드는 건 책상에 남은 암호 편지예요."
       },
       {
-        image: "planetarium/solution/12-cipher-addressee.jpg?v=ordered-vowels",
+        image: "planetarium/solution/12-cipher-addressee.jpg?v=stroke-vowels",
         alt: "줄리언 머서의 기자 이름과 To.로 시작하는 암호 편지",
         title: "수신인 이름으로 암호 풀기",
-        text: "교정쇄의 ‘줄리언 머서’를 편지의 To. 뒤에 대입하면 수신인을 알 수 있어요. ‘줄’의 ㅈ·ㅜ·ㄹ은 빈 마름모의 위 점, 검은 원의 오른쪽 점, 빈 사각형의 왼쪽 점이에요. 이 순서로 본문의 음절도 한 글자씩 풀 수 있어요."
+        text: "교정쇄의 ‘줄리언 머서’를 편지의 To. 뒤에 대입하면 수신인을 알 수 있어요. ‘줄’의 ㅈ·ㅜ·ㄹ은 빈 마름모의 위 점, 검은 삼각형의 아래 점, 빈 사각형의 왼쪽 점이에요. 이 순서로 본문의 음절도 한 글자씩 풀 수 있어요."
       },
       {
-        image: "planetarium/solution/13-cipher-letter.jpg?v=ordered-vowels",
+        image: "planetarium/solution/13-cipher-letter.jpg?v=stroke-vowels",
         alt: "기사 교정쇄 옆에 남은 문양 암호 편지",
         title: "편지에는 발견자를 바꾸라고 쓰여 있어요",
         text: "편지는 “발견자는 내 이름으로 바꿔. 일이 끝나면 네가 후원자에게 보낸 그 편지는 돌려주지.”라고 읽혀요. 줄리언에게도 자신을 압박하던 소장을 원망할 이유가 있었어요. 이번 지시는 책상에 남아 있었고, 충돌 직전 줄리언의 동선은 객석에서 찍은 사진과 이어져요."
       },
       {
-        image: "planetarium/solution/14-letter-and-notice.jpg?v=ordered-vowels",
+        image: "planetarium/solution/14-letter-and-notice.jpg?v=stroke-vowels",
         alt: "발견자 이름을 바꾸라는 암호 편지 본문과 에드워드 헤일의 연임 심사 통지서",
         title: "소장이 공로를 원했던 이유",
         text: "공문에는 에드워드가 직접 주도한 연구 실적을 입증해야 연임할 수 있다고 적혀 있어요. 발견자 이름을 자기 이름으로 바꾸라는 편지를 함께 보면, 소장이 베넷의 발견을 자기 실적으로 발표하려 한 이유가 드러나요."

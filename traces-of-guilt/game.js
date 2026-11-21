@@ -1,4 +1,4 @@
-import { caseFile } from "./case-data.js?v=reporter-expression";
+import { caseFile } from "./case-data.js?v=stroke-vowels";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -289,7 +289,7 @@ function hints(left, right) {
 
 function cipherTable(rows, title, filled) {
   const directions = [["north", "위"], ["east", "오른쪽"], ["south", "아래"], ["west", "왼쪽"]];
-  const shapeNames = { square: "사각형", triangle: "삼각형", diamond: "마름모", circle: "원", pentagon: "오각형" };
+  const shapeNames = { square: "사각형", triangle: "삼각형", diamond: "마름모", circle: "원" };
   const baseLetters = new Map(rows.filter(([, dots]) => dots === 1).map(([shape, , letters]) => [shape, letters]));
   return `<table class="cipher-table">
     <caption>${title}</caption>
@@ -301,7 +301,7 @@ function cipherTable(rows, title, filled) {
           <span class="cipher-glyph" data-shape="${shape}" data-direction="${directions[index][0]}" data-filled="${filled}" aria-hidden="true">
             <span class="cipher-shape"></span><span class="cipher-dots"><i></i>${dots === 2 ? "<i></i>" : ""}</span>
           </span>
-          <span class="cipher-letter">${dots === 2 && !filled ? `<span class="cipher-base">${baseLetters.get(shape)[index]} → </span>` : ""}${letter}</span>
+          <span class="cipher-letter">${dots === 2 ? `<span class="cipher-base">${baseLetters.get(shape)[index]} → </span>` : ""}${letter}</span>
         </span>
       </td>`).join("")}
     </tr>`).join("")}</tbody>
@@ -310,7 +310,7 @@ function cipherTable(rows, title, filled) {
 
 function cipherGuide(cipher) {
   return `<p>빈 도형은 자음, 검게 채운 도형은 모음이에요. 점의 위치와 개수로 자모를 구별해요. 짧은 세로선은 음절을 나누고, 넓은 여백은 어절을 나눠요.</p>
-    <p>자음에서 <strong>점 두 개</strong>는 ㄱ에서 ㄲ으로 바뀌는 것처럼 쌍자음을 뜻해요. 모음은 한글 모음 순서대로 다섯 도형을 채워요. 각 도형에서 위·오른쪽·아래·왼쪽으로 돌고, 마지막 ㅣ는 사각형으로 돌아가 위에 점을 두 개 찍어요.</p>
+    <p>자음에서 <strong>점 두 개</strong>는 ㄱ에서 ㄲ으로 바뀌는 것처럼 쌍자음을 뜻해요. 모음에서는 ㅏ에 ㅣ가 붙어 ㅐ가 되는 것처럼, 기본 모음에 세로획 ㅣ가 붙으면 같은 도형의 같은 방향에 점을 하나 더 찍어요.</p>
     <div class="cipher-tables">
       ${cipherTable(cipher.consonants, "자음 · 빈 도형", false)}
       ${cipherTable(cipher.vowels, "모음 · 검은 도형", true)}
