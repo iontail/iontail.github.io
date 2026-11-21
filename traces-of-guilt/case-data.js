@@ -1,12 +1,12 @@
 const illustrations = {
-  scene: "planetarium/main.png?v=rehearsal-slide-handoff",
+  scene: "planetarium/main.png?v=main-standing-figures",
   testimonyA: "planetarium/witnesses-01.png?v=witness-proof",
   testimonyB: "planetarium/witnesses-02.png?v=bennett-meeting",
-  schedule: "planetarium/schedule.png?v=book-overview",
+  schedule: "planetarium/schedule.png?v=updated-assignments",
   console: "planetarium/console.png?v=clue-art-refresh",
   photo: "planetarium/photo.png?v=clue-art-refresh",
-  drawer: "planetarium/drawer.png?v=clue-art-refresh",
-  proof: "planetarium/proof.png?v=desk-details"
+  drawer: "planetarium/drawer.png?v=weight-columns",
+  proof: "planetarium/proof.png?v=ordered-vowels"
 };
 
 export const caseFile = {
@@ -88,7 +88,7 @@ export const caseFile = {
   hints: [
     "진행표에 적힌 순서와 실제 리허설이 일치하는지 확인해 보세요.",
     "기자가 찍은 리허설 사진과 서랍 속 관측 자료 대조표를 비교해 보세요. 두 자료에서 어떤 사실을 확인할 수 있을까요?",
-    "교정쇄 옆 편지는 누구에게 보내려던 걸까요? 짐작한 이름을 ‘To.’ 뒤의 문양에 한 글자씩 대입해 보면, 암호의 규칙을 찾을 수 있을지도 몰라요.",
+    "교정쇄 옆 편지는 누구에게 보내려던 걸까요? ‘To.’ 뒤에 기자의 이름을 대입해 보세요. 검은 도형은 ㅏ·ㅐ·ㅑ·ㅒ부터 시작하는 한글 모음 순서예요. 사각형, 삼각형, 마름모, 원, 오각형 차례로 위·오른쪽·아래·왼쪽을 채워요.",
     "소리가 나기 직전의 증언을 나란히 읽어 보세요. 각자가 있던 자리와 보고 들은 내용을 비교하면, 서로 맞지 않는 대목이 있나요?"
   ],
   suspects: [
@@ -101,7 +101,7 @@ export const caseFile = {
     practice: false,
     question: "에드워드 헤일을 살해한 사람은 누구인가요?",
     suspectId: "clive",
-    explanation: "베넷은 잘못된 Ⅰ번을 끼워 예정에 없던 교체를 일으켰어요. 리드가 정상 Ⅰ번을 찾으러 조작대를 비우고 소장이 투영기에 다가간 사이, 베넷은 어둠 속에서 몰래 역회전 레버를 당겼어요. 소장이 자기 이름으로 발표하려던 발견은 베넷의 성과였어요.",
+    explanation: "진행표에서 베넷은 암전과 기준별 정렬을, 에드워드 헤일은 A를 맡았어요. 잘못된 Ⅰ번으로 리드가 정상 슬라이드를 찾으러 가고 소장이 투영기에 다가가자, 베넷은 비어 있는 조작대에서 투영기를 역회전시켰어요. 소장이 자기 이름으로 발표하려던 발견은 베넷의 성과였어요.",
     video: {
       // Add the edited MP4 as src and, if available, Korean WebVTT as captions.
       src: "",
@@ -118,22 +118,21 @@ export const caseFile = {
         ["diamond", 2, "ㅉ---"]
       ],
       vowels: [
-        ["square", 1, "ㅏㅓㅗㅜ"],
-        ["triangle", 1, "ㅡㅣㅐㅔ"],
-        ["diamond", 1, "ㅘㅝㅚㅟ"],
-        ["circle", 1, "ㅢ---"],
-        ["square", 2, "ㅑㅕㅛㅠ"],
-        ["triangle", 2, "--ㅒㅖ"],
-        ["diamond", 2, "ㅙㅞ--"]
+        ["square", 1, "ㅏㅐㅑㅒ"],
+        ["triangle", 1, "ㅓㅔㅕㅖ"],
+        ["diamond", 1, "ㅗㅘㅙㅚ"],
+        ["circle", 1, "ㅛㅜㅝㅞ"],
+        ["pentagon", 1, "ㅟㅠㅡㅢ"],
+        ["square", 2, "ㅣ---"]
       ]
     },
     stepsTitle: "장면별 해설",
     steps: [
       {
-        image: "planetarium/solution/01-rehearsal-schedule.jpg?v=book-overview",
-        alt: "리허설 A, 에드워드 헤일이 맡은 Ⅱ번 장착과 초점 확인, 리허설 B가 적힌 진행표",
+        image: "planetarium/solution/01-rehearsal-schedule.jpg?v=updated-assignments",
+        alt: "02번 암전 담당 클라이브 베넷과 03번 리허설 A 담당 에드워드 헤일이 적힌 진행표",
         title: "예정된 리허설 순서",
-        text: "19시 49분에는 투영기에 먼저 끼운 Ⅰ번으로 발견 전 사진을 띄울 예정이었어요. 에드워드 헤일은 19시 53분에 Ⅱ번을 장착하고 초점을 확인한 뒤, 19시 56분에 사진을 보여주기로 했어요. 화살표와 거리는 Ⅱ번 화면을 확인한 뒤에 표시하는 순서였어요."
+        text: "베넷은 19시 46분에 암전과 기준별 정렬을 맡았어요. 에드워드 헤일은 19시 49분에 Ⅰ번으로 리허설 A를 진행하고, 19시 53분에 Ⅱ번을 장착해 초점을 확인할 예정이었어요. 화살표와 거리는 19시 56분 리허설 B에서 Ⅱ번 화면을 확인한 뒤에 나오는 표시였어요."
       },
       {
         image: "planetarium/solution/02-margaret-testimony.jpg",
@@ -145,10 +144,10 @@ export const caseFile = {
         image: "planetarium/solution/03-projected-arrow.jpg",
         alt: "명왕성 옆 화살표에 300 thou라고 표시된 리허설 사진",
         title: "카메라에 남은 화면",
-        text: "줄리언의 사진에는 명왕성 옆에 화살표와 300 thou라는 표기가 찍혀 있어요. 서랍 속 인화물에도 거리 기록이 남아 있어요. 두 자료가 가리키는 곳을 비교해 보세요."
+        text: "줄리언의 사진에는 명왕성 옆에 화살표와 300 thou라는 표기가 찍혀 있어요. 서랍 속 대조표에도 거리 기록이 온전히 남아 있어요. 두 자료가 가리키는 곳을 비교해 보세요."
       },
       {
-        image: "planetarium/solution/04-photo-comparison.jpg",
+        image: "planetarium/solution/04-photo-comparison.jpg?v=readable-notes",
         alt: "리허설 사진의 300 thou 화살표와 정상 Ⅱ번 인화물의 7,620 microns 기록 및 광점 비교",
         title: "같은 거리, 서로 다른 화면",
         text: "같은 배율의 인화지에서 300 thou와 7,620 microns는 같은 길이예요. 정상 Ⅱ번 인화물에는 화살촉 너머에 광점이 있어요. 리허설 사진의 같은 자리는 비어 있어요."
@@ -184,10 +183,10 @@ export const caseFile = {
         text: "에드워드는 발표 뒤 집을 나가겠다고 했고, 회의 안건에는 마거릿의 결재권과 장부를 소장에게 넘긴다고 적혀 있어요. 마거릿을 의심할 이유는 충분해요. 증언을 시간순으로 읽으면 마거릿이 객석에 들어섰을 때 이미 화면이 떠 있었어요. 그녀는 커피를 든 채 의자 등받이를 더듬다가 급한 발소리와 충돌음을 차례로 들었다고 했어요."
       },
       {
-        image: "planetarium/solution/10-plate-return.jpg",
-        alt: "P-07의 재계량 값 0.94 kg에 표시가 된 건판 반납 기록",
+        image: "planetarium/solution/10-plate-return.jpg?v=weight-columns",
+        alt: "P-07의 붉은 기재 중량 1.26과 검은 실측값 0.94를 나란히 보여주는 건판 반납 기록",
         title: "리드가 서명한 건판 반납 기록",
-        text: "리드가 한 장을 반납했다고 기록한 P-07의 실측값은 빈 케이스의 무게인 0.94 kg과 같아요. 장비를 다룰 줄 아는 리드가 건판까지 숨겼을 가능성이 있어 먼저 의심할 만해요. 충돌 직전에는 소장의 요청으로 객석 뒤에 가서 정상 Ⅰ번을 꺼냈어요. 그 요청 때문에 리드가 조작대를 비웠다는 점이 중요해요."
+        text: "리드는 P-07을 1매 반납했다고 쓰고 붉은색으로 1.26 kg을 적었어요. 소장이 따로 잰 검은색 0.94 kg에는 동그라미가 있고, 다른 세 건은 기재값과 실측값이 같아 체크돼 있어요. 0.94 kg은 빈 케이스의 무게예요. P-07은 폐기 예정 건판이에요. 리드가 충돌 직전에 객석 뒤에서 꺼낸 정상 Ⅰ번은 별개의 슬라이드였어요."
       },
       {
         image: "planetarium/solution/11-julian-testimony.jpg",
@@ -196,19 +195,19 @@ export const caseFile = {
         text: "줄리언은 리허설 전에 기사 교정쇄를 소장실에 두고 나왔어요. 불이 꺼진 뒤에는 객석 통로에서 천장을 찍었고, 카메라를 내리기도 전에 충돌음을 들었다고 했어요. 그녀를 의심하게 만드는 건 책상에 남은 암호 편지예요."
       },
       {
-        image: "planetarium/solution/12-cipher-addressee.jpg",
+        image: "planetarium/solution/12-cipher-addressee.jpg?v=ordered-vowels",
         alt: "줄리언 머서의 기자 이름과 To.로 시작하는 암호 편지",
         title: "수신인 이름으로 암호 풀기",
-        text: "교정쇄의 ‘줄리언 머서’를 편지의 To. 뒤에 대입하면 수신인을 알 수 있어요. ‘줄’의 ㅈ·ㅜ·ㄹ이 첫 음절의 문양 세 개와 맞아요. 위의 비밀암호 대응표로 같은 방식을 본문에 적용할 수 있어요."
+        text: "교정쇄의 ‘줄리언 머서’를 편지의 To. 뒤에 대입하면 수신인을 알 수 있어요. ‘줄’의 ㅈ·ㅜ·ㄹ은 빈 마름모의 위 점, 검은 원의 오른쪽 점, 빈 사각형의 왼쪽 점이에요. 이 순서로 본문의 음절도 한 글자씩 풀 수 있어요."
       },
       {
-        image: "planetarium/solution/13-cipher-letter.jpg",
+        image: "planetarium/solution/13-cipher-letter.jpg?v=ordered-vowels",
         alt: "기사 교정쇄 옆에 남은 문양 암호 편지",
         title: "편지에는 발견자를 바꾸라고 쓰여 있어요",
         text: "편지는 “발견자는 내 이름으로 바꿔. 일이 끝나면 네가 후원자에게 보낸 그 편지는 돌려주지.”라고 읽혀요. 줄리언에게도 자신을 압박하던 소장을 원망할 이유가 있었어요. 이번 지시는 책상에 남아 있었고, 충돌 직전 줄리언의 동선은 객석에서 찍은 사진과 이어져요."
       },
       {
-        image: "planetarium/solution/14-letter-and-notice.jpg",
+        image: "planetarium/solution/14-letter-and-notice.jpg?v=ordered-vowels",
         alt: "발견자 이름을 바꾸라는 암호 편지 본문과 에드워드 헤일의 연임 심사 통지서",
         title: "소장이 공로를 원했던 이유",
         text: "공문에는 에드워드가 직접 주도한 연구 실적을 입증해야 연임할 수 있다고 적혀 있어요. 발견자 이름을 자기 이름으로 바꾸라는 편지를 함께 보면, 소장이 베넷의 발견을 자기 실적으로 발표하려 한 이유가 드러나요."
@@ -220,10 +219,10 @@ export const caseFile = {
         text: "베넷은 리드가 소장실에 들어간 때가 소장이 차려입고 미팅에 나선 직후였다고 했어요. 오후의 차림과 나간 시점까지 묘사한 건, 베넷이 이미 그때 소장을 봤다는 단서예요. 바로 뒤에 ‘리허설에서 불을 끄기 직전이 처음’이라고 한 말과 맞지 않아요."
       },
       {
-        image: "planetarium/solution/16-schedule-and-testimony.jpg",
-        alt: "암전 담당 리드와 리허설 A 담당 베넷이 적힌 진행표, 당일 조명을 맡았다는 베넷의 증언",
+        image: "planetarium/solution/16-schedule-and-testimony.jpg?v=updated-assignments",
+        alt: "암전 담당 베넷과 리허설 A 담당 에드워드 헤일이 적힌 진행표, 스위치 앞에 있었다는 베넷의 증언",
         title: "슬라이드, 조명, 조작대가 한 사람에게 이어져요",
-        text: "진행표에서 첫 사진은 베넷, 암전은 리드 담당이에요. 베넷은 당일 조명을 맡았고 스위치 앞에서 충돌음을 들었다고 했어요. 리드의 증언에는 암전 뒤 첫 사진이 떴을 때 베넷이 조작대 곁에 있었던 순간이 나와요. 리드가 잘못된 첫 화면 때문에 자리를 뜨자, 첫 슬라이드와 조명에 관여한 베넷에게 조작대를 쓸 기회도 생겼어요."
+        text: "진행표에는 02번 암전이 베넷, 03번 리허설 A가 에드워드 헤일 담당으로 적혀 있어요. 베넷은 충돌음을 들었을 때 스위치 앞에 있었다고 했어요. 리드는 첫 사진이 뜨자 베넷이 조작대 곁에서 설명했다고 기억해요. 이 증언은 베넷이 암전 뒤에도 조작대 가까이에 있었음을 보여 줘요. 리드가 슬라이드를 가지러 떠나면서 조작대가 비었어요."
       },
       {
         image: "planetarium/solution/lever-crack.png",
@@ -232,7 +231,7 @@ export const caseFile = {
         text: "마거릿이 들은 급한 발소리는 베넷이 어둠 속에서 조작대로 뛰어가는 소리였어요. 곧이어 충돌음이 났죠. 조작대 그림을 확대하면 레버 손잡이 고리 아래 금속 막대에 가는 금이 보여요. 베넷이 달려와 레버를 세게 당길 때 남은 흔적이에요."
       },
       {
-        image: "planetarium/solution/17-projection-platform.jpg",
+        image: "planetarium/solution/17-projection-platform.jpg?v=main-standing-figures",
         alt: "천문관 중앙 투영기와 난간, 그 옆에 쓰러진 에드워드 헤일",
         title: "충돌 순간의 재구성",
         text: "정상 Ⅰ번이 끼워져 있었다면 리드는 조작대에서 다음 순서를 준비했을 거예요. 베넷은 Ⅰ번을 바꿔 끼워 리드가 자리를 비우게 했어요. 그리고 암전 상태에서 빈 조작대로 달려가 몰래 역회전 레버를 세게 당겼어요. 소장은 울타리에 걸려 뒤로 넘어지며 판에 머리를 부딪쳤고, 베넷은 충돌 뒤에 불을 켰어요."
@@ -241,7 +240,7 @@ export const caseFile = {
         image: illustrations.scene,
         alt: "사고가 난 투영기와 천문관에 있던 네 용의자",
         title: "3번 용의자 클라이브 베넷",
-        text: "마거릿에게는 운영권, 리드에게는 사라진 건판, 줄리언에게는 협박 편지가 걸려 있었어요. 베넷만은 첫 화면을 준비했고, 암전을 맡았고, 정상 Ⅰ번을 찾으러 리드가 떠나는 순간 조작대 곁에 있었어요. 암호 편지와 연임 공문은 왜 그날 행동했는지 설명해요. 리드를 움직이게 한 슬라이드부터 충돌 뒤 불을 켜기까지, 사건 전체를 설명하는 사람은 베넷이에요."
+        text: "마거릿에게는 운영권, 리드에게는 사라진 건판, 줄리언에게는 협박 편지가 걸려 있었어요. 베넷은 암전을 맡았고, 첫 사진이 뜬 뒤 리드가 정상 Ⅰ번을 찾으러 떠나기 전에 조작대 곁에서 목격됐어요. 암호 편지와 연임 공문은 왜 그날 행동했는지 설명해요. 리드를 움직이게 한 슬라이드부터 충돌 뒤 불을 켜기까지, 사건 전체를 설명하는 사람은 베넷이에요."
       }
     ]
   }
