@@ -13,9 +13,7 @@ const deskTitle = desk.querySelector("h2");
 const returnButton = document.querySelector(".return");
 const closedBook = document.querySelector(".closed-book");
 const openButton = document.querySelector(".open-book");
-const openLabel = openButton.querySelector(".open-label");
 const deskVolume = desk.querySelector(".desk-volume");
-const previewLabel = desk.querySelector(".preview-label");
 const jackets = [deskVolume.querySelector(".cover"), document.querySelector("#preview-cover").content.firstElementChild];
 const closeButton = document.querySelector(".close-book");
 const reader = document.querySelector(".reader");
@@ -24,6 +22,11 @@ const spread = document.querySelector(".spread");
 const clueTabs = document.querySelector(".clue-tabs");
 const spreadTemplate = document.querySelector("#spread-template");
 const pageCount = document.querySelector("#page-count");
+const investigationNavigation = reader.querySelectorAll(".bookmarks, .page-nav");
+const recordLock = document.querySelector(".record-lock");
+const recordLockForm = recordLock.querySelector("form");
+const recordPasscode = recordLockForm.querySelector("input");
+const recordLockError = recordLockForm.querySelector(".record-lock-error");
 const viewer = document.querySelector(".viewer");
 const viewerDownload = viewer.querySelector("[data-download]");
 const hintConfirm = document.querySelector(".hint-confirm");
@@ -57,14 +60,17 @@ const hintsPage = Math.ceil(sheets.length / 2) + 1;
 const answerPage = hintsPage + 1;
 const lastPage = answerPage;
 const overviewPage = -1;
+const lockedRecord = 1;
+const recordPin = "0416";
 const viewedHints = new Set();
 let activePage = overviewPage;
 let activeClue;
 const recordFromHash = () => records.findIndex(record => record.hash === location.hash);
-let desiredRecord = Math.max(0, recordFromHash());
+const initialRecord = recordFromHash();
+let desiredRecord = Math.max(0, initialRecord);
 let deskRecord = 0;
-let bookState = recordFromHash() >= 0 ? "closed"
-  : location.hash === "#investigation" ? "shelf" : "entrance";
+let bookState = initialRecord === lockedRecord || location.hash === "#investigation" ? "shelf"
+  : initialRecord >= 0 ? "closed" : "entrance";
 let desiredState = bookState;
 let moving = false;
 let readerZoom;
@@ -397,6 +403,11 @@ function solution(layout) {
 function renderPage(page) {
   const layout = spreadTemplate.content.firstElementChild.cloneNode(true);
   const [left, right] = layout.children;
+  if (deskRecord === lockedRecord) {
+    left.innerHTML = '<h3 tabindex="-1"></h3><p class="paper-description">사건 기록을 준비 중이에요.</p>';
+    left.querySelector("h3").textContent = deskTitle.textContent;
+    return layout;
+  }
   if (page < hintsPage && clueLinks.length) {
     left.classList.add("indexed-paper");
     right.classList.add("indexed-paper");
@@ -531,7 +542,7 @@ function updateNavigation() {
     const destination = activePage + Number(button.dataset.step);
     button.disabled = destination < overviewPage || destination > lastPage;
   }
-  clueTabs.hidden = !clueLinks.length || activePage >= hintsPage;
+  clueTabs.hidden = deskRecord === lockedRecord || !clueLinks.length || activePage >= hintsPage;
   for (const button of reader.querySelectorAll(".bookmarks [data-page]")) {
     if (Number(button.dataset.page) === currentPage) button.setAttribute("aria-current", "page");
     else button.removeAttribute("aria-current");
@@ -576,7 +587,7 @@ function focusSheet(layout) {
 }
 
 function stepSpread(step) {
-  showPage(activePage + step);
+  if (deskRecord !== lockedRecord) showPage(activePage + step);
 }
 
 function showPage(page, animate = true, clue) {
@@ -622,7 +633,7 @@ function showStage(stage) {
   desk.hidden = stage !== "closed";
   exitButton.hidden = stage !== "shelf";
   returnButton.hidden = stage !== "closed";
-  setAttemptClock(stage === "closed" && !openButton.disabled);
+  setAttemptClock(stage === "closed" && deskRecord === 0);
   window.scrollTo(0, 0);
 }
 
@@ -683,15 +694,12 @@ async function enterArchive() {
 
 function setDeskRecord(index) {
   deskRecord = index;
-  const playable = index === 0;
+  const draft = index === lockedRecord;
   deskTitle.textContent = records[index].querySelector(".spine-title").textContent;
   deskVolume.querySelector(".cover").replaceWith(jackets[index].cloneNode(true));
   deskVolume.querySelector(".book-spine").replaceChildren(records[index].querySelector(".shelf-spine").cloneNode(true));
-  deskVolume.classList.toggle("preview-volume", !playable);
-  previewLabel.hidden = playable;
-  openLabel.hidden = !playable;
-  openButton.disabled = !playable;
-  openButton.setAttribute("aria-label", playable ? openLabel.textContent.trim() : `${deskTitle.textContent} 표지`);
+  deskVolume.classList.toggle("preview-volume", draft);
+  for (const controls of investigationNavigation) controls.hidden = draft;
 }
 
 async function travel(toDesk) {
@@ -881,7 +889,8 @@ async function goTo(state) {
   if (moving) return;
   moving = true;
   try {
-    while (bookState !== desiredState || (bookState === "closed" && deskRecord !== desiredRecord)) {
+    while (bookState !== desiredState ||
+      ((bookState === "closed" || bookState === "open") && deskRecord !== desiredRecord)) {
       if (bookState === "entrance" || (bookState === "shelf" && desiredState === "entrance")) {
         const toShelf = bookState === "entrance";
         if (toShelf) await enterArchive();
@@ -896,7 +905,7 @@ async function goTo(state) {
         await travel(true);
         bookState = "closed";
         if (desiredState === "closed" && deskRecord === desiredRecord) {
-          (openButton.disabled ? deskTitle : openButton).focus({ preventScroll: true });
+          openButton.focus({ preventScroll: true });
         }
       } else if (bookState === "open") {
         await foldBook(false);
@@ -917,7 +926,7 @@ async function goTo(state) {
   }
 }
 
-const catalogue = ["읽을 사건 기록을 골라보세요.", "책등을 누르면 표지를 볼 수 있어요."];
+const catalogue = ["읽을 사건 기록을 골라보세요.", "책등을 누르면 비밀번호를 입력할 수 있어요."];
 const shelfSteps = library.querySelectorAll("[data-shelf-step]");
 const caption = library.querySelector(".shelf-caption");
 const shelfBooks = library.querySelector(".shelf-books");
@@ -980,10 +989,48 @@ document.addEventListener("keydown", event => {
   }
 });
 
+function clearRecordLockError() {
+  recordLockError.hidden = true;
+  recordPasscode.removeAttribute("aria-invalid");
+}
+
+function requestLockedRecord() {
+  if (location.hash === records[lockedRecord].hash) {
+    history.replaceState(null, "", "#investigation");
+    goTo("shelf");
+  }
+  if (recordLock.open) return;
+  selectRecord(lockedRecord);
+  records[lockedRecord].focus({ preventScroll: true });
+  recordLockForm.reset();
+  clearRecordLockError();
+  recordLock.showModal();
+}
+
+recordLock.querySelector("[data-close-record-lock]").addEventListener("click", () => recordLock.close());
+recordPasscode.addEventListener("input", clearRecordLockError);
+recordLockForm.addEventListener("submit", event => {
+  event.preventDefault();
+  if (recordPasscode.value !== recordPin) {
+    recordPasscode.setAttribute("aria-invalid", "true");
+    recordLockError.hidden = false;
+    recordPasscode.select();
+    return;
+  }
+  recordLock.close();
+  desiredRecord = lockedRecord;
+  history.pushState(null, "", records[lockedRecord].hash);
+  goTo("open");
+});
+
 for (const [index, record] of records.entries()) {
   record.addEventListener("click", event => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
+    if (index === lockedRecord) {
+      requestLockedRecord();
+      return;
+    }
     desiredRecord = index;
     history.pushState(null, "", record.hash);
     goTo("closed");
@@ -1005,6 +1052,11 @@ returnButton.addEventListener("click", () => {
 });
 window.addEventListener("hashchange", () => {
   const index = recordFromHash();
+  if (index === lockedRecord) {
+    requestLockedRecord();
+    return;
+  }
+  if (recordLock.open) recordLock.close();
   if (index >= 0) {
     desiredRecord = index;
     goTo("closed");
@@ -1131,3 +1183,4 @@ hintConfirm.querySelector("form").addEventListener("submit", event => {
 viewer.addEventListener("close", () => viewer.querySelector(".viewer-art").replaceChildren());
 if (bookState === "closed") setDeskRecord(desiredRecord);
 showStage(bookState);
+if (initialRecord === lockedRecord) requestLockedRecord();
