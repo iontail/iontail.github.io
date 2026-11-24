@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#182131">
-  <meta name="pagecove-release" content="0.1.25">
+  <meta name="pagecove-release" content="0.1.26">
   <title>Pagecove · Mac용 논문 리더</title>
   <meta name="description" content="원문 옆에서 한글 번역을 읽고, 사용 중인 Codex나 Claude Code에 논문 내용을 질문하세요. Zotero와 연결되는 무료 Mac 앱이에요.">
   <link rel="canonical" href="https://iontail.github.io/pagecove/">
@@ -33,7 +33,7 @@
           <h1 id="hero-title">Pagecove</h1>
           <p class="hero-tagline">논문을 읽으면서 바로 질문하세요.</p>
           <p class="hero-description">원문 옆에 한글 번역이 표시돼요. AI 기능은 평소 쓰는 Codex나 Claude Code로 이용할 수 있어요.</p>
-          <div class="hero-download"><a class="button primary" href="https://github.com/iontail/Pagecove/releases/download/v0.1.25/Pagecove-0.1.25-mac-arm64.dmg"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2v11m-4-4 4 4 4-4M3 13v4h14v-4"/></svg>Mac용 다운로드</a><p class="download-meta">Pagecove v0.1.25<br>Apple Silicon · macOS 13 이상</p><a class="install-note" href="#first-open">설치 안내</a></div>
+          <div class="hero-download"><a class="button primary" href="https://github.com/iontail/Pagecove/releases/download/v0.1.26/Pagecove-0.1.26-mac-arm64.dmg"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2v11m-4-4 4 4 4-4M3 13v4h14v-4"/></svg>Mac용 다운로드</a><p class="download-meta">Pagecove v0.1.26<br>Apple Silicon · macOS 13 이상</p><a class="install-note" href="#first-open">설치 안내</a></div>
         </div>
         <figure class="mascot">
           <div class="mascot-visual"><img class="hero-otter" src="assets/otter-hero.png" width="960" height="960" alt="논문을 안고 있는 수달" fetchpriority="high"></div>
@@ -97,7 +97,7 @@
       <div class="setup-list">
         <details id="first-open"><summary>앱 설치와 첫 실행<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M10 4v12"/></svg></summary><div class="setup-body"><p>DMG를 열고 Pagecove를 ‘응용 프로그램’ 폴더로 옮겨 주세요.</p><p>이 앱은 Apple 개발자 인증서 서명과 공증을 받지 않았어요. macOS에서 실행을 막으면 파일 출처를 확인한 후, 시스템 설정의 <strong>개인정보 보호 및 보안 → 그래도 열기</strong>에서 허용할 수 있어요.</p><a href="https://support.apple.com/ko-kr/102445">Apple의 앱 실행 안내</a></div></details>
         <details id="ai-setup"><summary>Codex · Claude Code 연결<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M10 4v12"/></svg></summary><div class="setup-body"><p>Codex 또는 Claude Code CLI를 설치하고 터미널에서 로그인해 주세요. Pagecove의 ‘AI 연결’ 설정에서 설치 상태를 확인하고 모델을 선택하세요.</p><div class="text-links"><a href="https://developers.openai.com/codex/cli/">Codex 설치 안내</a><a href="https://code.claude.com/docs/en/setup">Claude Code 설치 안내</a></div></div></details>
-        <details id="zotero-setup"><summary>Zotero 연결<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M10 4v12"/></svg></summary><div class="setup-body"><p>Zotero 설정의 고급 메뉴에서 “이 컴퓨터의 다른 애플리케이션이 Zotero와 통신할 수 있도록 허용”을 켜 주세요. Zotero를 실행한 상태에서 Pagecove의 ‘Zotero → 동기화’를 누르세요. 클라우드에만 있는 PDF는 먼저 Mac에 내려받아 주세요.</p><a href="https://www.zotero.org/support/dev/web_api/v3/local_api">Zotero 로컬 API 안내</a></div></details>
+        <details id="zotero-setup"><summary>Zotero 연결<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M10 4v12"/></svg></summary><div class="setup-body"><p>Zotero 설정의 고급 메뉴에서 “이 컴퓨터의 다른 애플리케이션이 Zotero와 통신할 수 있도록 허용”을 켜 주세요. Zotero를 실행한 상태에서 Pagecove 왼쪽 사이드바의 Zotero 옆 ‘동기화’를 누르면 새 논문과 컬렉션이 반영돼요. 클라우드에만 있는 PDF는 먼저 Mac에 내려받아 주세요.</p><a href="https://www.zotero.org/support/dev/web_api/v3/local_api">Zotero 로컬 API 안내</a></div></details>
       </div>
     </section>
 
@@ -110,9 +110,9 @@
       </div>
     </section>
 
-    <section class="closing wrap" aria-labelledby="closing-title"><div><h2 id="closing-title">Pagecove 다운로드</h2><p>Pagecove · Apple Silicon Mac 전용</p></div><a class="button outlined" href="https://github.com/iontail/Pagecove/releases/tag/v0.1.25">릴리스와 다운로드<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg></a></section>
+    <section class="closing wrap" aria-labelledby="closing-title"><div><h2 id="closing-title">Pagecove 다운로드</h2><p>Pagecove · Apple Silicon Mac 전용</p></div><a class="button outlined" href="https://github.com/iontail/Pagecove/releases/tag/v0.1.26">릴리스와 다운로드<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg></a></section>
   </main>
   <dialog class="image-viewer" aria-labelledby="viewer-title"><div class="viewer-toolbar"><h2 id="viewer-title">Pagecove 앱 화면</h2><button type="button" class="viewer-close" aria-label="확대 화면 닫기">닫기<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button></div><div class="viewer-image"></div><p><span class="viewer-pan-note">화면을 좌우로 밀어 자세히 보세요. </span>ResNet 논문을 연 예시 화면이에요.</p></dialog>
-  <footer class="wrap"><div><a class="footer-brand" href="./">Pagecove</a><span class="credit">만든 사람 <a href="https://iontail.github.io/">iontail</a></span></div><div><a href="https://github.com/iontail/Pagecove/releases/tag/v0.1.25">릴리스 노트</a><a href="https://github.com/iontail/Pagecove/issues">문제 제보</a><a href="https://github.com/iontail/Pagecove">소스 코드</a></div><p>예시로 사용한 논문은 <a href="https://arxiv.org/abs/1512.03385">He et al., Deep Residual Learning for Image Recognition</a>이에요. 화면에는 번역과 답변 예시가 포함돼요.</p></footer>
+  <footer class="wrap"><div><a class="footer-brand" href="./">Pagecove</a><span class="credit">만든 사람 <a href="https://iontail.github.io/">iontail</a></span></div><div><a href="https://github.com/iontail/Pagecove/releases/tag/v0.1.26">릴리스 노트</a><a href="https://github.com/iontail/Pagecove/issues">문제 제보</a><a href="https://github.com/iontail/Pagecove">소스 코드</a></div><p>예시로 사용한 논문은 <a href="https://arxiv.org/abs/1512.03385">He et al., Deep Residual Learning for Image Recognition</a>이에요. 화면에는 번역과 답변 예시가 포함돼요.</p></footer>
 </body>
 </html>
