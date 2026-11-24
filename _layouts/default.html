@@ -11,7 +11,13 @@ layout: compress
     {% include head/custom.html %}
   </head>
 
-  <body{% if page.hide_masthead == true %} class="layout-no-masthead"{% endif %}>
+  {% if page.page_class == "home-page" or page.page_class == "projects-page" %}
+    <body class="layout-portfolio">
+  {% elsif page.hide_masthead == true %}
+    <body class="layout-no-masthead">
+  {% else %}
+    <body>
+  {% endif %}
 
     {% include browser-upgrade.html %}
     {% unless page.hide_masthead == true %}

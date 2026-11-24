@@ -14,29 +14,30 @@ author_profile: false
 
 {% assign has_publications = false %}
 
-<!-- New style rendering if publication categories are defined -->
-{% if site.publication_category %}
-  {% for category in site.publication_category  %}
-    {% assign title_shown = false %}
-    {% for post in site.publications reversed %}
-      {% if post.category != category[0] %}
-        {% continue %}
-      {% endif %}
-      {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
-      {% assign has_publications = true %}
-      {% include archive-single.html %}
+<div class="project-page-list publication-list">
+  {% if site.publication_category %}
+    {% for category in site.publication_category  %}
+      {% assign title_shown = false %}
+      {% for post in site.publications reversed %}
+        {% if post.category != category[0] %}
+          {% continue %}
+        {% endif %}
+        {% unless title_shown %}
+          <h2>{{ category[1].title }}</h2>
+          {% assign title_shown = true %}
+        {% endunless %}
+        {% assign has_publications = true %}
+        {% include archive-single.html card=true %}
+      {% endfor %}
     {% endfor %}
-  {% endfor %}
-{% else %}
-  {% for post in site.publications reversed %}
-    {% assign has_publications = true %}
-    {% include archive-single.html %}
-  {% endfor %}
-{% endif %}
+  {% else %}
+    {% for post in site.publications reversed %}
+      {% assign has_publications = true %}
+      {% include archive-single.html card=true %}
+    {% endfor %}
+  {% endif %}
 
-{% unless has_publications %}
-  <p>No publications have been added yet.</p>
-{% endunless %}
+  {% unless has_publications %}
+    <p class="portfolio-card__surface publication-list__empty">No publications have been added yet.</p>
+  {% endunless %}
+</div>

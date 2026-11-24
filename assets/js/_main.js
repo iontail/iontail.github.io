@@ -2,42 +2,28 @@
    Various functions that we want to use within the template
    ========================================================================== */
 
-// Determine the expected state of the theme toggle, which can be "dark", "light", or
-// "system". Default is "system".
-let determineThemeSetting = () => {
-  let themeSetting = localStorage.getItem("theme");
-  return (themeSetting != "dark" && themeSetting != "light" && themeSetting != "system") ? "system" : themeSetting;
-};
+const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+const defaultTheme = document.documentElement.dataset.theme || "light";
 
-// Determine the computed theme, which can be "dark" or "light". If the theme setting is
-// "system", the computed theme is determined based on the user's system preference.
-let determineComputedTheme = () => {
-  let themeSetting = determineThemeSetting();
-  if (themeSetting != "system") {
-    return themeSetting;
-  }
-  return (userPref && userPref("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
-};
+function determineThemeSetting() {
+  const theme = localStorage.getItem("theme");
+  return ["dark", "light", "system"].includes(theme) ? theme : defaultTheme;
+}
 
-// detect OS/browser preference
-const browserPref = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+function determineComputedTheme() {
+  const theme = determineThemeSetting();
+  return theme === "system" ? (systemTheme.matches ? "dark" : "light") : theme;
+}
 
-// Set the theme on page load or when explicitly called
-let setTheme = (theme) => {
-  const use_theme =
-    theme ||
-    localStorage.getItem("theme") ||
-    $("html").attr("data-theme") ||
-    browserPref;
-
-  if (use_theme === "dark") {
+function setTheme(theme = determineComputedTheme()) {
+  if (theme === "dark") {
     $("html").attr("data-theme", "dark");
     $("#theme-icon").removeClass("fa-sun").addClass("fa-moon");
-  } else if (use_theme === "light") {
+  } else {
     $("html").removeAttr("data-theme");
     $("#theme-icon").removeClass("fa-moon").addClass("fa-sun");
   }
-};
+}
 
 // Toggle the theme manually
 var toggleTheme = () => {
@@ -81,6 +67,34 @@ if (plotlyElements.length > 0) {
   });
 }
 
+const cardMotion = window.matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
+
+document.querySelectorAll("[data-card-motion]").forEach((card) => {
+  let frame = 0;
+
+  card.addEventListener("pointermove", (event) => {
+    if (event.pointerType !== "mouse" || !cardMotion.matches) return;
+
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      const { left, top, width, height } = card.getBoundingClientRect();
+      const x = (event.clientX - left) / width;
+      const y = (event.clientY - top) / height;
+
+      card.style.setProperty("--card-x", `${x * 100}%`);
+      card.style.setProperty("--card-y", `${y * 100}%`);
+      card.style.setProperty("--card-tilt-x", `${(0.5 - y) * 4.8}deg`);
+      card.style.setProperty("--card-tilt-y", `${(x - 0.5) * 4.8}deg`);
+      card.classList.add("is-tracking");
+    });
+  });
+
+  card.addEventListener("pointerleave", () => {
+    cancelAnimationFrame(frame);
+    card.classList.remove("is-tracking");
+  });
+});
+
 /* ==========================================================================
    Actions that should occur when the page has been fully loaded
    ========================================================================== */
@@ -90,14 +104,10 @@ $(document).ready(function () {
   const scssLarge = 925;          // pixels, from /_sass/_themes.scss
   const scssMastheadHeight = 70;  // pixels, from the current theme (e.g., /_sass/theme/_default.scss)
 
-  // If the user hasn't chosen a theme, follow the OS preference
   setTheme();
-  window.matchMedia('(prefers-color-scheme: dark)')
-        .addEventListener("change", (e) => {
-          if (!localStorage.getItem("theme")) {
-            setTheme(e.matches ? "dark" : "light");
-          }
-        });
+  systemTheme.addEventListener("change", () => {
+    if (determineThemeSetting() === "system") setTheme();
+  });
 
   // Enable the theme toggle
   $('#theme-toggle').on('click', toggleTheme);
@@ -134,8 +144,8 @@ $(document).ready(function () {
     }
   });
 
-  // Init smooth scroll, this needs to be slightly more than then fixed masthead height
-  $("a").smoothScroll({
+  // Preserve the native focus change for the skip link.
+  $("a").not(".masthead__skip").smoothScroll({
     offset: -scssMastheadHeight,
     preventDefault: false,
   });
