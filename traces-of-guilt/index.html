@@ -8,8 +8,8 @@
   <meta name="site-kind" content="gaming">
   <title>Traces of Guilt</title>
   <link rel="canonical" href="https://iontail.github.io/traces-of-guilt/">
-  <link rel="stylesheet" href="style.css?v=stroke-vowels">
-  <script src="game.js?v=cipher-hint" type="module"></script>
+  <link rel="stylesheet" href="style.css?v=case02-reveal">
+  <script src="game.js?v=case02-reveal" type="module"></script>
 </head>
 <body>
   <svg class="icon-definitions" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -188,6 +188,31 @@
       </div>
     </header>
     <div class="viewer-art"></div>
+  </dialog>
+
+  <dialog class="viewer case02-viewer" aria-labelledby="case02-viewer-title">
+    <header>
+      <h2 id="case02-viewer-title">종의 날개</h2>
+      <form method="dialog"><button class="plate" type="submit" autofocus>닫기 <svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></form>
+    </header>
+    <div class="case02-exhibit">
+      <div class="case02-stage">
+        <img class="case02-art" alt="종의 날개 외형">
+        <canvas hidden aria-hidden="true"></canvas>
+        <div class="case02-projection" aria-hidden="true">
+          <svg viewBox="0 0 240 132" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M110 61C91 26 57 29 20 17c10 19 29 30 53 34L38 48c11 14 26 20 48 20l-22 5c12 10 27 11 48 0m18-12c19-35 53-32 90-44-10 19-29 30-53 34l35-3c-11 14-26 20-48 20l22 5c-12 10-27 11-48 0"/>
+            <circle cx="120" cy="66" r="13"/>
+            <path d="M120 79v35h12v-8h-12m0-6h8"/>
+          </svg>
+          <img class="case02-specimen" alt="">
+        </div>
+      </div>
+      <div class="case02-exhibit-controls">
+        <p role="status" class="case02-caption"><span lang="de">Flügel der Glocke</span><span hidden>날개 달린 열쇠를 가져와라.</span></p>
+        <button class="plate case02-toggle" type="button" aria-pressed="false">앞부분 열기</button>
+      </div>
+    </div>
   </dialog>
 
   <dialog class="record-lock" aria-labelledby="record-lock-title">

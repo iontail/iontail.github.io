@@ -29,6 +29,8 @@ const recordPasscode = recordLockForm.querySelector("input");
 const recordLockError = recordLockForm.querySelector(".record-lock-error");
 const viewer = document.querySelector(".viewer");
 const viewerDownload = viewer.querySelector("[data-download]");
+const case02Viewer = document.querySelector(".case02-viewer");
+let case02Exhibit;
 const hintConfirm = document.querySelector(".hint-confirm");
 const hintQuestion = document.querySelector("#hint-question");
 const answerConfirm = document.querySelector(".answer-confirm");
@@ -406,6 +408,14 @@ function renderPage(page) {
   if (deskRecord === lockedRecord) {
     left.innerHTML = '<h3 tabindex="-1"></h3><p class="paper-description">사건 기록을 준비 중이에요.</p>';
     left.querySelector("h3").textContent = deskTitle.textContent;
+    right.innerHTML = `<h3>종의 날개</h3>
+      <button class="plate case02-open" type="button" aria-haspopup="dialog">3D 장면 보기</button>`;
+    right.querySelector(".case02-open").addEventListener("click", async () => {
+      case02Viewer.showModal();
+      case02Exhibit ??= import("./case-02/exhibit.js").then(({ mountExhibit }) => mountExhibit(case02Viewer));
+      const exhibit = await case02Exhibit;
+      if (case02Viewer.open) exhibit.reset();
+    });
     return layout;
   }
   if (page < hintsPage && clueLinks.length) {
