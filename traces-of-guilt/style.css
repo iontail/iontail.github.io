@@ -2267,6 +2267,10 @@ body:has(.viewer[open], .record-lock[open], .hint-confirm[open], .answer-confirm
   isolation: isolate;
   min-height: 0;
   border: 1px solid #b993673b;
+  background: radial-gradient(ellipse at 45% 22%, #fdf8ed, #eee3d1 69%, #d8c5aa);
+}
+.case02-stage.has-three::after, .case02-stage.has-three .case02-projection { display: none; }
+.case02-stage:not(.has-three) {
   background: radial-gradient(ellipse at 50% 44%, #44382a, #272520 66%, #1d1c1a);
 }
 .case02-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }

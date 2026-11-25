@@ -8,6 +8,7 @@ export function mountExhibit(viewer) {
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
   let opened = false;
   let draw = () => {};
+  let resetPose = () => {};
   let animation;
 
   art.src = new URL("fluegel-der-glocke.png", import.meta.url);
@@ -18,37 +19,42 @@ export function mountExhibit(viewer) {
     stage.classList.toggle("is-revealed", opened);
     toggle.setAttribute("aria-pressed", String(opened));
     toggle.textContent = opened ? "앞부분 닫기" : "앞부분 열기";
-    name.hidden = opened;
-    order.hidden = !opened;
+    if (!stage.classList.contains("has-three")) {
+      name.hidden = opened;
+      order.hidden = !opened;
+    }
     draw();
   }
 
   toggle.addEventListener("click", () => setOpen(!opened));
   viewer.addEventListener("close", () => {
     cancelAnimationFrame(animation);
+    resetPose();
     setOpen(false);
   });
 
-  import("./three.min.js").then(T => {
+  import("./three.min.js").then(async T => {
     const renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     const scene = new T.Scene();
     const camera = new T.PerspectiveCamera(34, 1, 0.1, 100);
-    scene.add(new T.HemisphereLight(0xfff1d6, 0x666c71, 2.15));
-    const key = new T.DirectionalLight(0xffe7bb, 2.45);
-    key.position.set(-3, 5, 7);
-    scene.add(key);
+    scene.add(new T.HemisphereLight(0xfff8e9, 0x7a6d5c, 1.05));
+    const key = new T.DirectionalLight(0xffecd3, 3.0);
+    key.position.set(-3, 7, 5);
+    const rim = new T.DirectionalLight(0xd3e4ff, 2.0);
+    rim.position.set(3, 3, -5);
+    scene.add(key, rim);
 
     const model = new T.Group();
     scene.add(model);
-    const olive = new T.MeshStandardMaterial({ color: 0x64604c, roughness: 0.85 });
-    const graphite = new T.MeshStandardMaterial({ color: 0x38333a, roughness: 0.8 });
+    const olive = new T.MeshStandardMaterial({ color: 0x595749, roughness: 0.47, metalness: 0.16 });
+    const graphite = new T.MeshStandardMaterial({ color: 0x373139, roughness: 0.52, metalness: 0.14 });
     const rust = new T.MeshStandardMaterial({ color: 0x903f2f, roughness: 0.84 });
     const amber = new T.MeshStandardMaterial({ color: 0xe6c496, emissive: 0xf6a847, emissiveIntensity: 0 });
 
     function silhouette(parent, contour, material) {
       const profile = contour.map(([radius, axis]) => new T.Vector2(radius, axis));
-      const piece = new T.Mesh(new T.LatheGeometry(profile, 40), material);
+      const piece = new T.Mesh(new T.LatheGeometry(profile, 64), material);
       piece.rotation.z = -Math.PI / 2;
       parent.add(piece);
     }
@@ -61,15 +67,17 @@ export function mountExhibit(viewer) {
     const front = -1.23;
     cover.position.x = front;
     model.add(cover);
-    silhouette(cover, [[0,-1.07],[.18,-1.01],[.35,-.85],[.49,-.60],[.59,0],[0,0]], graphite);
+    silhouette(cover, [[0,-1.12],[.12,-1.09],[.24,-1.02],[.35,-.89],[.44,-.72],[.51,-.52],[.56,-.28],[.59,0],[0,0]], graphite);
 
     const outline = new T.Shape();
     outline.moveTo(.95,.46);
-    outline.lineTo(1.55,1.10);
-    outline.lineTo(2.19,1.10);
-    outline.lineTo(1.95,.39);
+    outline.lineTo(1.49,1.04);
+    outline.quadraticCurveTo(1.54,1.10,1.65,1.11);
+    outline.lineTo(2.09,1.14);
+    outline.quadraticCurveTo(2.22,1.14,2.16,1.01);
+    outline.lineTo(1.90,.41);
     outline.closePath();
-    const fin = new T.ExtrudeGeometry(outline, { depth: .045, bevelEnabled: true, bevelSize: .025, bevelThickness: .025, bevelSegments: 1, steps: 1 });
+    const fin = new T.ExtrudeGeometry(outline, { depth: .045, bevelEnabled: true, bevelSize: .025, bevelThickness: .025, bevelSegments: 3, steps: 1 });
     for (const angle of [0, 2 * Math.PI / 3, 4 * Math.PI / 3]) {
       const shape = new T.Mesh(fin, olive);
       shape.rotation.x = angle;
@@ -91,8 +99,71 @@ export function mountExhibit(viewer) {
     lettering.position.set(.26, .03, .638);
     model.add(lettering);
 
-    let progress = 0;
+    function artPlane(image, width, height) {
+      const map = new T.CanvasTexture(image);
+      map.colorSpace = T.SRGBColorSpace;
+      const material = new T.MeshBasicMaterial({ map, transparent: true, depthWrite: false, opacity: 0 });
+      const mesh = new T.Mesh(new T.PlaneGeometry(width, height), material);
+      scene.add(mesh);
+      return mesh;
+    }
+
+    const floor = document.createElement("canvas");
+    floor.width = floor.height = 128;
+    const floorInk = floor.getContext("2d");
+    const shade = floorInk.createRadialGradient(64, 64, 0, 64, 64, 64);
+    shade.addColorStop(0, "rgba(50,39,33,.34)");
+    shade.addColorStop(.48, "rgba(53,44,37,.22)");
+    shade.addColorStop(1, "rgba(56,47,38,0)");
+    floorInk.fillStyle = shade;
+    floorInk.fillRect(0, 0, 128, 128);
+    const shadow = artPlane(floor, 6.3, 2.8);
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.position.y = -1.02;
+    shadow.material.opacity = 1;
+
+    const svg = stage.querySelector(".case02-projection svg").cloneNode(true);
+    svg.setAttribute("stroke", "#ffd493");
+    svg.setAttribute("stroke-width", "2");
+    svg.setAttribute("width", "480");
+    svg.setAttribute("height", "264");
+    const emblemImage = new Image();
+    emblemImage.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(svg));
+    await Promise.all([specimen.decode(), emblemImage.decode()]);
+
+    const projection = document.createElement("canvas");
+    projection.width = 640;
+    projection.height = 320;
+    const projectionInk = projection.getContext("2d");
+    const pool = projectionInk.createRadialGradient(320, 160, 60, 320, 160, 306);
+    pool.addColorStop(0, "rgba(37,29,31,.97)");
+    pool.addColorStop(.55, "rgba(44,35,35,.94)");
+    pool.addColorStop(.82, "rgba(51,42,39,.62)");
+    pool.addColorStop(1, "rgba(51,42,39,0)");
+    projectionInk.fillStyle = pool;
+    projectionInk.save();
+    projectionInk.translate(0, 88);
+    projectionInk.scale(1, .45);
+    projectionInk.fillRect(0, -196, 640, 712);
+    projectionInk.restore();
+    projectionInk.shadowColor = "#efa348";
+    projectionInk.shadowBlur = 23;
+    projectionInk.drawImage(emblemImage, 104, 35, 432, 237.6);
+
+    const halo = artPlane(projection, 2.95, 1.48);
+    const image = artPlane(specimen, 1.84, .94);
+    image.renderOrder = 1;
+
+    const smooth = (start, end, time) => {
+      const value = Math.max(0, Math.min(1, (time - start) / (end - start)));
+      return value * value * (3 - 2 * value);
+    };
+    let elapsed = 0;
     let previousTime;
+    resetPose = () => {
+      elapsed = 0;
+      previousTime = undefined;
+    };
     let lastWidth;
     let lastHeight;
     function frame(now) {
@@ -107,25 +178,50 @@ export function mountExhibit(viewer) {
         lastHeight = height;
       }
 
-      const target = Number(opened);
-      const step = previousTime === undefined ? 0 : Math.min((now - previousTime) / 680, 1);
+      const target = opened ? 4100 : 0;
+      const delta = previousTime === undefined ? 0 : Math.min(now - previousTime, 60);
       previousTime = now;
-      progress = reducedMotion.matches ? target : progress + Math.sign(target - progress) * Math.min(Math.abs(target - progress), step);
-      const pose = progress * progress * (3 - 2 * progress);
-      cover.position.set(front - .28 * pose, .50 * pose, 0);
-      cover.rotation.z = -1.45 * pose;
-      amber.emissiveIntensity = pose * 1.1;
+      elapsed = reducedMotion.matches ? target
+        : elapsed + Math.sign(target - elapsed) * Math.min(Math.abs(target - elapsed), delta * (opened ? 1 : 3.8));
+
+      const approach = smooth(0, 1350, elapsed);
+      const release = smooth(520, 1420, elapsed);
+      const swing = smooth(1250, 2420, elapsed);
+      const settle = smooth(2250, 4050, elapsed);
+      const glow = smooth(1600, 2350, elapsed);
+      const reveal = smooth(2350, 3270, elapsed);
+      const resolve = smooth(3030, 3970, elapsed);
+
+      cover.position.set(front - .39 * release - .17 * swing, .21 * release + .66 * swing, .08 * release - .29 * swing);
+      cover.rotation.set(.25 * swing, -.25 * swing, -1.42 * swing);
+      amber.emissiveIntensity = glow * (.94 + .41 * (1 - reveal));
 
       const portrait = camera.aspect < 1.15;
-      const distance = Math.max(9.6, 7.7 / camera.aspect);
-      model.rotation.set(.12, .28 + .29 * pose, -.08 + .11 * pose);
-      model.position.y = (portrait ? -.95 : -.42) * pose;
-      camera.position.set(-.52 - .72 * pose, .86, distance);
-      camera.lookAt(0, .20, 0);
+      const wide = Math.max(8.35, (portrait ? 8.6 : 7.0) / camera.aspect);
+      const distance = wide - (portrait ? 1.8 : 2.45) * approach + (portrait ? 1.5 : 1.52) * settle;
+      camera.position.set(-1.25 - 1.65 * approach + .95 * settle, 1.40 + .55 * swing, distance);
+      camera.lookAt(-.06 - .83 * approach + .73 * settle, .04 + .34 * reveal, 0);
+      model.rotation.set(.04 + .16 * approach, -.16 + .27 * swing, -.10 + .05 * settle);
+      model.position.y = -.36 * reveal;
+      shadow.position.y = -1.04 - .28 * reveal;
+
+      halo.position.set(-1.28 + .86 * settle, .76 + .96 * reveal, .55);
+      halo.quaternion.copy(camera.quaternion);
+      halo.scale.setScalar(.59 + .44 * reveal + (portrait ? -.12 : 0) * settle);
+      halo.material.opacity = reveal * (1 - .28 * resolve);
+      image.position.copy(halo.position);
+      image.position.z += .06;
+      image.quaternion.copy(camera.quaternion);
+      image.scale.copy(halo.scale);
+      image.material.opacity = .79 * resolve;
+
       renderer.render(scene, camera);
+      stage.classList.add("has-three");
       canvas.hidden = false;
       art.hidden = true;
-      if (progress !== target) animation = requestAnimationFrame(frame);
+      name.hidden = elapsed >= 3000;
+      order.hidden = elapsed < 3000;
+      if (elapsed !== target) animation = requestAnimationFrame(frame);
       else previousTime = undefined;
     }
 
@@ -139,6 +235,9 @@ export function mountExhibit(viewer) {
       cancelAnimationFrame(animation);
       canvas.hidden = true;
       art.hidden = false;
+      stage.classList.remove("has-three");
+      name.hidden = opened;
+      order.hidden = !opened;
     });
     canvas.addEventListener("webglcontextrestored", draw);
     draw();

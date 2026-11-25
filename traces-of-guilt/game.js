@@ -412,7 +412,7 @@ function renderPage(page) {
       <button class="plate case02-open" type="button" aria-haspopup="dialog">3D 장면 보기</button>`;
     right.querySelector(".case02-open").addEventListener("click", async () => {
       case02Viewer.showModal();
-      case02Exhibit ??= import("./case-02/exhibit.js").then(({ mountExhibit }) => mountExhibit(case02Viewer));
+      case02Exhibit ??= import("./case-02/exhibit.js?v=closeup").then(({ mountExhibit }) => mountExhibit(case02Viewer));
       const exhibit = await case02Exhibit;
       if (case02Viewer.open) exhibit.reset();
     });
