@@ -11,10 +11,10 @@ export const alpineLodge = {
     objective: "산장 안팎을 살피고 네 사람의 증언을 대조해 전날 저녁에 무슨 일이 있었는지 알아보세요."
   },
   hints: [
-    "접수대 장부를 살펴보세요. 묵고 있는 사람과 객실을 서로 연결할 수 있을까요?",
-    "벽난로에 놓인 두 사진을 비교해 보세요. 어떤 인물들이 함께 찍혀 있나요?",
-    "베란다 난간 아래를 자세히 살펴보세요. 작은 물건의 문양을 어디에서 본 적 있나요?",
-    "벤치에서 찾은 편지의 위아래를 살펴보세요. 두 표식의 위치를 기준으로 편지를 다시 읽어 보세요."
+    "벽난로 사진 속 인물들을 살펴보세요. 누가 함께 찍혔고, 어떤 관계였을까요?",
+    "모든 단서를 확대해 자세히 살펴보세요. 눈에 잘 띄지 않는 작은 부분에서도 중요한 정보를 얻을 수 있어요.",
+    "편지 위아래의 짧은 표식을 이어 보세요. 선에 걸치는 단어를 위에서부터 읽으면 어떤 문장이 되나요?",
+    "편지를 보낸 사람의 이름을 접수대 장부에 적힌 이름과 대조해 보세요."
   ],
   suspects: [
     { id: "clara", name: "클라라 켈러", portrait: "alpine-lodge/suspects/clara.png", role: "스키 강사", relationship: "요한의 딸" },
@@ -75,12 +75,12 @@ export const alpineLodge = {
   },
   clues: [
     { title: "왼쪽 서랍장", image: "alpine-lodge/drawer.jpg", action: "서랍장 살펴보기", mapLabel: "서랍장", position: [3, 61] },
-    { title: "탁자 위 지도", image: "alpine-lodge/map.png", action: "지도 살펴보기", mapLabel: "지도", position: [25, 67] },
+    { title: "탁자 위 지도", image: "alpine-lodge/map.png", action: "지도 살펴보기", mapLabel: "지도", position: [32, 67] },
     { title: "용의자 증언", image: "alpine-lodge/witnesses.png", action: "증언 확인하기", mapLabel: "증언", position: [70, 53] },
     { title: "베란다 전경", image: "alpine-lodge/veranda.jpg", action: "베란다 살펴보기", mapLabel: "베란다", position: [56, 32] },
     { title: "벽난로 사진", image: "alpine-lodge/fireplace.jpg", action: "벽난로 사진 보기", mapLabel: "사진", position: [19, 28] },
     { title: "카펫 아래 바닥", image: "alpine-lodge/carpet.jpg", action: "카펫 살펴보기", mapLabel: "카펫", position: [60, 82] },
-    { title: "산장 접수대", image: "alpine-lodge/reception.jpg", action: "접수대 살펴보기", mapLabel: "접수대", position: [7, 85] },
+    { title: "산장 접수대", image: "alpine-lodge/reception.jpg", action: "접수대 살펴보기", mapLabel: "접수대", position: [7, 91] },
     { title: "벤치에서 찾은 편지", image: "alpine-lodge/letter.png", action: "의자 탐색하기", mapLabel: "의자", position: [16, 77] }
   ]
 };
