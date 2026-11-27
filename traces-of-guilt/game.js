@@ -1,5 +1,5 @@
 import { caseFile } from "./case-data.js?v=cipher-hint";
-import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-field-hints";
+import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-hd";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -29,6 +29,8 @@ const recordPasscode = recordLockForm.querySelector("input");
 const recordLockError = recordLockForm.querySelector(".record-lock-error");
 const viewer = document.querySelector(".viewer");
 const viewerDownload = viewer.querySelector("[data-download]");
+const viewerArt = viewer.querySelector(".viewer-art");
+const viewerScale = viewer.querySelector("[data-art-scale]");
 const hintConfirm = document.querySelector(".hint-confirm");
 const hintQuestion = document.querySelector("#hint-question");
 const answerConfirm = document.querySelector(".answer-confirm");
@@ -346,11 +348,13 @@ function solutionCast(suspects, culpritId) {
       </section>`;
 }
 
-function solutionImage({ image, alt = "", origin, zoom, spot }, title) {
+function solutionImage({ image, alt = "", origin, zoom, spot, label, guide }, title) {
   const crop = origin ? ` style="--crop-origin:${origin[0]}% ${origin[1]}%;--crop-zoom:${zoom}"` : "";
   return `<button class="solution-step-image" type="button" data-zoom aria-haspopup="dialog" aria-label="${origin ? `${alt} 확대` : `${title} 단서 이미지 확대`}"${crop}>
     <img class="illustration" src="${image}" alt="${alt}" loading="lazy" decoding="async">
     ${spot ? `<span class="solution-spot" aria-hidden="true" style="--spot-x:${spot[0]}%;--spot-y:${spot[1]}%"></span>` : ""}
+    ${label ? `<span class="solution-step-label" aria-hidden="true">${label}</span>` : ""}
+    ${guide ? `<span class="solution-reading-guide" aria-hidden="true" style="--guide-x:${guide[0]}%;--guide-top:${guide[1]}%;--guide-bottom:${100 - guide[2]}%"></span>` : ""}
     <span class="solution-step-zoom">${icon("zoom")}</span>
   </button>`;
 }
@@ -1126,9 +1130,20 @@ function showArt(art, filename = "", href = art.src) {
   viewer.querySelector("h2").textContent = art.alt;
   viewerDownload.href = href;
   viewerDownload.download = filename;
-  viewer.querySelector(".viewer-art").replaceChildren(art.cloneNode(true));
+  viewerScale.hidden = investigation.file !== alpineLodge;
+  setViewerScale(false);
+  viewerArt.replaceChildren(art.cloneNode(true));
   viewer.showModal();
 }
+
+function setViewerScale(original) {
+  viewerArt.classList.toggle("is-native-size", original);
+  viewerScale.setAttribute("aria-pressed", String(original));
+  viewerScale.querySelector("span").textContent = original ? "화면에 맞춤" : "원본 크기";
+  viewerArt.scrollTo(0, 0);
+}
+
+viewerScale.addEventListener("click", () => setViewerScale(!viewerArt.classList.contains("is-native-size")));
 
 function renderSuspects() {
   const { answer, suspects } = investigation.file;
@@ -1210,7 +1225,7 @@ hintConfirm.querySelector("form").addEventListener("submit", event => {
   document.getElementById(button.getAttribute("aria-controls")).setAttribute("aria-hidden", "false");
 });
 
-viewer.addEventListener("close", () => viewer.querySelector(".viewer-art").replaceChildren());
+viewer.addEventListener("close", () => viewerArt.replaceChildren());
 if (bookState === "closed") setDeskRecord(desiredRecord);
 showStage(bookState);
 if (initialRecord === lockedRecord) requestLockedRecord();
