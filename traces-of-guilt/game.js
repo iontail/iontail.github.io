@@ -1,4 +1,5 @@
 import { caseFile } from "./case-data.js?v=cipher-hint";
+import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-illustrator";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -22,7 +23,6 @@ const spread = document.querySelector(".spread");
 const clueTabs = document.querySelector(".clue-tabs");
 const spreadTemplate = document.querySelector("#spread-template");
 const pageCount = document.querySelector("#page-count");
-const investigationNavigation = reader.querySelectorAll(".bookmarks, .page-nav");
 const recordLock = document.querySelector(".record-lock");
 const recordLockForm = recordLock.querySelector("form");
 const recordPasscode = recordLockForm.querySelector("input");
@@ -48,17 +48,27 @@ const audioStatus = soundSettings.querySelector(".audio-status");
 const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
 const stackedPages = matchMedia("(max-width: 760px)");
 
-let clueCount = 0;
-const sheets = caseFile.clues.map((clue, index) => ({
-  ...clue,
-  sheetIndex: index + 1,
-  clueNumber: clue.map ? null : ++clueCount
-}));
-const sceneLinks = sheets.filter(clue => clue.action);
-const clueLinks = sceneLinks.filter(clue => clue.clueNumber);
-const hintsPage = Math.ceil(sheets.length / 2) + 1;
-const answerPage = hintsPage + 1;
-const lastPage = answerPage;
+function investigationFor(file) {
+  let clueCount = 0;
+  const sheets = file.clues.map((clue, index) => ({
+    ...clue,
+    sheetIndex: index + 1,
+    clueNumber: clue.map ? null : ++clueCount
+  }));
+  const sceneLinks = sheets.filter(clue => clue.action);
+  return {
+    file,
+    sheets,
+    sceneLinks,
+    clueLinks: sceneLinks.filter(clue => clue.clueNumber),
+    evidencePages: Math.ceil(sheets.length / 2)
+  };
+}
+
+const investigations = [investigationFor(caseFile), investigationFor(alpineLodge)];
+let investigation = investigations[0];
+const hintsPage = () => investigation.evidencePages + 1;
+const answerPage = () => hintsPage() + 1;
 const overviewPage = -1;
 const lockedRecord = 1;
 const recordPin = "0416";
@@ -85,7 +95,7 @@ const number = value => String(value).padStart(2, "0");
 const icon = name => `<svg class="icon" aria-hidden="true"><use href="#icon-${name}"/></svg>`;
 const elapsedSeconds = () => Math.floor((performance.now() - attemptStartedAt) / 1000);
 const durationParts = seconds => [Math.floor(seconds / 3600), Math.floor(seconds / 60) % 60, seconds % 60];
-const suspectLabel = suspect => `${caseFile.suspects.indexOf(suspect) + 1}번 용의자`;
+const suspectLabel = suspect => `${investigation.file.suspects.indexOf(suspect) + 1}번 용의자`;
 const clueSpread = clue => Math.ceil(clue / 2);
 const backgroundVolume = () => spread.querySelector(".solution-video")?.paused === false ? 0 : volumeControl.valueAsNumber / 100;
 
@@ -218,7 +228,8 @@ function illustration(title, image) {
 }
 
 function sheetHeading(title, image, { clueNumber, map } = {}) {
-  const filename = `Traces-of-Guilt_${title.replaceAll(" ", "-")}.png`;
+  const extension = image.split(".").at(-1);
+  const filename = `Traces-of-Guilt_${title.replaceAll(" ", "-")}.${extension}`;
   return `<header class="sheet-heading">
     ${clueNumber ? `<span class="sheet-number" aria-hidden="true">${number(clueNumber)}</span>` : ""}
     <h3 tabindex="-1">${title}</h3>
@@ -230,7 +241,7 @@ function sheetHeading(title, image, { clueNumber, map } = {}) {
 }
 
 function sceneArt(title, image, location) {
-  const markers = sceneLinks.filter(clue => clue.location === location);
+  const markers = investigation.sceneLinks.filter(clue => clue.location === location && clue.position);
   return `<div class="art-window"><figure class="art-board scene-map">
       <div class="scene-plane">
         ${illustration(title, image)}
@@ -246,7 +257,7 @@ function sceneArt(title, image, location) {
 }
 
 function overview(left, right) {
-  const { title, scene } = caseFile;
+  const { file: { title, scene }, clueLinks } = investigation;
   left.classList.add("case-intro");
   right.classList.add("art-page");
   left.innerHTML = `<div class="case-intro-content">
@@ -263,7 +274,7 @@ function overview(left, right) {
 }
 
 function evidence(paper, index) {
-  const clue = sheets[index - 1];
+  const clue = investigation.sheets[index - 1];
   if (!clue) return;
   paper.classList.add("art-page");
   paper.dataset.clue = index;
@@ -274,7 +285,7 @@ function evidence(paper, index) {
 }
 
 function hints(left, right) {
-  const cards = caseFile.hints.map((hint, index) => {
+  const cards = investigation.file.hints.map((hint, index) => {
     const shown = viewedHints.has(index);
     return `<div class="hint-card">
       <button class="hint-trigger" type="button" data-hint="${index}" aria-expanded="${shown}" aria-controls="hint-${index}">${icon("seal")} 힌트 ${index + 1}</button>
@@ -317,9 +328,37 @@ function cipherGuide(cipher) {
     </div>`;
 }
 
+function solutionCast(suspects, culpritId) {
+  return `<section class="solution-cast" aria-labelledby="solution-cast">
+        <h4 id="solution-cast">용의자 인물표</h4>
+        <ol class="solution-cast-list">${suspects.map((suspect, index) => `<li>
+          <div class="solution-portrait">
+            <div class="solution-portrait-label">
+              <span class="solution-cast-number" aria-hidden="true">${index + 1}</span>
+              ${suspect.id === culpritId ? '<span class="solution-culprit">살인자</span>' : ""}
+            </div>
+            <img src="${suspect.portrait}" alt="" loading="lazy" decoding="async">
+          </div>
+          <h5>${suspect.name}</h5>
+          <p>${suspect.role}</p>
+          ${suspect.relationship ? `<p class="solution-cast-relationship">${suspect.relationship}</p>` : ""}
+        </li>`).join("")}</ol>
+      </section>`;
+}
+
+function solutionImage({ image, alt = "", origin, zoom, spot }, title) {
+  const crop = origin ? ` style="--crop-origin:${origin[0]}% ${origin[1]}%;--crop-zoom:${zoom}"` : "";
+  return `<button class="solution-step-image" type="button" data-zoom aria-haspopup="dialog" aria-label="${origin ? `${alt} 확대` : `${title} 단서 이미지 확대`}"${crop}>
+    <img class="illustration" src="${image}" alt="${alt}" loading="lazy" decoding="async">
+    ${spot ? `<span class="solution-spot" aria-hidden="true" style="--spot-x:${spot[0]}%;--spot-y:${spot[1]}%"></span>` : ""}
+    <span class="solution-step-zoom">${icon("zoom")}</span>
+  </button>`;
+}
+
 function solution(layout) {
-  const { practice, suspectId, explanation, video = {}, cipher, stepsTitle = "장면별 해설", steps = [] } = caseFile.answer;
-  const correctSuspect = caseFile.suspects.find(suspect => suspect.id === suspectId);
+  const { suspects, answer } = investigation.file;
+  const { practice, suspectId, explanation, video, cipher, stepsTitle = "장면별 해설", steps = [] } = answer;
+  const correctSuspect = suspects.find(suspect => suspect.id === suspectId);
   const successful = submittedSuspect.id === suspectId;
   const verdict = `${practice ? "시연 지목" : "범인 검거"} ${successful ? "성공" : "실패"}`;
   const [hours, minutes, seconds] = durationParts(completedSeconds);
@@ -332,27 +371,13 @@ function solution(layout) {
           <p id="solution-verdict" class="answer-verdict" data-outcome="${successful ? "success" : "failure"}">${verdict}</p>
         </div>
         <div class="solution-links">
-          <button class="solution-jump" type="button" data-solution-jump="solution-film-title">재구성 영상 보기</button>
+          ${video ? '<button class="solution-jump" type="button" data-solution-jump="solution-film-title">재구성 영상 보기</button>' : ""}
           ${cipher ? '<button class="solution-jump" type="button" data-solution-jump="solution-cipher-title">비밀암호 대응표 보기</button>' : ""}
           ${steps.length ? '<button class="solution-jump" type="button" data-solution-jump="solution-steps">장면별 해설 보기</button>' : ""}
         </div>
       </header>
-      <section class="solution-cast" aria-labelledby="solution-cast">
-        <h4 id="solution-cast">용의자 인물표</h4>
-        <ol class="solution-cast-list">${caseFile.suspects.map((suspect, index) => `<li>
-          <div class="solution-portrait">
-            <div class="solution-portrait-label">
-              <span class="solution-cast-number" aria-hidden="true">${index + 1}</span>
-              ${!practice && suspect.id === suspectId ? '<span class="solution-culprit">살인자</span>' : ""}
-            </div>
-            <img src="${suspect.portrait}" alt="" loading="lazy" decoding="async">
-          </div>
-          <h5>${suspect.name}</h5>
-          <p>${suspect.role}</p>
-          ${suspect.relationship ? `<p class="solution-cast-relationship">${suspect.relationship}</p>` : ""}
-        </li>`).join("")}</ol>
-      </section>
-      <section class="solution-reconstruction" aria-labelledby="solution-film-title">
+      ${solutionCast(suspects, practice ? null : suspectId)}
+      ${video ? `<section class="solution-reconstruction" aria-labelledby="solution-film-title">
         <h4 id="solution-film-title" tabindex="-1">사건 재구성 영상</h4>
         <div class="solution-film">
           ${video.src ? `<video class="solution-video" src="${video.src}"${video.poster ? ` poster="${video.poster}"` : ""}
@@ -364,11 +389,11 @@ function solution(layout) {
             <p>${video.src ? "재구성 영상을 불러올 수 없어요." : "재구성 영상 준비 중"}</p>
           </div>
         </div>
-      </section>
+      </section>` : ""}
       <section class="solution-result" aria-label="지목 결과 상세">
         <p>${explanation}</p>
         <dl class="case-result">
-          <dt>내가 지목한 용의자</dt><dd>${suspectLabel(submittedSuspect)}</dd>
+          <dt>내가 지목한 용의자</dt><dd>${suspectLabel(submittedSuspect)} (${submittedSuspect.name})</dd>
           <dt>${practice ? "시연 정답" : "범인"}</dt><dd>${suspectLabel(correctSuspect)} (${correctSuspect.name})</dd>
           <dt>풀이 시간</dt><dd>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</dd>
         </dl>
@@ -379,11 +404,8 @@ function solution(layout) {
       </section>` : ""}
       ${steps.length ? `<section class="solution-sequence" aria-labelledby="solution-steps">
         <h4 id="solution-steps" tabindex="-1">${stepsTitle}</h4>
-        <ol class="solution-steps">${steps.map((step, index) => `<li>
-          <button class="solution-step-image" type="button" data-zoom aria-haspopup="dialog" aria-label="${step.title} 단서 이미지 확대">
-            <img class="illustration" src="${step.image}" alt="${step.alt ?? ""}" loading="lazy" decoding="async">
-            <span class="solution-step-zoom">${icon("zoom")}</span>
-          </button>
+        <ol class="solution-steps">${steps.map((step, index) => `<li${step.comparison ? ' class="solution-compared-step"' : ""}>
+          ${step.comparison ? `<div class="solution-comparison">${step.comparison.map(view => solutionImage(view, step.title)).join("")}</div>` : solutionImage(step, step.title)}
           <div class="solution-step-text">
             <span class="solution-step-number" aria-hidden="true">${number(index + 1)}</span>
             <div><h5>${step.title}</h5><p>${step.text}</p></div>
@@ -403,18 +425,13 @@ function solution(layout) {
 function renderPage(page) {
   const layout = spreadTemplate.content.firstElementChild.cloneNode(true);
   const [left, right] = layout.children;
-  if (deskRecord === lockedRecord) {
-    left.innerHTML = '<h3 tabindex="-1"></h3><p class="paper-description">사건 기록을 준비 중이에요.</p>';
-    left.querySelector("h3").textContent = deskTitle.textContent;
-    return layout;
-  }
-  if (page < hintsPage && clueLinks.length) {
+  if (page <= investigation.evidencePages && investigation.clueLinks.length) {
     left.classList.add("indexed-paper");
     right.classList.add("indexed-paper");
   }
   if (page === 0) overview(left, right);
-  else if (page === hintsPage) hints(left, right);
-  else if (page === answerPage) solution(layout);
+  else if (page === hintsPage()) hints(left, right);
+  else if (page === answerPage()) solution(layout);
   else {
     evidence(left, page * 2 - 1);
     evidence(right, page * 2);
@@ -537,12 +554,12 @@ function turnPage(outgoing, incoming, forward, nextClue) {
 
 function updateNavigation() {
   const currentPage = Math.max(0, activePage);
-  pageCount.textContent = activePage === overviewPage ? "사건 개요" : `${activePage + 1} / ${lastPage + 1} 펼침면`;
+  pageCount.textContent = activePage === overviewPage ? "사건 개요" : `${activePage + 1} / ${answerPage() + 1} 펼침면`;
   for (const button of reader.querySelectorAll("[data-step]")) {
     const destination = activePage + Number(button.dataset.step);
-    button.disabled = destination < overviewPage || destination > lastPage;
+    button.disabled = destination < overviewPage || destination > answerPage();
   }
-  clueTabs.hidden = deskRecord === lockedRecord || !clueLinks.length || activePage >= hintsPage;
+  clueTabs.hidden = !investigation.clueLinks.length || activePage > investigation.evidencePages;
   for (const button of reader.querySelectorAll(".bookmarks [data-page]")) {
     if (Number(button.dataset.page) === currentPage) button.setAttribute("aria-current", "page");
     else button.removeAttribute("aria-current");
@@ -587,11 +604,11 @@ function focusSheet(layout) {
 }
 
 function stepSpread(step) {
-  if (deskRecord !== lockedRecord) showPage(activePage + step);
+  showPage(activePage + step);
 }
 
 function showPage(page, animate = true, clue) {
-  if (page < overviewPage || page > lastPage) return;
+  if (page < overviewPage || page > answerPage()) return;
   if (page === activePage && spread.hasChildNodes()) {
     if (clue) {
       activeClue = clue;
@@ -600,7 +617,7 @@ function showPage(page, animate = true, clue) {
     }
     return;
   }
-  if (page === answerPage && completedSeconds === null) {
+  if (page === answerPage() && completedSeconds === null) {
     if (!answerConfirm.open) answerConfirm.showModal();
     return;
   }
@@ -609,14 +626,14 @@ function showPage(page, animate = true, clue) {
   const reading = page !== overviewPage;
   if (animate && outgoing && reading !== desk.classList.contains("is-reading")) setReadingLayout(reading);
   const contentPage = Math.max(0, page);
-  const nextClue = clue ?? (page > 0 && page < hintsPage ? page * 2 - 1 : undefined);
+  const nextClue = clue ?? (page > 0 && page <= investigation.evidencePages ? page * 2 - 1 : undefined);
   const pageChanged = !outgoing || contentPage !== Math.max(0, activePage);
   let incoming = outgoing;
   if (pageChanged) {
     outgoing?.querySelector(".solution-video")?.pause();
     incoming = renderPage(contentPage);
     spread.replaceChildren(incoming);
-    if (activePage === answerPage) updateVolume();
+    if (activePage === answerPage()) updateVolume();
     if (animate && outgoing) turnPage(outgoing, incoming, page > activePage, nextClue);
   }
   activePage = page;
@@ -627,13 +644,15 @@ function showPage(page, animate = true, clue) {
 
 function showStage(stage) {
   if (stage !== "closed" && hintConfirm.open) hintConfirm.close("no");
-  if (stage === "shelf") viewedHints.clear();
+  if (stage === "shelf") {
+    viewedHints.clear();
+  }
   entrance.hidden = stage !== "entrance";
   library.hidden = stage !== "shelf";
   desk.hidden = stage !== "closed";
   exitButton.hidden = stage !== "shelf";
   returnButton.hidden = stage !== "closed";
-  setAttemptClock(stage === "closed" && deskRecord === 0);
+  setAttemptClock(stage === "closed");
   window.scrollTo(0, 0);
 }
 
@@ -694,12 +713,18 @@ async function enterArchive() {
 
 function setDeskRecord(index) {
   deskRecord = index;
+  investigation = investigations[index];
   const draft = index === lockedRecord;
   deskTitle.textContent = records[index].querySelector(".spine-title").textContent;
   deskVolume.querySelector(".cover").replaceWith(jackets[index].cloneNode(true));
   deskVolume.querySelector(".book-spine").replaceChildren(records[index].querySelector(".shelf-spine").cloneNode(true));
   deskVolume.classList.toggle("preview-volume", draft);
-  for (const controls of investigationNavigation) controls.hidden = draft;
+  renderSuspects();
+  reader.querySelector('[data-bookmark="hints"]').dataset.page = hintsPage();
+  reader.querySelector('[data-bookmark="answer"]').dataset.page = answerPage();
+  clueTabs.innerHTML = investigation.clueLinks.map(({ sheetIndex, clueNumber, action }) =>
+    `<button class="plate" type="button" data-clue="${sheetIndex}" aria-label="${clueNumber}. ${action}" title="${action}">${clueNumber}</button>`
+  ).join("");
 }
 
 async function travel(toDesk) {
@@ -795,7 +820,7 @@ async function foldBook(opening) {
     for (const dialog of [submissionConfirm, suspectPicker, answerConfirm, hintConfirm]) {
       if (dialog.open) dialog.close();
     }
-    if (activePage === answerPage) showPage(overviewPage, false);
+    if (activePage === answerPage()) showPage(overviewPage, false);
   }
   window.scrollTo(0, 0);
   removeTurns();
@@ -1067,11 +1092,6 @@ window.addEventListener("hashchange", () => {
 openButton.addEventListener("click", () => goTo("open"));
 closeButton.addEventListener("click", () => goTo("closed"));
 
-reader.querySelector('[data-bookmark="hints"]').dataset.page = hintsPage;
-reader.querySelector('[data-bookmark="answer"]').dataset.page = answerPage;
-clueTabs.innerHTML = clueLinks.map(({ sheetIndex, clueNumber, action }) =>
-  `<button class="plate" type="button" data-clue="${sheetIndex}" aria-label="${clueNumber}. ${action}" title="${action}">${clueNumber}</button>`
-).join("");
 for (const event of ["play", "pause", "ended"]) spread.addEventListener(event, updateVolume, true);
 reader.addEventListener("click", event => {
   const button = event.target.closest("button") ?? event.target.closest(".hint-card")?.querySelector(".hint-trigger");
@@ -1098,25 +1118,33 @@ reader.addEventListener("click", event => {
     const paper = button.closest(".paper");
     const art = button.querySelector("img") ?? paper.querySelector(".illustration");
     const download = paper.querySelector("[data-download]");
-    viewer.querySelector("h2").textContent = art.alt;
-    viewerDownload.href = download?.href ?? art.src;
-    viewerDownload.download = download?.download ?? "";
-    viewer.querySelector(".viewer-art").replaceChildren(art.cloneNode(true));
-    viewer.showModal();
+    showArt(art, download?.download, download?.href);
   }
 });
 
-suspectForm.querySelector("#suspect-prompt").textContent = caseFile.answer.question;
-suspectForm.querySelector(".suspect-practice").hidden = !caseFile.answer.practice;
-suspectLineup.innerHTML = caseFile.suspects.map(suspect => `
-  <label class="suspect-card">
-    <input type="radio" name="suspect" value="${suspect.id}" required>
-    <span class="suspect-face">
-      <span class="suspect-portrait"><img src="${suspect.portrait}" alt="" draggable="false" decoding="async">
-        <span class="suspect-check" aria-hidden="true">${icon("check")}</span></span>
-      <span class="suspect-number">${suspectLabel(suspect)}</span>
-    </span>
-  </label>`).join("");
+function showArt(art, filename = "", href = art.src) {
+  viewer.querySelector("h2").textContent = art.alt;
+  viewerDownload.href = href;
+  viewerDownload.download = filename;
+  viewer.querySelector(".viewer-art").replaceChildren(art.cloneNode(true));
+  viewer.showModal();
+}
+
+function renderSuspects() {
+  const { answer, suspects } = investigation.file;
+  suspectPicker.classList.toggle("alpine-suspect-picker", investigation.file === alpineLodge);
+  suspectForm.querySelector("#suspect-prompt").textContent = answer.question;
+  suspectForm.querySelector(".suspect-practice").hidden = !answer.practice;
+  suspectLineup.innerHTML = suspects.map(suspect => `
+    <label class="suspect-card">
+      <input type="radio" name="suspect" value="${suspect.id}" required>
+      <span class="suspect-face">
+        <span class="suspect-portrait"><img src="${suspect.portrait}" alt="" draggable="false" decoding="async">
+          <span class="suspect-check" aria-hidden="true">${icon("check")}</span></span>
+        <span class="suspect-number">${suspectLabel(suspect)}</span>
+      </span>
+    </label>`).join("");
+}
 
 suspectLineup.addEventListener("pointermove", event => {
   if (event.pointerType !== "mouse" || motionPreference.matches) return;
@@ -1131,7 +1159,7 @@ suspectLineup.addEventListener("pointermove", event => {
 
 function selectedSuspect() {
   const id = suspectForm.querySelector('input[name="suspect"]:checked')?.value;
-  return caseFile.suspects.find(suspect => suspect.id === id);
+  return investigation.file.suspects.find(suspect => suspect.id === id);
 }
 
 function updateSuspectSelection() {
@@ -1160,7 +1188,9 @@ suspectForm.addEventListener("submit", event => {
 submissionConfirm.querySelector("form").addEventListener("submit", event => {
   if (event.submitter?.value !== "yes") return;
   event.preventDefault();
-  submittedSuspect = selectedSuspect();
+  const suspect = selectedSuspect();
+  if (!suspect) return;
+  submittedSuspect = suspect;
   completedSeconds = elapsedSeconds();
   clearInterval(clockInterval);
   caseClock.setAttribute("data-complete", "");
@@ -1168,7 +1198,7 @@ submissionConfirm.querySelector("form").addEventListener("submit", event => {
   updateClock();
   submissionConfirm.close("yes");
   suspectPicker.close();
-  showPage(answerPage);
+  showPage(answerPage());
 });
 
 hintConfirm.querySelector("form").addEventListener("submit", event => {

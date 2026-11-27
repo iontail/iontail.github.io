@@ -562,7 +562,14 @@ main { overflow: clip; }
   content: "";
 }
 .shelf-spine::after { inset-block: auto 6%; }
-.spine-rust { --spine-light: #835644; --spine-cloth: #603b2d; --spine-shadow: #3a231e; }
+.spine-alpine {
+  --spine-light: #678e95;
+  --spine-cloth: #365f67;
+  --spine-shadow: #203d47;
+  color: #e6eddf;
+}
+
+.spine-alpine .spine-number { color: inherit; }
 .spine-planetarium { --spine-light: #536478; --spine-cloth: #293b51; --spine-shadow: #101d31; }
 .spine-number {
   margin-top: calc(var(--spine-width) * .13);
@@ -707,7 +714,13 @@ main { overflow: clip; }
   opacity: .45;
 }
 
-.cover-rust { --cloth: #563529; --cloth-light: #724d3c; --foil: #e6c591; --binding-cloth: #432b22; --binding-rim: #604231; }
+.cover-alpine {
+  --cloth: #325963;
+  --cloth-light: #5d8189;
+  --foil: #e6eddf;
+  --binding-cloth: #24444d;
+  --binding-rim: #59767a;
+}
 .cover-planetarium {
   --cloth: #233349;
   --cloth-light: #3b526b;
@@ -732,9 +745,10 @@ main { overflow: clip; }
   text-shadow: 0 1px #281c11, 0 -1px #ffe3a536;
 }
 .cover-brand { grid-column: 1; grid-row: 3; font: 400 clamp(.76rem, 1.35vw, 1.25rem)/1 var(--display); white-space: nowrap; }
-.cover :is(img, .gallery-mark) { grid-column: 2; grid-row: 1 / -1; width: 96%; align-self: center; justify-self: end; }
+.cover :is(img, .mountain-mark) { grid-column: 2; grid-row: 1 / -1; width: 96%; align-self: center; justify-self: end; }
 .cover img { display: block; object-fit: contain; opacity: .76; }
-.cover-rust .cover-index, .cover-rust .cover-brand { opacity: .95; }
+.cover-alpine .cover-index { color: var(--foil); }
+.cover-alpine .cover-index, .cover-alpine .cover-brand { opacity: .95; }
 
 .book-spine, .book-edge {
   position: absolute;
@@ -764,24 +778,27 @@ main { overflow: clip; }
 }
 
 
-.gallery-mark {
+.cover .mountain-mark {
   position: relative;
-  display: grid;
-  place-items: center;
-  aspect-ratio: 1.6;
-  width: 68%;
-  align-self: center;
+  width: 78%;
+  aspect-ratio: 1.4;
+  opacity: .8;
 }
 
-.gallery-mark i {
+.mountain-mark::before, .mountain-mark::after {
   position: absolute;
-  inset: 9% 30%;
-  border: 1px solid #f6d7a2a0;
-  transform: rotate(45deg);
+  inset: 0;
+  background: var(--foil);
+  content: "";
 }
 
-.gallery-mark i:nth-child(2) { inset: 16% 34%; }
-.gallery-mark i:nth-child(3) { inset: 23% 38%; }
+.mountain-mark::before {
+  clip-path: polygon(0 85%, 42% 14%, 61% 45%, 72% 30%, 100% 85%, 95% 85%, 72% 37%, 61% 52%, 42% 21%, 5% 85%);
+}
+
+.mountain-mark::after {
+  clip-path: polygon(27% 46%, 42% 21%, 56% 45%, 47% 41%, 42% 46%, 36% 39%);
+}
 
 .empty-cover {
   position: relative;
@@ -938,7 +955,7 @@ main { overflow: clip; }
   gap: .46rem;
 }
 .is-carrying .open-label { visibility: hidden; }
-.preview-volume .paper-edge, .preview-volume .book-spine { background-color: #4c2a22; border-color: #6d4639; }
+.preview-volume .paper-edge, .preview-volume .book-spine { background-color: #24444d; border-color: #59767a; }
 .flying-volume {
   position: fixed;
   z-index: 10;
@@ -1515,6 +1532,7 @@ main { overflow: clip; }
   pointer-events: none;
 }
 .suspect-portrait img { display: block; width: 100%; height: calc(var(--portrait-height) * 1.11); object-fit: contain; filter: drop-shadow(.28rem .2rem .25rem #321d1970); }
+.alpine-suspect-picker .suspect-portrait img { height: 100%; }
 .suspect-number { display: grid; min-height: 2.9rem; place-items: center; padding: .34rem; text-align: center; font: 700 clamp(.76rem, 1.7vw, 1.05rem)/1.38 var(--archive-serif); word-break: keep-all; }
 .suspect-check {
   position: absolute;
@@ -1821,6 +1839,21 @@ main { overflow: clip; }
   padding: 0;
 }
 .solution-steps li::marker { font-size: 0; }
+.solution-compared-step { grid-column: 1 / -1; }
+.solution-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.solution-comparison .solution-step-image img { transform: scale(var(--crop-zoom)); transform-origin: var(--crop-origin); }
+.solution-spot {
+  position: absolute;
+  left: var(--spot-x);
+  top: var(--spot-y);
+  width: clamp(1.35rem, 5.8vw, 4.5rem);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border: 2px solid #ffe5a2;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #5c382b;
+  pointer-events: none;
+}
 .solution-step-image {
   position: relative;
   width: 100%;
