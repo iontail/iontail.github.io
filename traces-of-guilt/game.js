@@ -1,5 +1,5 @@
 import { caseFile } from "./case-data.js?v=solution-time";
-import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-chapel-source";
+import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-answer-video";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -99,7 +99,8 @@ const elapsedSeconds = () => Math.floor((performance.now() - attemptStartedAt) /
 const durationParts = seconds => [Math.floor(seconds / 3600), Math.floor(seconds / 60) % 60, seconds % 60];
 const suspectLabel = suspect => `${investigation.file.suspects.indexOf(suspect) + 1}번 용의자`;
 const clueSpread = clue => Math.ceil(clue / 2);
-const backgroundVolume = () => spread.querySelector(".solution-video")?.paused === false ? 0 : volumeControl.valueAsNumber / 100;
+const backgroundVolume = () => spread.querySelector(".solution-youtube") ||
+  spread.querySelector(".solution-video")?.paused === false ? 0 : volumeControl.valueAsNumber / 100;
 
 function updateClock() {
   const seconds = completedSeconds ?? elapsedSeconds();
@@ -369,6 +370,9 @@ function solutionImage({ image, alt = "", label, frame, imageRatio = 1.25, under
 function solution(layout) {
   const { suspects, answer } = investigation.file;
   const { practice, suspectId, video, cipher, stepsTitle = "장면별 해설", steps = [], story = [], storyImage } = answer;
+  const youtubeId = /^[\w-]{11}$/.test(video?.youtubeId ?? "") ? video.youtubeId : null;
+  const hasVideo = youtubeId || video?.src || video?.poster;
+  const videoTitle = video?.title ?? "사건 재구성 영상";
   const successful = submittedSuspect.id === suspectId;
   const verdict = `${practice ? "시연 지목" : "범인 검거"} ${successful ? "성공" : "실패"}`;
   const [hours, minutes, seconds] = durationParts(completedSeconds);
@@ -384,16 +388,20 @@ function solution(layout) {
           </div>
         </div>
         <div class="solution-links">
-          ${video ? '<button class="solution-jump" type="button" data-solution-jump="solution-film-title">재구성 영상 보기</button>' : ""}
+          ${hasVideo ? `<button class="solution-jump" type="button" data-solution-jump="solution-film-title">${video.title ?? "재구성 영상"} 보기</button>` : ""}
           ${cipher ? '<button class="solution-jump" type="button" data-solution-jump="solution-cipher-title">비밀암호 대응표 보기</button>' : ""}
           ${steps.length ? '<button class="solution-jump" type="button" data-solution-jump="solution-steps">장면별 해설 보기</button>' : ""}
           ${story.length ? '<button class="solution-jump" type="button" data-solution-jump="solution-story">사건의 전말 읽기</button>' : ""}
         </div>
       </header>
       ${solutionCast(suspects, practice ? null : suspectId)}
-      ${video ? `<section class="solution-reconstruction" aria-labelledby="solution-film-title">
-        <h4 id="solution-film-title" tabindex="-1">사건 재구성 영상</h4>
+      ${hasVideo ? `<section class="solution-reconstruction" aria-labelledby="solution-film-title">
+        <h4 id="solution-film-title" tabindex="-1">${videoTitle}</h4>
         <div class="solution-film">
+          ${youtubeId ? `<iframe class="solution-youtube" title="${videoTitle}"
+            src="https://www.youtube-nocookie.com/embed/${youtubeId}?playsinline=1&amp;rel=0"
+            loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+            allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>` : `
           ${video.src ? `<video class="solution-video" src="${video.src}"${video.poster ? ` poster="${video.poster}"` : ""}
             controls playsinline preload="metadata" aria-labelledby="solution-film-title">
             ${video.captions ? `<track kind="captions" src="${video.captions}" srclang="ko" label="한국어">` : ""}
@@ -401,7 +409,7 @@ function solution(layout) {
           <div class="solution-film-still"${video.src ? " hidden" : ""}>
             ${video.poster ? `<img src="${video.poster}" alt="" decoding="async">` : ""}
             <p>${video.src ? "재구성 영상을 불러올 수 없어요." : "재구성 영상 준비 중"}</p>
-          </div>
+          </div>`}
         </div>
       </section>` : ""}
       ${cipher ? `<section class="solution-cipher" aria-labelledby="solution-cipher-title">
@@ -645,7 +653,7 @@ function showPage(page, animate = true, clue) {
     outgoing?.querySelector(".solution-video")?.pause();
     incoming = renderPage(contentPage);
     spread.replaceChildren(incoming);
-    if (activePage === answerPage()) updateVolume();
+    if (activePage === answerPage() || page === answerPage()) updateVolume();
     if (animate && outgoing) turnPage(outgoing, incoming, page > activePage, nextClue);
   }
   activePage = page;

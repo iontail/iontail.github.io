@@ -28,6 +28,10 @@ export const alpineLodge = {
   answer: {
     question: "요한 켈러의 죽음과 관련해 누구를 지목하시겠어요?",
     suspectId: "paul",
+    video: {
+      title: "사건 재구성 영상",
+      youtubeId: "hRtbeySyJwk"
+    },
     steps: [
       {
         title: "식사 뒤 거실에서 들린 언쟁",
