@@ -1,5 +1,5 @@
 import { caseFile } from "./case-data.js?v=solution-time";
-import { alpineLodge } from "./alpine-lodge/case-data.js?v=solution-time";
+import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-annotated";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -348,20 +348,34 @@ function solutionCast(suspects, culpritId) {
       </section>`;
 }
 
-function solutionImage({ image, alt = "", origin, zoom, spot, label, guide }, title) {
-  const crop = origin ? ` style="--crop-origin:${origin[0]}% ${origin[1]}%;--crop-zoom:${zoom}"` : "";
-  return `<button class="solution-step-image" type="button" data-zoom aria-haspopup="dialog" aria-label="${origin ? `${alt} 확대` : `${title} 단서 이미지 확대`}"${crop}>
+function solutionImage({ image, alt = "", label, frame, portrait, underlines = [], circles = [] }, title) {
+  const [left, top, width, height] = frame ?? [0, 0, 100, 100];
+  const crop = frame
+    ? ` style="--frame-ratio:${5 * width} / ${4 * height};--image-width:${10000 / width}%;--image-height:${10000 / height}%;--image-left:${-100 * left / width}%;--image-top:${-100 * top / height}%"`
+    : "";
+  const marks = underlines.length || circles.length ? `<svg class="solution-image-marks" viewBox="${left} ${top} ${width} ${height}" preserveAspectRatio="none" aria-hidden="true">
+      ${underlines.map(([x1, y1, x2, y2]) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`).join("")}
+      ${circles.map(([cx, cy, rx, ry]) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/>`).join("")}
+    </svg>` : "";
+  return `<button class="solution-step-image${frame ? " solution-framed-image" : ""}${portrait ? " solution-portrait-frame" : ""}" type="button" data-zoom aria-haspopup="dialog" aria-label="${frame ? `${alt} 원본 보기` : `${title} 단서 이미지 확대`}"${crop}>
     <img class="illustration" src="${image}" alt="${alt}" loading="lazy" decoding="async">
-    ${spot ? `<span class="solution-spot" aria-hidden="true" style="--spot-x:${spot[0]}%;--spot-y:${spot[1]}%"></span>` : ""}
+    ${marks}
     ${label ? `<span class="solution-step-label" aria-hidden="true">${label}</span>` : ""}
-    ${guide ? `<span class="solution-reading-guide" aria-hidden="true" style="--guide-x:${guide[0]}%;--guide-top:${guide[1]}%;--guide-bottom:${100 - guide[2]}%"></span>` : ""}
     <span class="solution-step-zoom">${icon("zoom")}</span>
   </button>`;
 }
 
+function solutionComparison(step) {
+  const columns = step.comparison.map(({ frame }) => frame ? `minmax(0, ${frame[2] / frame[3]}fr)` : "minmax(0, 1fr)").join(" ");
+  return `<div class="solution-comparison" style="--comparison-columns:${columns};--comparison-count:${step.comparison.length}">
+    ${step.comparison.map(view => solutionImage(view, step.title)).join("")}
+    ${step.question ? '<span class="solution-comparison-question" aria-hidden="true"><b>?</b>↔</span>' : ""}
+  </div>`;
+}
+
 function solution(layout) {
   const { suspects, answer } = investigation.file;
-  const { practice, suspectId, video, cipher, stepsTitle = "장면별 해설", steps = [] } = answer;
+  const { practice, suspectId, video, cipher, stepsTitle = "장면별 해설", steps = [], story = [] } = answer;
   const successful = submittedSuspect.id === suspectId;
   const verdict = `${practice ? "시연 지목" : "범인 검거"} ${successful ? "성공" : "실패"}`;
   const [hours, minutes, seconds] = durationParts(completedSeconds);
@@ -380,6 +394,7 @@ function solution(layout) {
           ${video ? '<button class="solution-jump" type="button" data-solution-jump="solution-film-title">재구성 영상 보기</button>' : ""}
           ${cipher ? '<button class="solution-jump" type="button" data-solution-jump="solution-cipher-title">비밀암호 대응표 보기</button>' : ""}
           ${steps.length ? '<button class="solution-jump" type="button" data-solution-jump="solution-steps">장면별 해설 보기</button>' : ""}
+          ${story.length ? '<button class="solution-jump" type="button" data-solution-jump="solution-story">사건의 전말 읽기</button>' : ""}
         </div>
       </header>
       ${solutionCast(suspects, practice ? null : suspectId)}
@@ -403,12 +418,16 @@ function solution(layout) {
       ${steps.length ? `<section class="solution-sequence" aria-labelledby="solution-steps">
         <h4 id="solution-steps" tabindex="-1">${stepsTitle}</h4>
         <ol class="solution-steps">${steps.map((step, index) => `<li${step.comparison ? ' class="solution-compared-step"' : ""}>
-          ${step.comparison ? `<div class="solution-comparison">${step.comparison.map(view => solutionImage(view, step.title)).join("")}${step.question ? '<span class="solution-comparison-question" aria-hidden="true"><b>?</b>↔</span>' : ""}</div>` : solutionImage(step, step.title)}
+          ${step.comparison ? solutionComparison(step) : solutionImage(step, step.title)}
           <div class="solution-step-text">
             <span class="solution-step-number" aria-hidden="true">${number(index + 1)}</span>
-            <div><h5>${step.title}</h5><p>${step.text}</p></div>
+            <div><h5>${step.title}</h5>${[step.text].flat().map(paragraph => `<p>${paragraph}</p>`).join("")}</div>
           </div>
         </li>`).join("")}</ol>
+      </section>` : ""}
+      ${story.length ? `<section class="solution-story" aria-labelledby="solution-story">
+        <h4 id="solution-story" tabindex="-1">사건의 전말</h4>
+        ${story.map(paragraph => `<p>${paragraph}</p>`).join("")}
       </section>` : ""}
     </div>
   </section>`;

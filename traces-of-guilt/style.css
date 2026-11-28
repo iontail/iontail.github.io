@@ -1708,14 +1708,14 @@ main { overflow: clip; }
 }
 .answer-verdict[data-outcome="success"] { --verdict-border: #679879; --verdict-background: #233c30; --verdict-ink: #c5eccd; }
 .answer-verdict[data-outcome="failure"] { --verdict-border: #ac6b61; --verdict-background: #482b2c; --verdict-ink: #ffc3b1; }
-.solution-step-text p, .solution-cipher p {
+.solution-step-text p, .solution-cipher p, .solution-story p {
   color: #e1d5c2;
   font-size: 1rem;
   line-height: 1.65;
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
-:is(.solution-cast, .solution-reconstruction, .solution-cipher, .solution-sequence) h4 {
+:is(.solution-cast, .solution-reconstruction, .solution-cipher, .solution-sequence, .solution-story) h4 {
   margin-bottom: 1rem;
   scroll-margin-block-start: 1rem;
   font: 700 1.4rem/1.35 var(--ink-display);
@@ -1830,7 +1830,7 @@ main { overflow: clip; }
 }
 .solution-steps li::marker { font-size: 0; }
 .solution-compared-step { grid-column: 1 / -1; }
-.solution-comparison { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.solution-comparison { position: relative; display: grid; grid-template-columns: var(--comparison-columns); gap: .75rem; }
 .solution-comparison-question {
   position: absolute;
   left: 50%;
@@ -1846,7 +1846,6 @@ main { overflow: clip; }
   pointer-events: none;
 }
 .solution-comparison-question b { display: block; }
-.solution-step-image img { transform: scale(var(--crop-zoom, 1)); transform-origin: var(--crop-origin, center); }
 .solution-step-label {
   position: absolute;
   inset: .4rem auto auto .4rem;
@@ -1855,24 +1854,6 @@ main { overflow: clip; }
   color: #fff0d5;
   font-size: clamp(.65rem, 1.2vw, .86rem);
   line-height: 1.4;
-}
-.solution-reading-guide {
-  position: absolute;
-  inset: var(--guide-top) auto var(--guide-bottom) var(--guide-x);
-  border-left: 2px dashed #8f3528;
-  pointer-events: none;
-}
-.solution-spot {
-  position: absolute;
-  left: var(--spot-x);
-  top: var(--spot-y);
-  width: clamp(1.35rem, 5.8vw, 4.5rem);
-  aspect-ratio: 1;
-  translate: -50% -50%;
-  border: 2px solid #ffe5a2;
-  border-radius: 50%;
-  box-shadow: 0 0 0 1px #5c382b;
-  pointer-events: none;
 }
 .solution-step-image {
   position: relative;
@@ -1888,6 +1869,49 @@ main { overflow: clip; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.solution-steps:has(.solution-framed-image) {
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.6rem, 4vw, 3rem);
+  max-width: 53rem;
+  margin-inline: auto;
+}
+.solution-framed-image {
+  display: block;
+  aspect-ratio: var(--frame-ratio);
+}
+.solution-steps > li > .solution-framed-image {
+  max-width: 44rem;
+  margin-inline: auto;
+}
+.solution-steps > li > .solution-portrait-frame { max-width: 34rem; }
+.solution-framed-image img {
+  position: absolute;
+  inset: var(--image-top) auto auto var(--image-left);
+  width: var(--image-width);
+  height: var(--image-height);
+  max-width: none;
+  object-fit: fill;
+}
+.solution-image-marks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #c31f25;
+  stroke-width: clamp(1.5px, .24vw, 3px);
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 .6px #fff0dc);
+  pointer-events: none;
+}
+.solution-image-marks > * { vector-effect: non-scaling-stroke; }
+.solution-step-text p + p, .solution-story p + p { margin-top: .6rem; }
+.solution-story {
+  max-width: 53rem;
+  margin: clamp(2rem, 5vw, 4rem) auto 0;
+  padding-block-start: clamp(1rem, 2vw, 1.6rem);
+  border-top: 1px solid #a481537a;
 }
 .solution-step-zoom {
   position: absolute;
@@ -1924,6 +1948,9 @@ main { overflow: clip; }
 }
 @media (max-width: 560px) {
   .solution-steps { grid-template-columns: minmax(0, 1fr); }
+  .solution-comparison { grid-template-columns: repeat(var(--comparison-count), minmax(0, 1fr)); gap: .4rem; }
+  .solution-comparison .solution-step-label { inset: auto 0 0; font-size: .62rem; text-align: left; }
+  .solution-comparison .solution-step-zoom { top: .22rem; right: .22rem; width: 1.4rem; height: 1.4rem; }
 }
 
 .page-nav {
