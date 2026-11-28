@@ -1,5 +1,5 @@
 import { caseFile } from "./case-data.js?v=solution-time";
-import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-ledger-ending";
+import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-chapel";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -230,7 +230,7 @@ function illustration(title, image) {
 }
 
 function sheetHeading(title, image, { clueNumber, map } = {}) {
-  const extension = image.split(".").at(-1);
+  const extension = image.split("?")[0].split(".").at(-1);
   const filename = `Traces-of-Guilt_${title.replaceAll(" ", "-")}.${extension}`;
   return `<header class="sheet-heading">
     ${clueNumber ? `<span class="sheet-number" aria-hidden="true">${number(clueNumber)}</span>` : ""}

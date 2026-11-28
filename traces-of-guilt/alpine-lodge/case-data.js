@@ -1,3 +1,6 @@
+const witnessesImage = "alpine-lodge/witnesses.png?v=alpine-chapel";
+const mapImage = "alpine-lodge/map-closeup.png?v=alpine-chapel";
+
 export const alpineLodge = {
   title: "알프스 산장의 비밀",
   scene: {
@@ -6,7 +9,7 @@ export const alpineLodge = {
     image: "alpine-lodge/main.png",
     description: [
       "알프스 산장의 주인 요한 켈러가 베란다 아래 절벽 밑에서 숨진 채 발견됐습니다. 베란다에서 추락한 것으로 보입니다. 요한은 전날 저녁부터 모습을 보이지 않았고, 밤새 내린 눈에 산장으로 이어지는 길이 막혔습니다.",
-      "산장에는 요한의 딸이자 스키 강사인 클라라 켈러, 번역가 마라 바이스, 부동산 감정평가사 빅터 하르트, 마을 교회 목사 파울 슈타이너가 남아 있습니다."
+      "산장에는 요한의 딸이자 스키 강사인 클라라 켈러, 번역가 마라 바이스, 부동산 감정평가사 빅터 하르트, 마을 성당의 파울 슈타이너 신부가 남아 있습니다."
     ],
     objective: "산장 안팎을 살피고 네 사람의 증언을 대조해 전날 저녁에 무슨 일이 있었는지 알아보세요."
   },
@@ -20,7 +23,7 @@ export const alpineLodge = {
     { id: "clara", name: "클라라 켈러", portrait: "alpine-lodge/suspects/clara.png", role: "스키 강사", relationship: "요한의 딸" },
     { id: "mara", name: "마라 바이스", portrait: "alpine-lodge/suspects/mara.png", role: "번역가", relationship: "산장에 자주 묵는 단골 손님" },
     { id: "viktor", name: "빅터 하르트", portrait: "alpine-lodge/suspects/viktor.png", role: "부동산 감정평가사", relationship: "산장 감정 업무로 요한을 만난 사이" },
-    { id: "paul", name: "파울 슈타이너", portrait: "alpine-lodge/suspects/paul.png", role: "마을 교회 목사", relationship: "요한의 오랜 지인" }
+    { id: "paul", name: "파울 슈타이너", portrait: "alpine-lodge/suspects/paul.png", role: "마을 성당 신부", relationship: "요한의 오랜 지인" }
   ],
   answer: {
     question: "요한 켈러의 죽음과 관련해 누구를 지목하시겠어요?",
@@ -28,51 +31,51 @@ export const alpineLodge = {
     steps: [
       {
         title: "식사 뒤 거실에서 들린 언쟁",
-        image: "alpine-lodge/witnesses.png", alt: "식사 뒤 거실에서 남자들의 언쟁을 들었다는 클라라의 증언",
+        image: witnessesImage, alt: "식사 뒤 거실에서 남자들의 언쟁을 들었다는 클라라의 증언",
         frame: [26.5, 15.5, 67, 15.7], underlines: [[74.2, 24.95, 89.5, 24.95], [29.8, 27.6, 78, 27.6]],
         text: "클라라는 저녁 식사 뒤 방에 있다가 거실에서 언쟁을 들었어요. 남자들의 목소리 같았다는 말만으로 누구인지 알 수는 없어요. 아직 클라라의 증언이 사실인지는 확인할 수는 없지만, 해당 언쟁이 사건과 관련 있다면 빅터와 파울을 의심해보는게 타당해요."
       },
       {
         title: "마라가 들은 빅터의 통화",
-        image: "alpine-lodge/witnesses.png", alt: "빅터가 낮은 감정가와 약속한 몫을 이야기했다는 마라의 증언",
+        image: witnessesImage, alt: "빅터가 낮은 감정가와 약속한 몫을 이야기했다는 마라의 증언",
         frame: [6, 34, 88, 19], underlines: [[9.6, 39.8, 64.3, 39.8], [9.6, 42.3, 50.8, 42.3]],
         text: "마라는 저녁 식사 전 옆방에서 빅터의 통화를 들었어요. 빅터의 책정한 낮은 감정가는 누군가와 미리 꾸민 거래였다는 것을 알 수 있어요."
       },
       {
         title: "빅터는 요한과 자주 다퉜어요",
-        image: "alpine-lodge/witnesses.png", alt: "감정가로 다퉜지만 시각은 기억나지 않는다는 빅터의 증언",
+        image: witnessesImage, alt: "감정가로 다퉜지만 시각은 기억나지 않는다는 빅터의 증언",
         frame: [6, 54, 88, 19], underlines: [[46, 64.9, 77.2, 64.9], [29.8, 67.35, 72, 67.35]],
         text: "요한은 35년을 지낸 산장이 헐값에 평가됐다고 주장하며 사건 당일 여러번 싸웠어요. 다만, 다툰 각 시각은 기억하지 못했어요. 클라라가 들은 언쟁이 그중 하나였는지는 알 수 없어요."
       },
       {
         title: "파울이 밝힌 방문 이유",
-        image: "alpine-lodge/witnesses.png", alt: "작별 인사를 하러 산장에 왔다는 파울의 증언",
+        image: witnessesImage, alt: "작별 인사를 하러 산장에 왔다는 파울의 증언",
         frame: [6, 74, 88, 19], underlines: [[9.6, 84.3, 45.3, 84.3]],
         text: "파울은 요한이 떠나기 전 작별 인사를 하러 왔다고 했어요. 식사 뒤에는 눈이 많이 내려 산장에 묵었다고 했죠. 이 증언에서 요한과 다툴 만한 사정은 드러나지 않아요. 그렇다고 범인 선상에서 제외하긴 일러요."
       },
       {
         title: "클라라가 아버지와 다툰 이유",
-        image: "alpine-lodge/witnesses.png", alt: "산장을 팔고 도시로 가자고 했다는 클라라의 증언",
+        image: witnessesImage, alt: "산장을 팔고 도시로 가자고 했다는 클라라의 증언",
         frame: [6, 14, 88, 19], underlines: [[29.8, 22.4, 89.2, 22.4]],
         text: "클라라는 산장을 팔고 도시로 가자는 말을 재촉하다 아버지와 다퉜어요. 도시로 떠나고 싶은 조급함만으로 살인 동기를 설명하기는 어렵기때문에 저녁에 들린 남자들의 언쟁을 사실이라고 생각하고 빅터와 파울을 현장 단서와 대조해 봐야해요."
       },
       {
-        title: "교회 앞에 선 두 사람",
+        title: "성당 앞에 선 두 사람",
         image: "alpine-lodge/solution/church-photo.png", alt: "벽난로 오른쪽 액자 속 젊은 요한과 파울",
         frame: [0, 0, 100, 100], circles: [[50, 38.1, 4.3, 5.45]],
-        text: "벽난로 오른쪽 액자에는 젊은 요한과 파울이 교회 앞에 나란히 서 있어요. 오래전부터 같은 교회에 다녔다는 파울의 말이 사진과 일치해요."
+        text: "벽난로 오른쪽 액자에는 젊은 요한과 파울이 성당 앞에 나란히 서 있어요. 오래전부터 같은 성당에 다녔다는 파울의 말이 사진과 일치해요."
       },
       {
         title: "종탑과 배지의 문양",
-        image: "alpine-lodge/solution/church-photo.png", alt: "젊은 요한과 파울의 배지와 교회 종탑 문양",
+        image: "alpine-lodge/solution/church-photo.png", alt: "젊은 요한과 파울의 배지와 성당 종탑 문양",
         frame: [21, 30, 77, 61], circles: [[50, 38.1, 4.3, 5.45], [36.8, 76.1, 2.5, 3.2], [85.1, 71.8, 2.5, 3.2]],
-        text: "종탑 가운데에 교회 문양이 보여요. 요한과 파울의 가슴에 달린 배지에도 같은 문양이 있어요."
+        text: "종탑 가운데에 성당 문양이 보여요. 요한과 파울의 가슴에 달린 배지에도 같은 문양이 있어요."
       },
       {
         title: "눈 위에 떨어진 배지",
         image: "alpine-lodge/solution/badge-detail.png", alt: "베란다 왼쪽 난간 밑 눈에 떨어진 배지",
         frame: [0, 0, 100, 100], circles: [[18.7, 48.3, 9.8, 8.3]],
-        text: "왼쪽 난간 아래 눈 위에 작은 금속 배지가 떨어져 있어요. 배지에 새겨진 문양은 옛 사진에서 본 교회 문양과 같아요. 아마도 몸싸움간에 떨어진 배지일 거예요."
+        text: "왼쪽 난간 아래 눈 위에 작은 금속 배지가 떨어져 있어요. 배지에 새겨진 문양은 옛 사진에서 본 성당 문양과 같아요. 아마도 몸싸움간에 떨어진 배지일 거예요."
       },
       {
         title: "파울의 옷에는 배지가 없어요",
@@ -119,10 +122,10 @@ export const alpineLodge = {
         text: "불에 탄 손가락의 흔적과 연결해봤을때, 검은 사각형 구멍은 지문 인식부라고 추측할 수 있어요. 즉, 104호 서랍에는 산장 주인 요한과 연결된 별도의 잠금장치가 있었으며, 누군가가 그날 요한을 찾아야 했던 이유를 설명해 줘요."
       },
       {
-        title: "교회 장식에 숨은 열쇠",
-        image: "alpine-lodge/solution/ornament-detail.png", alt: "황동 교회의 종 문양 위에 숨은 열쇠",
+        title: "성당 모형에 숨은 열쇠",
+        image: "alpine-lodge/solution/ornament-detail.png", alt: "황동 성당 모형의 종 문양 위에 숨은 열쇠",
         frame: [7, 9, 63, 63], circles: [[33, 48.4, 12, 4.25]],
-        text: "황동 교회 장식의 종 문양 바로 위에 길쭉한 열쇠가 숨어 있어요. 처음 온 손님이 알아보기 어려운 자리예요. 산장 주인 요한과 오랜 지인 파울은 그 위치를 알 만했어요. 그리고 그 키는 열쇠 고리에 없었던 104호 서랍장 열쇠라고 추측할 수 있어요."
+        text: "황동 성당 모형의 종 문양 바로 위에 길쭉한 열쇠가 숨어 있어요. 처음 온 손님이 알아보기 어려운 자리예요. 산장 주인 요한과 오랜 지인 파울은 그 위치를 알 만했어요. 그리고 그 키는 열쇠 고리에 없었던 104호 서랍장 열쇠라고 추측할 수 있어요."
       },
       {
         title: "깨진 판자 밑에 켜진 글자",
@@ -177,11 +180,11 @@ export const alpineLodge = {
         title: "종탑에서 다시 만난 이름",
         image: "alpine-lodge/solution/church-photo.png", alt: "옛 사진 속 종탑의 날개 달린 종 문양",
         frame: [38.6, 24, 22.8, 24], circles: [[50, 38.1, 4.3, 5.45]],
-        text: "검색으로 뜻을 확인한 뒤 옛 사진의 종탑을 다시 보면 날개 달린 종이 있어요. 편지의 서명과 장부의 이름이 둘이 다니던 교회에 있던 문양으로 이어져요."
+        text: "검색으로 뜻을 확인한 뒤 옛 사진의 종탑을 다시 보면 날개 달린 종이 있어요. 편지의 서명과 장부의 이름이 둘이 다니던 성당에 있던 문양으로 이어져요."
       },
       {
         title: "지도에서 붉게 표시된 도시",
-        image: "alpine-lodge/map-closeup.png", alt: "인근 도시 옆 붉은 표식이 원으로 강조된 지도",
+        image: mapImage, alt: "인근 도시 옆 붉은 표식이 원으로 강조된 지도",
         frame: [25, 20, 73, 73.5], circles: [[82.2, 76.4, 3.7, 4.65]],
         text: "편지는 24일자라 ‘내일’은 25일이에요. 지도의 붉은 표적 표식은 도시를 가리켜요. 두 단서를 맞춰 보면 조직이 그 도시를 겨냥했고, 계획에 필요한 물건을 산장에 숨겨 뒀음을 알 수 있어요."
       },
@@ -193,7 +196,7 @@ export const alpineLodge = {
       },
       {
         title: "클라라가 꿈을 펼치고 싶었던 도시",
-        image: "alpine-lodge/witnesses.png", alt: "도시에서 디자이너로 일하고 싶다는 클라라의 증언",
+        image: witnessesImage, alt: "도시에서 디자이너로 일하고 싶다는 클라라의 증언",
         frame: [26.5, 15.5, 67, 15.7], underlines: [[54.5, 22.36, 89.2, 22.36], [29.8, 24.85, 32.5, 24.85]],
         text: "증언에서 알수 있다시피, 클라라는 스키 강사를 그만두고 그 도시에서 디자이너로 일하고 싶었고 곧 도시로 떠날 예정이었어요. 그런데 만약 도시가 공격받는다면 어떻게 될까요? 당연히 클라라의 꿈을 이루기 어렵겠지요. 그렇기때문에 요한이 도시를 겨냥한 지령에 협조하지 않았을 거에요."
       },
@@ -212,7 +215,7 @@ export const alpineLodge = {
       height: 896
     },
     story: [
-      "요한 켈러와 파울 슈타이너는 오랫동안 같은 교회에 다녔어요. 두 사람은 교회의 문양을 쓰는 테러 조직 ‘날개 달린 종’의 일원이기도 했어요. 편지 속 ‘날개 달린 열쇠’는 요한이 산장 비밀칸에 숨겨둔 바이러스 시료의 암호명이었어요.",
+      "요한 켈러와 파울 슈타이너는 오랫동안 같은 성당에 다녔어요. 두 사람은 성당의 문양을 쓰는 테러 조직 ‘날개 달린 종’의 일원이기도 했어요. 편지 속 ‘날개 달린 열쇠’는 요한이 산장 비밀칸에 숨겨둔 바이러스 시료의 암호명이었어요.",
       "조직은 12월 25일에 인근 도시를 공격할 계획이었어요. 24일까지 시료를 넘기라는 지시는 성탄 인사처럼 보이는 편지의 가운데에 숨어 있었어요. 장부의 104호는 임무를 기록하는 자리였고, ‘퇴실’은 시료를 확보해 전달까지 마쳤다는 뜻이었어요.",
       "요한의 딸 클라라는 스키 강사 일을 그만두고 그 도시에서 디자이너로 일하고 싶어 했어요. 요한은 산장을 팔자는 딸과 다퉜지만, 딸이 꿈을 펼치려는 도시를 공격하는 일에는 협조하지 않기로 했어요. 그는 비밀칸에 보관하던 시료를 넘기지 않았어요.",
       "24일 저녁, 파울은 작별 인사를 하러 왔다며 산장에 들어왔어요. 저녁 식사가 끝난 뒤 파울은 거실에서 요한에게 왜 시료를 넘기지 않았는지 따졌어요. 방에 있던 클라라가 들은 남자들의 언쟁은 두 사람의 목소리였어요. 마라가 식사 전에 들은 빅터의 통화는 산장을 헐값에 사들이려는 별개의 거래였어요.",
@@ -221,9 +224,9 @@ export const alpineLodge = {
     ]
   },
   clues: [
-    { title: "탁자 위 지도", image: "alpine-lodge/map-closeup.png", action: "지도 살펴보기", mapLabel: "지도", position: [32, 67] },
+    { title: "탁자 위 지도", image: mapImage, action: "지도 살펴보기", mapLabel: "지도", position: [32, 67] },
     { title: "왼쪽 서랍장", image: "alpine-lodge/drawer.png", action: "서랍장 살펴보기", mapLabel: "서랍장", position: [3, 61] },
-    { title: "용의자 증언", image: "alpine-lodge/witnesses.png", action: "증언 확인하기", mapLabel: "증언", position: [70, 53] },
+    { title: "용의자 증언", image: witnessesImage, action: "증언 확인하기", mapLabel: "증언", position: [70, 53] },
     { title: "베란다 전경", image: "alpine-lodge/veranda.png", action: "베란다 살펴보기", mapLabel: "베란다", position: [56, 32] },
     { title: "벽난로 사진", image: "alpine-lodge/fireplace.png", action: "벽난로 사진 보기", mapLabel: "사진", position: [19, 28] },
     { title: "카펫 아래 바닥", image: "alpine-lodge/carpet.png", action: "카펫 살펴보기", mapLabel: "카펫", position: [60, 82] },
