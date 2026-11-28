@@ -12,8 +12,8 @@ export const alpineLodge = {
   },
   hints: [
     "벽난로 사진 속 인물들을 살펴보세요. 누가 함께 찍혔고, 어떤 관계였을까요?",
-    "베란다 사진 속 울타리와 눈을 자세히 살펴보세요. 그곳에서 발견한 흔적을 다른 단서들과 연결해 보세요.",
-    "편지 위아래의 짧은 표식을 이어 보세요. 선에 걸치는 단어를 위에서부터 읽으면 어떤 문장이 되나요?",
+    "베란다 사진 속 울타리와 눈을 자세히 살펴 단서를 찾아보세요. 요한을 밀어 떨어뜨렸다면, 울타리에 핏자국은 왜 남았을까요? 발견한 흔적을 다른 단서들과 함께 놓고 생각해 보세요.",
+    "편지에 띄어쓰기가 유난히 넓은 곳이 있어요. 작성자가 특정 단어를 가운데에 놓으려고 한 건 아닐까요? 그 배치를 단서로 편지를 다시 읽어 보세요.",
     "편지를 보낸 사람의 이름을 접수대 장부에 적힌 이름과 대조해 보세요."
   ],
   suspects: [
@@ -122,8 +122,8 @@ export const alpineLodge = {
     ]
   },
   clues: [
+    { title: "탁자 위 지도", image: "alpine-lodge/map-closeup.png", action: "지도 살펴보기", mapLabel: "지도", position: [32, 67] },
     { title: "왼쪽 서랍장", image: "alpine-lodge/drawer.png", action: "서랍장 살펴보기", mapLabel: "서랍장", position: [3, 61] },
-    { title: "탁자 위 지도", image: "alpine-lodge/map.png", action: "지도 살펴보기", mapLabel: "지도", position: [32, 67] },
     { title: "용의자 증언", image: "alpine-lodge/witnesses.png", action: "증언 확인하기", mapLabel: "증언", position: [70, 53] },
     { title: "베란다 전경", image: "alpine-lodge/veranda.png", action: "베란다 살펴보기", mapLabel: "베란다", position: [56, 32] },
     { title: "벽난로 사진", image: "alpine-lodge/fireplace.png", action: "벽난로 사진 보기", mapLabel: "사진", position: [19, 28] },

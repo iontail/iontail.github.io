@@ -1,5 +1,5 @@
 import { caseFile } from "./case-data.js?v=cipher-hint";
-import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-hd";
+import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-map-hints";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
