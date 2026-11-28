@@ -1647,7 +1647,7 @@ main { overflow: clip; }
   font-size: clamp(1.65rem, 3.4vw, 2.8rem);
   letter-spacing: -.035em;
 }
-.solution-title-line { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .75rem; }
+.solution-title-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .75rem; }
 .solution-links { display: flex; flex-wrap: wrap; gap: 0 1rem; }
 .solution-jump {
   min-height: 2.75rem;
@@ -1688,14 +1688,13 @@ main { overflow: clip; }
   font-size: clamp(.88rem, 2.8vw, 1.05rem);
   text-align: center;
 }
-.solution-result {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: .8rem 2rem;
-  margin-block: clamp(1.3rem, 3vw, 2.5rem);
-  padding-block: .95rem;
-  border-block: 1px solid #a481537a;
+.solution-outcome { display: grid; gap: .2rem; text-align: center; }
+.solution-time {
+  margin: 0;
+  color: #e1d5c2;
+  font-size: .8rem;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 .answer-verdict {
   margin: 0;
@@ -1709,22 +1708,13 @@ main { overflow: clip; }
 }
 .answer-verdict[data-outcome="success"] { --verdict-border: #679879; --verdict-background: #233c30; --verdict-ink: #c5eccd; }
 .answer-verdict[data-outcome="failure"] { --verdict-border: #ac6b61; --verdict-background: #482b2c; --verdict-ink: #ffc3b1; }
-.solution-result p, .solution-step-text p, .solution-cipher p {
+.solution-step-text p, .solution-cipher p {
   color: #e1d5c2;
   font-size: 1rem;
   line-height: 1.65;
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
-.case-result {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: .25rem .85rem;
-  margin: 0;
-  color: #e1d5c2;
-  font-size: .95rem;
-}
-.case-result dd { margin: 0; font-weight: 700; }
 :is(.solution-cast, .solution-reconstruction, .solution-cipher, .solution-sequence) h4 {
   margin-bottom: 1rem;
   scroll-margin-block-start: 1rem;
@@ -1933,7 +1923,7 @@ main { overflow: clip; }
   .solution-portrait { aspect-ratio: 5 / 6; }
 }
 @media (max-width: 560px) {
-  .solution-result, .solution-steps { grid-template-columns: minmax(0, 1fr); }
+  .solution-steps { grid-template-columns: minmax(0, 1fr); }
 }
 
 .page-nav {

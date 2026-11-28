@@ -25,7 +25,6 @@ export const alpineLodge = {
   answer: {
     question: "요한 켈러의 죽음과 관련해 누구를 지목하시겠어요?",
     suspectId: "paul",
-    explanation: "범인은 4번 용의자 파울 슈타이너예요. 베란다에 떨어진 배지는 파울을 추락 현장에 연결해요. 두 사람이 왜 그날 만났는지는 서랍장, 편지, 장부, 지도를 차례로 대조하면 드러나요.",
     steps: [
       {
         title: "저녁 식사 뒤, 거실에서 들린 언쟁",

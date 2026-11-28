@@ -101,7 +101,6 @@ export const caseFile = {
     practice: false,
     question: "에드워드 헤일을 살해한 사람은 누구인가요?",
     suspectId: "clive",
-    explanation: "진행표에서 베넷은 암전과 기준별 정렬을, 에드워드 헤일은 A를 맡았어요. 잘못된 Ⅰ번으로 리드가 정상 슬라이드를 찾으러 가고 소장이 투영기에 다가가자, 베넷은 비어 있는 조작대에서 투영기를 역회전시켰어요. 소장이 자기 이름으로 발표하려던 발견은 베넷의 성과였어요.",
     video: {
       // Add the edited MP4 as src and, if available, Korean WebVTT as captions.
       src: "",

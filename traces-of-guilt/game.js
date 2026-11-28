@@ -1,5 +1,5 @@
-import { caseFile } from "./case-data.js?v=cipher-hint";
-import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-solution-27";
+import { caseFile } from "./case-data.js?v=solution-time";
+import { alpineLodge } from "./alpine-lodge/case-data.js?v=solution-time";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -361,8 +361,7 @@ function solutionImage({ image, alt = "", origin, zoom, spot, label, guide }, ti
 
 function solution(layout) {
   const { suspects, answer } = investigation.file;
-  const { practice, suspectId, explanation, video, cipher, stepsTitle = "장면별 해설", steps = [] } = answer;
-  const correctSuspect = suspects.find(suspect => suspect.id === suspectId);
+  const { practice, suspectId, video, cipher, stepsTitle = "장면별 해설", steps = [] } = answer;
   const successful = submittedSuspect.id === suspectId;
   const verdict = `${practice ? "시연 지목" : "범인 검거"} ${successful ? "성공" : "실패"}`;
   const [hours, minutes, seconds] = durationParts(completedSeconds);
@@ -371,8 +370,11 @@ function solution(layout) {
     <div class="solution-content">
       <header class="solution-heading">
         <div class="solution-title-line">
-          <h3 id="solution-title" tabindex="-1" aria-describedby="solution-verdict">사건 해결</h3>
-          <p id="solution-verdict" class="answer-verdict" data-outcome="${successful ? "success" : "failure"}">${verdict}</p>
+          <h3 id="solution-title" tabindex="-1" aria-describedby="solution-verdict solution-time">사건 해결</h3>
+          <div class="solution-outcome">
+            <p id="solution-verdict" class="answer-verdict" data-outcome="${successful ? "success" : "failure"}">${verdict}</p>
+            <p id="solution-time" class="solution-time">풀이 시간 <time datetime="PT${completedSeconds}S">${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</time></p>
+          </div>
         </div>
         <div class="solution-links">
           ${video ? '<button class="solution-jump" type="button" data-solution-jump="solution-film-title">재구성 영상 보기</button>' : ""}
@@ -394,14 +396,6 @@ function solution(layout) {
           </div>
         </div>
       </section>` : ""}
-      <section class="solution-result" aria-label="지목 결과 상세">
-        <p>${explanation}</p>
-        <dl class="case-result">
-          <dt>내가 지목한 용의자</dt><dd>${suspectLabel(submittedSuspect)} (${submittedSuspect.name})</dd>
-          <dt>${practice ? "시연 정답" : "범인"}</dt><dd>${suspectLabel(correctSuspect)} (${correctSuspect.name})</dd>
-          <dt>풀이 시간</dt><dd>${hours ? `${hours}시간 ` : ""}${minutes}분 ${seconds}초</dd>
-        </dl>
-      </section>
       ${cipher ? `<section class="solution-cipher" aria-labelledby="solution-cipher-title">
         <h4 id="solution-cipher-title" tabindex="-1">비밀암호 대응표</h4>
         ${cipherGuide(cipher)}
