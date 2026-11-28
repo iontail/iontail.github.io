@@ -1829,23 +1829,6 @@ main { overflow: clip; }
   padding: 0;
 }
 .solution-steps li::marker { font-size: 0; }
-.solution-compared-step { grid-column: 1 / -1; }
-.solution-comparison { position: relative; display: grid; grid-template-columns: var(--comparison-columns); gap: .75rem; }
-.solution-comparison-question {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-  padding: .35rem .55rem;
-  border: 1px solid #d7af70;
-  background: #101a22;
-  color: #ffe5a2;
-  font-size: clamp(1.15rem, 3vw, 2rem);
-  line-height: 1;
-  text-align: center;
-  pointer-events: none;
-}
-.solution-comparison-question b { display: block; }
 .solution-step-label {
   position: absolute;
   inset: .4rem auto auto .4rem;
@@ -1877,19 +1860,21 @@ main { overflow: clip; }
     max-width: 58rem;
     margin-inline: auto;
   }
-  .solution-steps:has(.solution-framed-image) > li:first-child { grid-column: 1 / -1; }
-  .solution-steps:has(.solution-framed-image) > .solution-compared-step { grid-column: auto; }
 }
 @media (max-width: 760px) {
   .solution-steps:has(.solution-framed-image) { grid-template-columns: minmax(0, 1fr); }
 }
 .solution-framed-image {
-  display: block;
-  aspect-ratio: var(--frame-ratio);
+  display: grid;
+  place-items: center;
+  aspect-ratio: 3 / 2;
+  background: #24323d;
 }
-.solution-steps > li > .solution-framed-image {
-  max-width: 44rem;
-  margin-inline: auto;
+.solution-image-panel {
+  position: relative;
+  width: var(--panel-width);
+  height: var(--panel-height);
+  overflow: hidden;
 }
 .solution-framed-image img {
   position: absolute;
@@ -1963,9 +1948,6 @@ main { overflow: clip; }
 }
 @media (max-width: 560px) {
   .solution-steps { grid-template-columns: minmax(0, 1fr); }
-  .solution-comparison { grid-template-columns: repeat(var(--comparison-count), minmax(0, 1fr)); gap: .4rem; }
-  .solution-comparison .solution-step-label { inset: auto 0 0; font-size: .62rem; text-align: left; }
-  .solution-comparison .solution-step-zoom { top: .22rem; right: .22rem; width: 1.4rem; height: 1.4rem; }
 }
 
 .page-nav {

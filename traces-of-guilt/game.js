@@ -1,5 +1,5 @@
 import { caseFile } from "./case-data.js?v=solution-time";
-import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-story-specimen";
+import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-explained";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -348,29 +348,22 @@ function solutionCast(suspects, culpritId) {
       </section>`;
 }
 
-function solutionImage({ image, alt = "", label, frame, underlines = [], circles = [] }, title) {
+function solutionImage({ image, alt = "", label, frame, imageRatio = 1.25, underlines = [], circles = [] }, title) {
   const [left, top, width, height] = frame ?? [0, 0, 100, 100];
+  const cropRatio = imageRatio * width / height;
   const crop = frame
-    ? ` style="--frame-ratio:${5 * width} / ${4 * height};--image-width:${10000 / width}%;--image-height:${10000 / height}%;--image-left:${-100 * left / width}%;--image-top:${-100 * top / height}%"`
+    ? ` style="--panel-width:${Math.min(100, 100 * cropRatio / 1.5)}%;--panel-height:${Math.min(100, 150 / cropRatio)}%;--image-width:${10000 / width}%;--image-height:${10000 / height}%;--image-left:${-100 * left / width}%;--image-top:${-100 * top / height}%"`
     : "";
   const marks = underlines.length || circles.length ? `<svg class="solution-image-marks" viewBox="${left} ${top} ${width} ${height}" preserveAspectRatio="none" aria-hidden="true">
       ${underlines.map(([x1, y1, x2, y2]) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`).join("")}
       ${circles.map(([cx, cy, rx, ry]) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/>`).join("")}
     </svg>` : "";
+  const art = `<img class="illustration" src="${image}" alt="${alt}" loading="lazy" decoding="async">${marks}`;
   return `<button class="solution-step-image${frame ? " solution-framed-image" : ""}" type="button" data-zoom aria-haspopup="dialog" aria-label="${frame ? `${alt} 원본 보기` : `${title} 단서 이미지 확대`}"${crop}>
-    <img class="illustration" src="${image}" alt="${alt}" loading="lazy" decoding="async">
-    ${marks}
+    ${frame ? `<span class="solution-image-panel">${art}</span>` : art}
     ${label ? `<span class="solution-step-label" aria-hidden="true">${label}</span>` : ""}
     <span class="solution-step-zoom">${icon("zoom")}</span>
   </button>`;
-}
-
-function solutionComparison(step) {
-  const columns = step.comparison.map(({ frame }) => frame ? `minmax(0, ${frame[2] / frame[3]}fr)` : "minmax(0, 1fr)").join(" ");
-  return `<div class="solution-comparison" style="--comparison-columns:${columns};--comparison-count:${step.comparison.length}">
-    ${step.comparison.map(view => solutionImage(view, step.title)).join("")}
-    ${step.question ? '<span class="solution-comparison-question" aria-hidden="true"><b>?</b>↔</span>' : ""}
-  </div>`;
 }
 
 function solution(layout) {
@@ -417,8 +410,8 @@ function solution(layout) {
       </section>` : ""}
       ${steps.length ? `<section class="solution-sequence" aria-labelledby="solution-steps">
         <h4 id="solution-steps" tabindex="-1">${stepsTitle}</h4>
-        <ol class="solution-steps">${steps.map((step, index) => `<li${step.comparison ? ' class="solution-compared-step"' : ""}>
-          ${step.comparison ? solutionComparison(step) : solutionImage(step, step.title)}
+        <ol class="solution-steps">${steps.map((step, index) => `<li>
+          ${solutionImage(step, step.title)}
           <div class="solution-step-text">
             <span class="solution-step-number" aria-hidden="true">${number(index + 1)}</span>
             <div><h5>${step.title}</h5>${[step.text].flat().map(paragraph => `<p>${paragraph}</p>`).join("")}</div>
