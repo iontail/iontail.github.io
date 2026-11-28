@@ -1,5 +1,5 @@
 import { caseFile } from "./case-data.js?v=solution-time";
-import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-annotated";
+import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-27-cuts";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -348,7 +348,7 @@ function solutionCast(suspects, culpritId) {
       </section>`;
 }
 
-function solutionImage({ image, alt = "", label, frame, portrait, underlines = [], circles = [] }, title) {
+function solutionImage({ image, alt = "", label, frame, underlines = [], circles = [] }, title) {
   const [left, top, width, height] = frame ?? [0, 0, 100, 100];
   const crop = frame
     ? ` style="--frame-ratio:${5 * width} / ${4 * height};--image-width:${10000 / width}%;--image-height:${10000 / height}%;--image-left:${-100 * left / width}%;--image-top:${-100 * top / height}%"`
@@ -357,7 +357,7 @@ function solutionImage({ image, alt = "", label, frame, portrait, underlines = [
       ${underlines.map(([x1, y1, x2, y2]) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`).join("")}
       ${circles.map(([cx, cy, rx, ry]) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/>`).join("")}
     </svg>` : "";
-  return `<button class="solution-step-image${frame ? " solution-framed-image" : ""}${portrait ? " solution-portrait-frame" : ""}" type="button" data-zoom aria-haspopup="dialog" aria-label="${frame ? `${alt} 원본 보기` : `${title} 단서 이미지 확대`}"${crop}>
+  return `<button class="solution-step-image${frame ? " solution-framed-image" : ""}" type="button" data-zoom aria-haspopup="dialog" aria-label="${frame ? `${alt} 원본 보기` : `${title} 단서 이미지 확대`}"${crop}>
     <img class="illustration" src="${image}" alt="${alt}" loading="lazy" decoding="async">
     ${marks}
     ${label ? `<span class="solution-step-label" aria-hidden="true">${label}</span>` : ""}

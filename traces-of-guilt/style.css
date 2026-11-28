@@ -1870,11 +1870,18 @@ main { overflow: clip; }
   height: 100%;
   object-fit: cover;
 }
-.solution-steps:has(.solution-framed-image) {
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(1.6rem, 4vw, 3rem);
-  max-width: 53rem;
-  margin-inline: auto;
+@media (min-width: 761px) {
+  .solution-steps:has(.solution-framed-image) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.4rem, 3vw, 2.4rem);
+    max-width: 58rem;
+    margin-inline: auto;
+  }
+  .solution-steps:has(.solution-framed-image) > li:first-child { grid-column: 1 / -1; }
+  .solution-steps:has(.solution-framed-image) > .solution-compared-step { grid-column: auto; }
+}
+@media (max-width: 760px) {
+  .solution-steps:has(.solution-framed-image) { grid-template-columns: minmax(0, 1fr); }
 }
 .solution-framed-image {
   display: block;
@@ -1884,7 +1891,6 @@ main { overflow: clip; }
   max-width: 44rem;
   margin-inline: auto;
 }
-.solution-steps > li > .solution-portrait-frame { max-width: 34rem; }
 .solution-framed-image img {
   position: absolute;
   inset: var(--image-top) auto auto var(--image-left);
