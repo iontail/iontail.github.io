@@ -31,7 +31,7 @@ export const alpineLodge = {
         title: "시간대를 먼저 좁혀요",
         image: "alpine-lodge/main.png",
         alt: "사건 다음 날 아침의 산장 전경",
-        text: "요한은 전날 저녁부터 모습을 보이지 않다가 베란다 아래 절벽 밑에서 발견됐어요. 접수대 장부의 마지막 기록과 벤치에서 찾은 편지에는 12월 24일이 적혀 있어요. 두 자료를 함께 보면 우리가 조사하는 산장 장면은 성탄절 아침이고, 돌아봐야 할 시간은 전날 저녁이에요."
+        text: "요한은 전날 저녁부터 모습을 보이지 않다가 베란다 아래 절벽 밑에서 발견됐어요. 접수대 장부의 마지막 기록과 의자에 끼워진 편지에는 12월 24일이 적혀 있어요. 두 자료를 함께 보면 우리가 조사하는 산장 장면은 성탄절 아침이고, 돌아봐야 할 시간은 전날 저녁이에요."
       },
       {
         title: "클라라와 빅터에게도 갈등이 있었어요",
@@ -102,12 +102,12 @@ export const alpineLodge = {
           { image: "alpine-lodge/letter.png", alt: "편지 끝에 남은 서명 gel과 ke", label: "편지 끝의 서명", origin: [68, 74], zoom: 4.35 },
           { image: "alpine-lodge/reception.png", alt: "접수대 장부의 플뤼겔 글로케와 104호", label: "숙박 장부의 104호", origin: [49, 55], zoom: 4.0 }
         ],
-        text: "벤치에서 찾은 편지 끝에는 잉크가 번져 ‘gel’과 ‘ke’만 남아 있어요. 장부의 ‘플뤼겔 글로케’를 독일어로 적은 Flügel Glocke와 대조하면 남은 글자가 맞아요. 편지와 104호 기록은 같은 이름을 가리켜요. 그 이름을 실제로 누가 사용했는지는 장부에 적혀 있지 않아요."
+        text: "의자에 끼워진 편지 끝에는 잉크가 번져 ‘gel’과 ‘ke’만 남아 있어요. 장부의 ‘플뤼겔 글로케’를 독일어로 적은 Flügel Glocke와 대조하면 남은 글자가 맞아요. 편지와 104호 기록은 같은 이름을 가리켜요. 그 이름을 실제로 누가 사용했는지는 장부에 적혀 있지 않아요."
       },
       {
         title: "편지에서 어느 단어를 읽을지 정해요",
         image: "alpine-lodge/letter.png",
-        alt: "본문 중앙을 따라 읽는 벤치 속 편지",
+        alt: "의자에 끼워진 편지의 본문 중앙",
         guide: [50, 17, 54],
         text: "편지 위아래의 짧은 표식 사이를 곧게 잇고, 선이 지나가는 단어 전체를 본문 위쪽부터 읽어요. ‘내일 도시 목표 실행 / 오늘 재료 준비 / 날개 달린 열쇠’가 순서대로 드러나요. 탁자 위 지도에서 산장 주변에 표시된 인근 도시는 한 곳이라, 편지의 ‘도시’를 지도 속 지명과 연결해 볼 수 있어요."
       },
@@ -129,6 +129,6 @@ export const alpineLodge = {
     { title: "벽난로 사진", image: "alpine-lodge/fireplace.png", action: "벽난로 사진 보기", mapLabel: "사진", position: [19, 28] },
     { title: "카펫 아래 바닥", image: "alpine-lodge/carpet.png", action: "카펫 살펴보기", mapLabel: "카펫", position: [60, 82] },
     { title: "산장 접수대", image: "alpine-lodge/reception.png", action: "접수대 살펴보기", mapLabel: "접수대", position: [7, 91] },
-    { title: "벤치에서 찾은 편지", image: "alpine-lodge/letter.png", action: "의자속 편지 탐색하기", mapLabel: "의자속 편지", position: [16, 77] }
+    { title: "의자에 끼워진 편지", image: "alpine-lodge/letter.png", action: "의자속 편지 탐색하기", mapLabel: "의자속 편지", position: [16, 77] }
   ]
 };
