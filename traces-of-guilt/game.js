@@ -1,5 +1,5 @@
 import { caseFile } from "./case-data.js?v=solution-time";
-import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-27-cuts";
+import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-story-specimen";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -375,7 +375,7 @@ function solutionComparison(step) {
 
 function solution(layout) {
   const { suspects, answer } = investigation.file;
-  const { practice, suspectId, video, cipher, stepsTitle = "장면별 해설", steps = [], story = [] } = answer;
+  const { practice, suspectId, video, cipher, stepsTitle = "장면별 해설", steps = [], story = [], storyImage } = answer;
   const successful = submittedSuspect.id === suspectId;
   const verdict = `${practice ? "시연 지목" : "범인 검거"} ${successful ? "성공" : "실패"}`;
   const [hours, minutes, seconds] = durationParts(completedSeconds);
@@ -427,7 +427,9 @@ function solution(layout) {
       </section>` : ""}
       ${story.length ? `<section class="solution-story" aria-labelledby="solution-story">
         <h4 id="solution-story" tabindex="-1">사건의 전말</h4>
-        ${story.map(paragraph => `<p>${paragraph}</p>`).join("")}
+        ${story.map((paragraph, index) => `<p>${paragraph}</p>
+          ${index === 0 && storyImage ? `<img class="solution-story-image" src="${storyImage.src}" alt="${storyImage.alt}"
+            width="${storyImage.width}" height="${storyImage.height}" loading="lazy" decoding="async">` : ""}`).join("")}
       </section>` : ""}
     </div>
   </section>`;

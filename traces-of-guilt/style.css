@@ -1919,6 +1919,15 @@ main { overflow: clip; }
   padding-block-start: clamp(1rem, 2vw, 1.6rem);
   border-top: 1px solid #a481537a;
 }
+.solution-story-image {
+  display: block;
+  width: min(100%, 38rem);
+  height: auto;
+  margin: 1rem auto;
+  padding: clamp(.45rem, 2vw, 1.2rem);
+  border: 1px solid #a481537a;
+  background: #222e38;
+}
 .solution-step-zoom {
   position: absolute;
   top: .42rem;
