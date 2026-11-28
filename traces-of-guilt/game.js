@@ -1,5 +1,5 @@
 import { caseFile } from "./case-data.js?v=cipher-hint";
-import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-letter-title";
+import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-solution-27";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
@@ -409,7 +409,7 @@ function solution(layout) {
       ${steps.length ? `<section class="solution-sequence" aria-labelledby="solution-steps">
         <h4 id="solution-steps" tabindex="-1">${stepsTitle}</h4>
         <ol class="solution-steps">${steps.map((step, index) => `<li${step.comparison ? ' class="solution-compared-step"' : ""}>
-          ${step.comparison ? `<div class="solution-comparison">${step.comparison.map(view => solutionImage(view, step.title)).join("")}</div>` : solutionImage(step, step.title)}
+          ${step.comparison ? `<div class="solution-comparison">${step.comparison.map(view => solutionImage(view, step.title)).join("")}${step.question ? '<span class="solution-comparison-question" aria-hidden="true"><b>?</b>↔</span>' : ""}</div>` : solutionImage(step, step.title)}
           <div class="solution-step-text">
             <span class="solution-step-number" aria-hidden="true">${number(index + 1)}</span>
             <div><h5>${step.title}</h5><p>${step.text}</p></div>

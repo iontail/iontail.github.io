@@ -1840,7 +1840,22 @@ main { overflow: clip; }
 }
 .solution-steps li::marker { font-size: 0; }
 .solution-compared-step { grid-column: 1 / -1; }
-.solution-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.solution-comparison { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.solution-comparison-question {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  padding: .35rem .55rem;
+  border: 1px solid #d7af70;
+  background: #101a22;
+  color: #ffe5a2;
+  font-size: clamp(1.15rem, 3vw, 2rem);
+  line-height: 1;
+  text-align: center;
+  pointer-events: none;
+}
+.solution-comparison-question b { display: block; }
 .solution-step-image img { transform: scale(var(--crop-zoom, 1)); transform-origin: var(--crop-origin, center); }
 .solution-step-label {
   position: absolute;
