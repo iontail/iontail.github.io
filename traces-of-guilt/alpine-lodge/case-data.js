@@ -1,5 +1,5 @@
-const witnessesImage = "alpine-lodge/witnesses.png?v=alpine-chapel";
-const mapImage = "alpine-lodge/map-closeup.png?v=alpine-chapel";
+const witnessesImage = "alpine-lodge/witnesses.png?v=alpine-chapel-source";
+const mapImage = "alpine-lodge/map-closeup.png?v=alpine-chapel-source";
 
 export const alpineLodge = {
   title: "알프스 산장의 비밀",

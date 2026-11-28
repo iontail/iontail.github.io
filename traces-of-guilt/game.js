@@ -1,5 +1,5 @@
 import { caseFile } from "./case-data.js?v=solution-time";
-import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-chapel";
+import { alpineLodge } from "./alpine-lodge/case-data.js?v=alpine-chapel-source";
 
 const entrance = document.querySelector(".entrance");
 const enterButton = entrance.querySelector(".enter-room");
